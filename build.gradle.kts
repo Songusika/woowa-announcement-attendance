@@ -22,7 +22,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-mysql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     runtimeOnly("com.h2database:h2")
@@ -30,6 +29,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+    testImplementation("io.rest-assured:rest-assured:5.3.0")
 }
 
 ktlint {
