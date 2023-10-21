@@ -1,0 +1,786 @@
+openapi: 3.0.3
+info:
+  title: 찜꽁 API 문서
+  description: 캠퍼스 플랫폼 찜꽁의 API 문서입니다.
+  contact:
+    email: junho5336@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://api.test.com
+tags:
+  - name: Reservation
+    description: 예약과 관련된 도메인입니다.
+  - name: Map
+    description: Map(캠퍼스)와 관련된 도메인입니다.
+  - name: Space
+    description: Space(강의장)과 관련된 도메인입니다.
+  - name: Slack
+    description: Slack과 관련된 도메인입니다.
+paths:
+  /api/maps/{mapId}/spaces/{spaceId}/reservations:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: spaceId
+        required: true
+        schema:
+          type: integer
+    post:
+      operationId: createReservation
+      tags:
+        - Reservation
+      summary: 예약 생성
+      description: 사용자가 예약을 수행한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservation_post'
+      responses:
+        201:
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+                example: '/api/maps/1/spaces/1/reservations/8'
+  /api/maps/{mapId}/spaces/{spaceId}/reservations/{reservationId}:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: spaceId
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: reservationId
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: findReservation
+      tags:
+        - Reservation
+      summary: 예약 조회
+      description: 특정 Space의 date에 해당하는 예약 정보를 조회한다.
+      parameters:
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2023-03-25'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservation_get_single'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+    delete:
+      operationId: removeReservation
+      tags:
+        - Reservation
+      summary: 예약 삭제
+      description: 특정 예약을 삭제한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: 1234
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Request
+    put:
+      operationId: updateReservation
+      tags:
+        - Reservation
+      summary: 예약 수정
+      description: 특정 예약을 수정한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: string
+              example: 1234
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+  /api/maps:
+    post:
+      operationId: createMap
+      tags:
+        - Map
+      summary: Map 생성
+      description: Map을 생성한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/map_post'
+      responses:
+        201:
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+                example: '/api/maps/1'
+        400:
+          description: Bad Request
+    get:
+      operationId: findAllMap
+      tags:
+        - Map
+      summary: Map 전체 조회
+      description: Map 전체를 조회한다.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map_get_all'
+        404:
+          description: Not Found
+  /api/maps/{mapId}:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+          example: 1
+    get:
+      operationId: findMap
+      tags:
+        - Map
+      summary: Map 단건 조회
+      description: Map 단건을 조회한다.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map_get_single'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+    delete:
+      operationId: removeMap
+      tags:
+        - Map
+      summary: Map 삭제
+      description: Map을 삭제한다.
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Request
+    put:
+      operationId: updateMap
+      tags:
+        - Map
+      summary: Map 수정
+      description: Map을 수정한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/map_put'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+  /api/maps/{mapId}/spaces:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+          example: 1
+    post:
+      operationId: createSpace
+      tags:
+        - Space
+      summary: Space 생성
+      description: Space를 생성한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/space_post'
+      responses:
+        201:
+          description: Created
+          headers:
+            Location:
+              schema:
+                type: string
+                example: '/api/maps/1/spaces/1'
+        400:
+          description: Bad Request
+    get:
+      operationId: findAllSpace
+      tags:
+        - Space
+      summary: Space 전체 조회
+      description: 특정 Map의 Space 전체 목록을 조회한다.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/space_get_all'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+  /api/maps/{mapId}/spaces/{spaceId}:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+          example: 1
+      - in: path
+        name: spaceId
+        required: true
+        schema:
+          type: integer
+          example: 1
+    get:
+      operationId: findSpace
+      tags:
+        - Space
+      summary: Space 단건 조회
+      description: 특정 Map의 Space 단건을 조회한다.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/space_get_single'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+    delete:
+      operationId: removeSpace
+      tags:
+        - Space
+      summary: Space 삭제
+      description: 특정 Space를 삭제한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/space_delete'
+      responses:
+        204:
+          description: No Content
+        400:
+          description: Bad Request
+    put:
+      operationId: updateSpace
+      tags:
+        - Space
+      summary: Space 수정
+      description: 특정 Space를 수정한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/space_put'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+  /api/maps/{mapId}/spaces/availability:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+          example: 1
+    get:
+      operationId: findSpaceAvailability
+      tags:
+        - Reservation
+      summary: Space 예약 가능 여부 조회
+      description: 예약 가능 여부를 조회합니다.
+      parameters:
+        - in: query
+          name: startDateTime
+          required: true
+          schema:
+            type: string
+            example: '2023-03-25 10:00'
+        - in: query
+          name: endDateTime
+          required: true
+          schema:
+            type: string
+            example: '2023-03-25 11:00'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref:
+                  '#/components/schemas/space_get_reservation_enabled'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+  /api/maps/{mapId}/slack:
+    parameters:
+      - in: path
+        name: mapId
+        required: true
+        schema:
+          type: integer
+          example: 1
+    post:
+      operationId: mappingSlackUrl
+      tags:
+        - Slack
+      summary: 슬랙 URL 등록
+      description: Map에 슬랙 URL을 등록한다.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/slack_post'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+    get:
+      operationId: findSlackUrlByMap
+      tags:
+        - Slack
+      summary: 슬랙 URL 조회
+      description: Map에 등록된 슬랙 URL을 조회한다.
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/slack_get'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+
+components:
+  schemas:
+    reservation_get_single:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        startDateTime:
+          type: string
+          example: '2023-03-25 01:00'
+        endDateTime:
+          type: string
+          example: '2023-03-25 02:00'
+        name:
+          type: string
+          example: 제이슨
+        description:
+          type: string
+          example: 찜꽁 근로 회의
+      required:
+        - id
+        - startDateTime
+        - endDateTime
+        - name
+        - description
+    reservation_post:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        startDateTime:
+          type: string
+          example: '2023-03-25 01:00'
+        endDateTime:
+          type: string
+          example: '2023-03-25 02:00'
+        name:
+          type: string
+          example: 제이슨
+        description:
+          type: string
+          example: 찜꽁 근로 회의
+        password:
+          type: string
+          example: 1234
+      required:
+        - id
+        - startDateTime
+        - endDateTime
+        - name
+        - description
+        - password
+    map_get_single:
+      type: object
+      properties:
+        mapId:
+          type: integer
+          example: 1
+        mapName:
+          type: string
+          example: '루터회관'
+        mapDrawing:
+          type: string
+          example: '{"width":100,"height":100,"mapElements":[{"id":2,"type":"polyline","stroke":"#333333","points":["50,40","40,20"]},{"id":3,"type":"polyline","stroke":"#333333","points":["40,20","20,20"]},{"id":4,"type":"polyline","stroke":"#333333","points":["20,20","10,50"]},{"id":5,"type":"polyline","stroke":"#333333","points":["10,50","50,90"]},{"id":6,"type":"polyline","stroke":"#333333","points":["50,90","90,50"]},{"id":7,"type":"polyline","stroke":"#333333","points":["90,50","80,20"]},{"id":8,"type":"polyline","stroke":"#333333","points":["80,20","60,20"]},{"id":9,"type":"polyline","stroke":"#333333","points":["60,20","50,40"]}]}'
+        thumbnail:
+          type: string
+          example: '<?xml version="1.0"?><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"/></svg>'
+        slackUrl:
+          type: string
+          example: 'https://slackexample.com'
+      required:
+        - mapId
+        - mapName
+        - mapDrawing
+        - thumbnail
+        - slackUrl
+    map_get_all:
+      type: array
+      items:
+        $ref: '#/components/schemas/map_get_single'
+    map_post:
+      type: object
+      properties:
+        mapName:
+          type: string
+          example: '루터회관'
+        mapDrawing:
+          type: string
+          example: '{"width":100,"height":100,"mapElements":[{"id":2,"type":"polyline","stroke":"#333333","points":["50,40","40,20"]},{"id":3,"type":"polyline","stroke":"#333333","points":["40,20","20,20"]},{"id":4,"type":"polyline","stroke":"#333333","points":["20,20","10,50"]},{"id":5,"type":"polyline","stroke":"#333333","points":["10,50","50,90"]},{"id":6,"type":"polyline","stroke":"#333333","points":["50,90","90,50"]},{"id":7,"type":"polyline","stroke":"#333333","points":["90,50","80,20"]},{"id":8,"type":"polyline","stroke":"#333333","points":["80,20","60,20"]},{"id":9,"type":"polyline","stroke":"#333333","points":["60,20","50,40"]}]}'
+        thumbnail:
+          type: string
+          example: '<?xml version="1.0"?><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"/></svg>'
+        slackUrl:
+          type: string
+          example: "https://slackexample.com"
+      required:
+        - mapName
+        - mapDrawing
+        - thumbnail
+        - slackUrl
+    map_put:
+      type: object
+      properties:
+        mapName:
+          type: string
+          example: '루터회관'
+        mapDrawing:
+          type: string
+          example: '{"width":100,"height":100,"mapElements":[{"id":2,"type":"polyline","stroke":"#333333","points":["50,40","40,20"]},{"id":3,"type":"polyline","stroke":"#333333","points":["40,20","20,20"]},{"id":4,"type":"polyline","stroke":"#333333","points":["20,20","10,50"]},{"id":5,"type":"polyline","stroke":"#333333","points":["10,50","50,90"]},{"id":6,"type":"polyline","stroke":"#333333","points":["50,90","90,50"]},{"id":7,"type":"polyline","stroke":"#333333","points":["90,50","80,20"]},{"id":8,"type":"polyline","stroke":"#333333","points":["80,20","60,20"]},{"id":9,"type":"polyline","stroke":"#333333","points":["60,20","50,40"]}]}'
+        thumbnail:
+          type: string
+          example: '<?xml version="1.0"?><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"/></svg>'
+        slackUrl:
+          type: string
+          example: "https://slackexample.com"
+      required:
+        - mapName
+        - mapDrawing
+        - thumbnail
+        - slackUrl
+    space_get_single:
+      type: object
+      properties:
+        name:
+          type: string
+          example: '백엔드 강의실'
+        color:
+          type: string
+          example: '#FED7D9'
+        area:
+          type: string
+          example: '{ "id": "1", "type" : "rect", "x": "10", "y": "10", "width": "30", "height": "30" }'
+        reservationEnable:
+          description: '예약가능 여부'
+          type: boolean
+          example: true
+        settings:
+          description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
+          type: object
+          properties:
+            settingStartTime:
+              type: string
+              example: '10:00:00'
+            settingEndTime:
+              type: string
+              example: '22:00:00'
+            reservationMinimumTimeUnit:
+              type: integer
+              example: 10
+            reservationMaximumTimeUnit:
+              type: integer
+              example: 120
+            enabledDayOfWeek:
+              type: object
+              properties:
+                monday:
+                  type: boolean
+                  example: true
+                tuesday:
+                  type: boolean
+                  example: true
+                wednesday:
+                  type: boolean
+                  example: true
+                thursday:
+                  type: boolean
+                  example: true
+                friday:
+                  type: boolean
+                  example: true
+                saturday:
+                  type: boolean
+                  example: true
+                sunday:
+                  type: boolean
+                  example: true
+      required:
+        - name
+        - color
+        - area
+        - reservationEnable
+        - settings
+    space_get_all:
+      type: array
+      items:
+        $ref: '#/components/schemas/space_get_single'
+    space_get_reservation_enabled:
+      type: object
+      properties:
+        mapId:
+          type: integer
+          example: 1
+        spaces:
+          type: array
+          items:
+            type: object
+            properties:
+              spaceId:
+                type: integer
+                example: 15
+              isAvailable:
+                type: boolean
+                example: true
+      required:
+        - mapId
+        - spaces
+    space_post:
+      type: object
+      nullable: false
+      properties:
+        name:
+          type: string
+          example: '백엔드 강의실'
+          nullable: false
+        color:
+          type: string
+          example: '#FED7D9'
+          nullable: false
+        area:
+          type: string
+          example: '{ "id": "1", "type" : "rect", "x": "10", "y": "10", "width": "30", "height": "30" }'
+        thumbnail:
+          type: string
+          example: '<?xml version="1.0"?><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"/></svg>'
+        reservationEnable:
+          description: '예약가능 여부'
+          type: boolean
+          example: true
+        settings:
+          description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
+          type: object
+          properties:
+            settingStartTime:
+              type: string
+              example: '10:00:00'
+            settingEndTime:
+              type: string
+              example: '22:00:00'
+            reservationMinimumTimeUnit:
+              type: integer
+              example: 10
+              nullable: false
+            reservationMaximumTimeUnit:
+              type: integer
+              example: 120
+              nullable: false
+            enabledDayOfWeek:
+              type: object
+              nullable: false
+              properties:
+                monday:
+                  type: boolean
+                  example: true
+                tuesday:
+                  type: boolean
+                  example: true
+                wednesday:
+                  type: boolean
+                  example: true
+                thursday:
+                  type: boolean
+                  example: true
+                friday:
+                  type: boolean
+                  example: true
+                saturday:
+                  type: boolean
+                  example: true
+                sunday:
+                  type: boolean
+                  example: true
+      required:
+        - name
+        - color
+        - area
+        - thumbnail
+        - reservationEnable
+        - settings
+    space_put:
+      type: object
+      properties:
+        name:
+          type: string
+          example: '백엔드 강의실'
+        color:
+          type: string
+          example: '#FED7D9'
+        area:
+          type: string
+          example: '{ "id": "1", "type" : "rect", "x": "10", "y": "10", "width": "30", "height": "30" }'
+        thumbnail:
+          type: string
+          example: '<?xml version="1.0"?><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"/></svg>'
+        reservationEnable:
+          description: '예약가능 여부'
+          type: boolean
+          example: true
+        settings:
+          description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
+          type: object
+          properties:
+            settingStartTime:
+              type: string
+              example: '10:00:00'
+            settingEndTime:
+              type: string
+              example: '22:00:00'
+            reservationMinimumTimeUnit:
+              type: integer
+              example: 10
+            reservationMaximumTimeUnit:
+              type: integer
+              example: 120
+            enabledDayOfWeek:
+              type: object
+              properties:
+                monday:
+                  type: boolean
+                  example: true
+                tuesday:
+                  type: boolean
+                  example: true
+                wednesday:
+                  type: boolean
+                  example: true
+                thursday:
+                  type: boolean
+                  example: true
+                friday:
+                  type: boolean
+                  example: true
+                saturday:
+                  type: boolean
+                  example: true
+                sunday:
+                  type: boolean
+                  example: true
+      required:
+        - name
+        - color
+        - area
+        - thumbnail
+        - reservationEnable
+        - settings
+    space_delete:
+      type: object
+      properties:
+        thumbnail:
+          type: string
+          example: '<?xml version="1.0"?><svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M 7 4 C 6.744125 4 6.4879687 4.0974687 6.2929688 4.2929688 L 4.2929688 6.2929688 C 3.9019687 6.6839688 3.9019687 7.3170313 4.2929688 7.7070312 L 11.585938 15 L 4.2929688 22.292969 C 3.9019687 22.683969 3.9019687 23.317031 4.2929688 23.707031 L 6.2929688 25.707031 C 6.6839688 26.098031 7.3170313 26.098031 7.7070312 25.707031 L 15 18.414062 L 22.292969 25.707031 C 22.682969 26.098031 23.317031 26.098031 23.707031 25.707031 L 25.707031 23.707031 C 26.098031 23.316031 26.098031 22.682969 25.707031 22.292969 L 18.414062 15 L 25.707031 7.7070312 C 26.098031 7.3170312 26.098031 6.6829688 25.707031 6.2929688 L 23.707031 4.2929688 C 23.316031 3.9019687 22.682969 3.9019687 22.292969 4.2929688 L 15 11.585938 L 7.7070312 4.2929688 C 7.5115312 4.0974687 7.255875 4 7 4 z"/></svg>'
+      required:
+        - thumbnail
+    slack_post:
+      type: object
+      properties:
+        slackUrl:
+          type: string
+          example: "https://slackexample.com"
+      required:
+        - slackUrl
+    slack_get:
+      type: object
+      properties:
+        slackUrl:
+          type: string
+          example: "https://slackexample.com"
+      required:
+        - slackUrl
