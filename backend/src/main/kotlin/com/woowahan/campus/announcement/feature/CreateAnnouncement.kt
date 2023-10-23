@@ -21,7 +21,7 @@ class CreateAnnouncement(
     ): ResponseEntity<Unit> {
 
         val savedAnnouncement = announcementRepository.save(
-            Announcement(
+            Announcement.create(
                 createAnnouncementRequest.title,
                 createAnnouncementRequest.content,
                 createAnnouncementRequest.author,

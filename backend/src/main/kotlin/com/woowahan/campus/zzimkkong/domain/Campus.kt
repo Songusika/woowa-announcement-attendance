@@ -1,7 +1,9 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.data.annotation.Id
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 
+@Entity
 class Campus(
     val name: String,
     val drawing: String,

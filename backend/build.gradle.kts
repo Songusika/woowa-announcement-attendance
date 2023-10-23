@@ -17,7 +17,7 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 repositories.mavenCentral()
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -30,6 +30,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
+    implementation("com.slack.api:slack-api-client:1.30.0")
 }
 
 ktlint {

@@ -1,8 +1,10 @@
 package com.woowahan.campus.announcement.support
 
-import org.springframework.data.annotation.Id
+import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
 import org.springframework.data.domain.AbstractAggregateRoot
 
+@MappedSuperclass
 abstract class BaseEntity(
     @Id
     val id: Long,
@@ -21,6 +23,7 @@ abstract class BaseEntity(
     }
 }
 
+@MappedSuperclass
 abstract class BaseRootEntity<T : AbstractAggregateRoot<T>>(
     @Id
     val id: Long = 0L,

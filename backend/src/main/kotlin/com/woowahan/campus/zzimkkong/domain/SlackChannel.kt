@@ -1,9 +1,9 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Table
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
 
-@Table("SLACK_CHANNEL")
+@Entity
 class SlackChannel(
     val url: String,
     val campusId: Long,
