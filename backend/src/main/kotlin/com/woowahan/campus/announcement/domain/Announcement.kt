@@ -16,7 +16,6 @@ class Announcement(
     val slackChannelId: Int,
     id: Long = 0L,
 ) : BaseRootEntity<Announcement>(id) {
-    fun withId(id: Long): Announcement = Announcement(title, content, author, slackChannelId, id)
 
     fun update(title: String, content: String, author: String) {
         if (title.isBlank() || content.isBlank() || author.isBlank()) {
@@ -28,6 +27,11 @@ class Announcement(
             throw AuthorizationException("공지 작성자만이 공지를 수정할 수 있습니다.")
         }
         this.author = Author(author)
+    }
+
+    private fun publish(): Announcement {
+        val event = MessageSendEvent(this)
+        return this.andEvent(event)
     }
 
     companion object {
