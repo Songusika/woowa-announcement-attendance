@@ -7,5 +7,7 @@ import org.springframework.data.relational.core.mapping.Table
 class SlackChannel (
     val url: String,
     val campusId: Long,
-    @Id var id: Long = 0L,
-)
+    @Id val id: Long = 0L,
+) {
+    fun withId(id: Long): SlackChannel = SlackChannel(url, campusId, id)
+}

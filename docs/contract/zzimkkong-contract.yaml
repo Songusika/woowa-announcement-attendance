@@ -8,10 +8,16 @@ info:
 servers:
   - url: https://api.test.com
 tags:
+  - name: CreateMap
+    description: Map(캠퍼스) 생성과 관련된 도메인입니다.
+  - name: FindMap
+    description: Map(캠퍼스) 조회와 관련된 도메인입니다.
+  - name: UpdateMap
+    description: Map(캠퍼스) 수정과 관련된 도메인입니다.
+  - name: DeleteMap
+    description: Map(캠퍼스) 삭제와 관련된 도메인입니다.
   - name: Reservation
     description: 예약과 관련된 도메인입니다.
-  - name: Map
-    description: Map(캠퍼스)와 관련된 도메인입니다.
   - name: Space
     description: Space(강의장)과 관련된 도메인입니다.
   - name: Slack
@@ -131,7 +137,7 @@ paths:
     post:
       operationId: createMap
       tags:
-        - Map
+        - CreateMap
       summary: Map 생성
       description: Map을 생성한다.
       requestBody:
@@ -153,7 +159,7 @@ paths:
     get:
       operationId: findAllMap
       tags:
-        - Map
+        - FindMap
       summary: Map 전체 조회
       description: Map 전체를 조회한다.
       responses:
@@ -176,7 +182,7 @@ paths:
     get:
       operationId: findMap
       tags:
-        - Map
+        - FindMap
       summary: Map 단건 조회
       description: Map 단건을 조회한다.
       responses:
@@ -193,7 +199,7 @@ paths:
     delete:
       operationId: removeMap
       tags:
-        - Map
+        - DeleteMap
       summary: Map 삭제
       description: Map을 삭제한다.
       responses:
@@ -204,7 +210,7 @@ paths:
     put:
       operationId: updateMap
       tags:
-        - Map
+        - UpdateMap
       summary: Map 수정
       description: Map을 수정한다.
       requestBody:

@@ -1,25 +1,26 @@
 package com.woowahan.campus.zzimkkong.feature
 
+import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
+import openapi.model.MapGetSingle
 import openapi.model.MapPost
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CreateCampusTest(
+class ReadCampusTest(
     @LocalServerPort
     val port: Int
 ) : BehaviorSpec({
 
     RestAssured.port = port
 
-    Given("이름, 드로잉, 썸네일, 슬랙 URL을 받는다.") {
+    Given("캠퍼스 정보를 등록한다.") {
         val name = "잠실 캠퍼스"
         val drawing =
             "{\"width\":100,\"height\":100,\"mapElements\":[{\"id\":2,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"50,40\",\"40,20\"]},{\"id\":3,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"40,20\",\"20,20\"]},{\"id\":4,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"20,20\",\"10,50\"]},{\"id\":5,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"10,50\",\"50,90\"]},{\"id\":6,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"50,90\",\"90,50\"]},{\"id\":7,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"90,50\",\"80,20\"]},{\"id\":8,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"80,20\",\"60,20\"]},{\"id\":9,\"type\":\"polyline\",\"stroke\":\"#333333\",\"points\":[\"60,20\",\"50,40\"]}]}"
@@ -32,16 +33,43 @@ class CreateCampusTest(
             .given().log().all()
             .contentType(ContentType.JSON)
             .body(request)
+            .`when`().post("/api/maps")
+            .then().log().all()
+            .extract()
 
-        When("캠퍼스 정보를 저장한다.") {
-
-            val response = givenSpec.`when`().post("/api/maps")
+        When("캠퍼스 정보를 모두 조회한다.") {
+            val response = RestAssured
+                .given().log().all()
+                .`when`().get("/api/maps")
                 .then().log().all()
                 .extract()
 
-            Then("201 응답과 저장된 캠퍼스의 URI를 Location Header로 반환한다.") {
-                response.statusCode() shouldBe 201
-                response.header(HttpHeaders.LOCATION).shouldNotBeNull()
+            Then("200 응답과 저장된 캠퍼스 정보들을 반환한다.") {
+                assertSoftly {
+                    response.statusCode() shouldBe 200
+                    response.body().jsonPath().getList<MapGetSingle>(".").size shouldBe 1
+                }
+            }
+        }
+
+        When("캠퍼스 단건 정보를 조회한다.") {
+            val mapId = givenSpec.header(HttpHeaders.LOCATION).shouldNotBeNull().split("/").last()
+            val response = RestAssured
+                .given().log().all()
+                .`when`().get("/api/maps/$mapId")
+                .then().log().all()
+                .extract()
+
+            Then("200 응답과 저장된 캠퍼스 정보들을 반환한다.") {
+                assertSoftly {
+                    response.statusCode() shouldBe 200
+                    val mapGetSingle = response.body().jsonPath().getObject(".", MapGetSingle::class.java)
+                    mapGetSingle.mapId shouldBe mapId.toInt()
+                    mapGetSingle.mapName shouldBe name
+                    mapGetSingle.mapDrawing shouldBe drawing
+                    mapGetSingle.thumbnail shouldBe thumbnail
+                    mapGetSingle.slackUrl shouldBe slackUrl
+                }
             }
         }
     }
