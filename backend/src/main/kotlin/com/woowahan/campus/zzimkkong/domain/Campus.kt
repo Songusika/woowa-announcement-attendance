@@ -6,5 +6,7 @@ class Campus(
     val name: String,
     val drawing: String,
     val thumbnail: String,
-    @Id var id: Long = 0L,
-)
+    @Id val id: Long = 0L,
+) {
+    fun withId(id: Long): Campus = Campus(name, drawing, thumbnail, id)
+}
