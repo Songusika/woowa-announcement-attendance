@@ -20,14 +20,13 @@ class CreateAnnouncement(
         createAnnouncementRequest: CreateAnnouncementRequest
     ): ResponseEntity<Unit> {
 
-        val savedAnnouncement = announcementRepository.save(
-            Announcement(
-                createAnnouncementRequest.title,
-                createAnnouncementRequest.content,
-                createAnnouncementRequest.author,
-                createAnnouncementRequest.slackChannel.channelId
-            )
+        val announcement = Announcement(
+            createAnnouncementRequest.title,
+            createAnnouncementRequest.content,
+            createAnnouncementRequest.author,
+            createAnnouncementRequest.slackChannel.channelId
         )
+        val savedAnnouncement = announcementRepository.save(announcement.write())
         return ResponseEntity.created(URI.create("/api/announcements/${savedAnnouncement.id}")).build()
     }
 }

@@ -10,4 +10,9 @@ class Announcement(
     id: Long = 0L,
 ) : BaseRootEntity<Announcement>(id) {
     fun withId(id: Long): Announcement = Announcement(title, content, author, slackChannelId, id)
+
+    fun write(): Announcement {
+        val event = MessageSendEvent(this)
+        return this.andEvent(event)
+    }
 }

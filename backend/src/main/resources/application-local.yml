@@ -4,3 +4,10 @@ spring:
       enabled: true
   datasource:
     generate-unique-name: false
+
+
+slack:
+  bot:
+    token: 토큰
+  user:
+    token: 토큰
