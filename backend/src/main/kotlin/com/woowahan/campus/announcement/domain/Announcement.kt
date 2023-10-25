@@ -1,5 +1,7 @@
 package com.woowahan.campus.announcement.domain
 
+import com.woowahan.campus.announcement.support.BaseEntity
+
 class Announcement(
     val title: String,
     val content: String,

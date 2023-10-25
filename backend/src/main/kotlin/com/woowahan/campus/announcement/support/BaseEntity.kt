@@ -1,4 +1,4 @@
-package com.woowahan.campus.announcement.domain
+package com.woowahan.campus.announcement.support
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.AbstractAggregateRoot
