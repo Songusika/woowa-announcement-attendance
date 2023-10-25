@@ -40,7 +40,6 @@ class CreateAnnouncementTest(
                 .then().log().all()
                 .extract()
 
-
             Then("201 응답과 저장된 글의 URI를 Location Header로 반환한다.") {
                 response.statusCode() shouldBe 201
                 response.header(HttpHeaders.LOCATION) shouldNotBe null
