@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 
 abstract class BaseEntity(
     @Id
-    val id: Long = 0L
+    val id: Long
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -12,9 +12,7 @@ abstract class BaseEntity(
 
         other as BaseEntity
 
-        if (id != other.id) return false
-
-        return true
+        return id == other.id
     }
 
     override fun hashCode(): Int {
