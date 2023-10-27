@@ -22,7 +22,7 @@ class UpdateCampusTest(
     Given("캠퍼스 정보를 등록한다.") {
         val campus = CampusFixture.잠실_캠퍼스()
         val slackUrl = "https://slackexample.com"
-        val givenSpec = CampusFixture.`캠퍼스_생성`(campus, slackUrl)
+        val givenSpec = CampusFixture.캠퍼스_생성(campus, slackUrl)
         val campusForUpdate = CampusFixture.선릉_캠퍼스()
 
         When("캠퍼스 정보를 수정한다.") {
