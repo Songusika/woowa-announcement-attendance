@@ -22,7 +22,7 @@ class CreateCampusTest(
         val slackUrl = "https://slackexample.com"
 
         When("캠퍼스 정보를 저장한다.") {
-            val response = CampusFixture.`캠퍼스_생성`(campus, slackUrl)
+            val response = CampusFixture.캠퍼스_생성(campus, slackUrl)
 
             Then("201 응답과 저장된 캠퍼스의 URI를 Location Header로 반환한다.") {
                 response.statusCode() shouldBe 201

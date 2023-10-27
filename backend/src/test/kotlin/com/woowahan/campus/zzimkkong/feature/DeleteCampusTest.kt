@@ -19,7 +19,7 @@ class DeleteCampusTest(
     Given("캠퍼스 정보를 등록한다.") {
         val campus = CampusFixture.잠실_캠퍼스()
         val slackUrl = "https://slackexample.com"
-        val givenSpec = CampusFixture.`캠퍼스_생성`(campus, slackUrl)
+        val givenSpec = CampusFixture.캠퍼스_생성(campus, slackUrl)
 
         When("캠퍼스 정보를 삭제한다.") {
             val mapId = givenSpec.header("Location").split("/").last()
