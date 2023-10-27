@@ -35,19 +35,19 @@ class CampusFixture {
             .then().log().all()
             .extract()
 
-        fun `캠퍼스_전체_조회`() = RestAssured
+        fun `캠퍼스_전체_조회`(): ExtractableResponse<Response> = RestAssured
             .given().log().all()
             .`when`().get("/api/maps")
             .then().log().all()
             .extract()
 
-        fun `캠퍼스_단건_조회`(mapId: String) = RestAssured
+        fun `캠퍼스_단건_조회`(mapId: String): ExtractableResponse<Response> = RestAssured
             .given().log().all()
             .`when`().get("/api/maps/$mapId")
             .then().log().all()
             .extract()
 
-        fun `캠퍼스_단건_삭제`(mapId: String) = RestAssured
+        fun `캠퍼스_단건_삭제`(mapId: String): ExtractableResponse<Response> = RestAssured
             .given().log().all()
             .`when`().delete("/api/maps/$mapId")
             .then().log().all()
@@ -57,7 +57,7 @@ class CampusFixture {
             mapId: String,
             campus: Campus,
             slackUrl: String,
-        ) = RestAssured
+        ): ExtractableResponse<Response> = RestAssured
             .given().log().all()
             .contentType(ContentType.JSON)
             .body(MapPut(campus.name, campus.drawing, campus.thumbnail, slackUrl))
