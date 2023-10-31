@@ -1,10 +1,13 @@
 package com.woowahan.campus.announcement.support
 
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
 import org.springframework.data.annotation.Id
 import org.springframework.data.domain.AbstractAggregateRoot
 
 abstract class BaseEntity(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
 ) {
     override fun equals(other: Any?): Boolean {
@@ -25,8 +28,12 @@ abstract class BaseEntity(
 
 abstract class BaseRootEntity<T : AbstractAggregateRoot<T>>(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L
 ) : AbstractAggregateRoot<T>() {
+
+    val events: MutableCollection<Any> = super.domainEvents()
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

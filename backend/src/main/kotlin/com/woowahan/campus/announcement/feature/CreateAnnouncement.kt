@@ -26,7 +26,9 @@ class CreateAnnouncement(
             createAnnouncementRequest.author,
             createAnnouncementRequest.slackChannel.channelId
         )
-        val savedAnnouncement = announcementRepository.save(announcement.write())
+
+        val savedAnnouncement = announcementRepository.save(announcement)
+
         return ResponseEntity.created(URI.create("/api/announcements/${savedAnnouncement.id}")).build()
     }
 }
