@@ -1,7 +1,9 @@
 package com.woowahan.campus.announcement.domain
 
 import com.woowahan.campus.announcement.support.BaseEntity
+import jakarta.persistence.Entity
 
+@Entity
 class Announcement(
     val title: String,
     val content: String,

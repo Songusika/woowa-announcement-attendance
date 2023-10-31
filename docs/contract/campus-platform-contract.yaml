@@ -97,6 +97,7 @@ paths:
         name: id
         schema:
           type: integer
+          format: int64
           example: 1
         required: true
         description: 공지사항 ID
