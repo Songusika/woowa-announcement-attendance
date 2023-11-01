@@ -1,13 +1,15 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.data.annotation.Id
-import org.springframework.data.relational.core.mapping.Table
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 
-@Table("SLACK_CHANNEL")
+@Entity
 class SlackChannel(
     val url: String,
     val campusId: Long,
-    @Id val id: Long = 0L,
-) {
-    fun withId(id: Long): SlackChannel = SlackChannel(url, campusId, id)
-}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0L,
+)

@@ -1,12 +1,16 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.data.annotation.Id
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 
+@Entity
 class Campus(
     val name: String,
     val drawing: String,
     val thumbnail: String,
-    @Id val id: Long = 0L,
-) {
-    fun withId(id: Long): Campus = Campus(name, drawing, thumbnail, id)
-}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0L,
+)
