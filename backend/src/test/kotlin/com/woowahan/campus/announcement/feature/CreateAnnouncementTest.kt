@@ -1,5 +1,6 @@
 package com.woowahan.campus.announcement.feature
 
+import com.woowahan.campus.utils.basicEncodePassword
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -10,7 +11,6 @@ import openapi.model.CreateAnnouncementRequestSlackChannel
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
-import java.util.Base64
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CreateAnnouncementTest(
@@ -25,13 +25,13 @@ class CreateAnnouncementTest(
         val contents = "민트는 짱이다. 이상 전달 끗"
         val slackChannelRequest = CreateAnnouncementRequestSlackChannel(1, "민트 채널")
         val writer = "민트"
-        val password = "민트짱1234".toByteArray()
+        val password = "민트짱1234"
         val createAnnouncementRequest = CreateAnnouncementRequest(title, contents, writer, slackChannelRequest)
 
         val givenSpec = RestAssured
             .given().log().all()
             .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Basic ${String(Base64.getEncoder().encode(password))}")
+            .header(HttpHeaders.AUTHORIZATION, basicEncodePassword(password))
             .body(createAnnouncementRequest)
 
         When("작성자, 제목, 내용, 날짜를 저장한다.") {
