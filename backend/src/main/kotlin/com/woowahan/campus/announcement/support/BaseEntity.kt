@@ -1,10 +1,15 @@
 package com.woowahan.campus.announcement.support
 
-import org.springframework.data.annotation.Id
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.MappedSuperclass
 import org.springframework.data.domain.AbstractAggregateRoot
 
+@MappedSuperclass
 abstract class BaseEntity(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 ) {
     override fun equals(other: Any?): Boolean {
@@ -21,8 +26,10 @@ abstract class BaseEntity(
     }
 }
 
+@MappedSuperclass
 abstract class BaseRootEntity<T : AbstractAggregateRoot<T>>(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
 ) : AbstractAggregateRoot<T>() {
     override fun equals(other: Any?): Boolean {
