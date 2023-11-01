@@ -51,8 +51,9 @@ paths:
           description: Unauthorized
         400:
           description: Bad Request
+  /api/announcements/offset:
     get:
-      operationId: findAllAnnouncementByPage
+      operationId: findAllAnnouncementByOffset
       tags:
         - GetAllAnnouncement
       summary: 공지 전체 조회(페이징)
@@ -86,7 +87,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/announcementsByPageResponse'
+                $ref: '#/components/schemas/announcementsInfoByOffsetResponse'
         401:
           description: Unauthorized
         400:
@@ -285,13 +286,13 @@ components:
         - content
         - author
         - createdAt
-    announcementsByPageResponse:
+    announcementsInfoByOffsetResponse:
       type: object
       properties:
         announcements:
           type: array
           items:
-            $ref: '#/components/schemas/announcementPageResponse'
+            $ref: '#/components/schemas/announcementInfoResponse'
         page:
           type: integer
           example: 0
@@ -310,7 +311,32 @@ components:
         - size
         - totalElements
         - totalPages
-    announcementPageResponse:
+    announcementsInfoResponse:
+      type: object
+      properties:
+        announcements:
+          type: array
+          items:
+            $ref: '#/components/schemas/announcementInfoResponse'
+        page:
+          type: integer
+          example: 0
+        size:
+          type: integer
+          example: 10
+        totalElements:
+          type: integer
+          example: 1
+        totalPages:
+          type: integer
+          example: 1
+      required:
+        - announcements
+        - page
+        - size
+        - totalElements
+        - totalPages
+    announcementInfoResponse:
       type: object
       properties:
         id:
