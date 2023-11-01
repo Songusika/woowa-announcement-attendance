@@ -1,9 +1,11 @@
 package com.woowahan.campus.zzimkkong.feature
 
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
+import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
 import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
@@ -14,9 +16,12 @@ import org.springframework.http.HttpHeaders
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ReadCampusTest(
-    @LocalServerPort
-    val port: Int
+        @LocalServerPort
+        val port: Int,
+        val databaseInitializer: DatabaseInitializer
 ) : BehaviorSpec({
+
+    extensions(databaseInitializer)
 
     RestAssured.port = port
 
@@ -31,15 +36,17 @@ class ReadCampusTest(
             Then("200 응답과 저장된 캠퍼스 정보들을 반환한다.") {
                 assertSoftly {
                     response.statusCode() shouldBe 200
-                    response.body().jsonPath().getList(".", MapGetSingle::class.java) shouldContain
-                        MapGetSingle(
-                            mapId = givenSpec.header(HttpHeaders.LOCATION).shouldNotBeNull().split("/").last()
-                                .toInt(),
-                            mapName = campus.name,
-                            mapDrawing = campus.drawing,
-                            thumbnail = campus.thumbnail,
-                            slackUrl = slackUrl
-                        )
+                    val results = response.body().jsonPath().getList(".", MapGetSingle::class.java)
+                    results shouldHaveSize 1
+                    results shouldContain
+                            MapGetSingle(
+                                    mapId = givenSpec.header(HttpHeaders.LOCATION).shouldNotBeNull().split("/").last()
+                                            .toInt(),
+                                    mapName = campus.name,
+                                    mapDrawing = campus.drawing,
+                                    thumbnail = campus.thumbnail,
+                                    slackUrl = slackUrl
+                            )
                 }
             }
         }
