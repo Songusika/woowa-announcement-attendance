@@ -10,6 +10,3 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-
-common:
-  password: 민트짱1234
