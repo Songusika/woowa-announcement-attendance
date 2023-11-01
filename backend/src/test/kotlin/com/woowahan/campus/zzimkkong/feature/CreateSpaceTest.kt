@@ -1,6 +1,7 @@
 package com.woowahan.campus.zzimkkong.feature
 
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
+import com.woowahan.campus.zzimkkong.fixture.SettingFixture
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -24,9 +25,10 @@ class CreateSpaceTest(
         val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
         val space = SpaceFixture.랜딩_강의장(campusId)
         val thumbnail = "thumbnail"
+        val settings = listOf(SettingFixture.회의실_예약_설정_1())
 
         When("공간 정보를 저장한다.") {
-            val response = SpaceFixture.회의실_생성(space, thumbnail)
+            val response = SpaceFixture.회의실_생성(space, thumbnail, settings)
 
             Then("201 응답과 저장된 공간의 URI를 Location Header로 반환한다.") {
                 response.statusCode() shouldBe 201

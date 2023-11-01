@@ -1,6 +1,8 @@
 package com.woowahan.campus.zzimkkong.feature
 
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
+import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_1
+import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_3
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture
 import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
 import com.woowahan.campus.zzimkkong.support.ResponseUtils
@@ -34,7 +36,8 @@ class ReadSpaceTest(
         val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
         val space = SpaceFixture.랜딩_강의장(campusId)
         val thumbnail = "thumbnail"
-        val spaceId = SpaceFixture.회의실_생성_ID_반환(space, thumbnail)
+        val settings = listOf(회의실_예약_설정_1(), 회의실_예약_설정_3())
+        val spaceId = SpaceFixture.회의실_생성_ID_반환(space, thumbnail, settings)
 
         When("회의실 정보를 모두 조회한다.") {
             val response = SpaceFixture.회의실_전체_조회(campusId.toString())
@@ -51,33 +54,33 @@ class ReadSpaceTest(
                                 "reservationEnable": ${space.reservationEnabled},
                                 "settings": [
                                     {
-                                        "settingStartTime": "${space.settings[0].startTime}",
-                                        "settingEndTime": "${space.settings[0].endTime}",
+                                        "settingStartTime": "${settings[0].startTime}",
+                                        "settingEndTime": "${settings[0].endTime}",
                                         "reservationMinimumTimeUnit": 1,
-                                        "reservationMaximumTimeUnit": ${space.settings[0].maximumMinute},
+                                        "reservationMaximumTimeUnit": ${settings[0].maximumMinute},
                                         "enabledDayOfWeek": {
-                                            "monday": ${space.settings[0].getEnableDays().contains(MONDAY)},
-                                            "tuesday": ${space.settings[0].getEnableDays().contains(TUESDAY)},
-                                            "wednesday": ${space.settings[0].getEnableDays().contains(WEDNESDAY)},
-                                            "thursday": ${space.settings[0].getEnableDays().contains(THURSDAY)},
-                                            "friday": ${space.settings[0].getEnableDays().contains(FRIDAY)},
-                                            "saturday": ${space.settings[0].getEnableDays().contains(SATURDAY)},
-                                            "sunday": ${space.settings[0].getEnableDays().contains(SUNDAY)}
+                                            "monday": ${settings[0].getEnableDays().contains(MONDAY)},
+                                            "tuesday": ${settings[0].getEnableDays().contains(TUESDAY)},
+                                            "wednesday": ${settings[0].getEnableDays().contains(WEDNESDAY)},
+                                            "thursday": ${settings[0].getEnableDays().contains(THURSDAY)},
+                                            "friday": ${settings[0].getEnableDays().contains(FRIDAY)},
+                                            "saturday": ${settings[0].getEnableDays().contains(SATURDAY)},
+                                            "sunday": ${settings[0].getEnableDays().contains(SUNDAY)}
                                         }
                                     },
                                     {
-                                        "settingStartTime": "${space.settings[1].startTime}",
-                                        "settingEndTime": "${space.settings[1].endTime}",
+                                        "settingStartTime": "${settings[1].startTime}",
+                                        "settingEndTime": "${settings[1].endTime}",
                                         "reservationMinimumTimeUnit": 1,
-                                        "reservationMaximumTimeUnit": ${space.settings[1].maximumMinute},
+                                        "reservationMaximumTimeUnit": ${settings[1].maximumMinute},
                                         "enabledDayOfWeek": {
-                                            "monday": ${space.settings[1].getEnableDays().contains(MONDAY)},
-                                            "tuesday": ${space.settings[1].getEnableDays().contains(TUESDAY)},
-                                            "wednesday": ${space.settings[1].getEnableDays().contains(WEDNESDAY)},
-                                            "thursday": ${space.settings[1].getEnableDays().contains(THURSDAY)},
-                                            "friday": ${space.settings[1].getEnableDays().contains(FRIDAY)},
-                                            "saturday": ${space.settings[1].getEnableDays().contains(SATURDAY)},
-                                            "sunday": ${space.settings[1].getEnableDays().contains(SUNDAY)}
+                                            "monday": ${settings[1].getEnableDays().contains(MONDAY)},
+                                            "tuesday": ${settings[1].getEnableDays().contains(TUESDAY)},
+                                            "wednesday": ${settings[1].getEnableDays().contains(WEDNESDAY)},
+                                            "thursday": ${settings[1].getEnableDays().contains(THURSDAY)},
+                                            "friday": ${settings[1].getEnableDays().contains(FRIDAY)},
+                                            "saturday": ${settings[1].getEnableDays().contains(SATURDAY)},
+                                            "sunday": ${settings[1].getEnableDays().contains(SUNDAY)}
                                         }
                                     }
                                 ]
@@ -101,33 +104,33 @@ class ReadSpaceTest(
                             "reservationEnable": ${space.reservationEnabled},
                             "settings": [
                                 {
-                                    "settingStartTime": "${space.settings[0].startTime}",
-                                    "settingEndTime": "${space.settings[0].endTime}",
+                                    "settingStartTime": "${settings[0].startTime}",
+                                    "settingEndTime": "${settings[0].endTime}",
                                     "reservationMinimumTimeUnit": 1,
-                                    "reservationMaximumTimeUnit": ${space.settings[0].maximumMinute},
+                                    "reservationMaximumTimeUnit": ${settings[0].maximumMinute},
                                     "enabledDayOfWeek": {
-                                        "monday": ${space.settings[0].getEnableDays().contains(MONDAY)},
-                                        "tuesday": ${space.settings[0].getEnableDays().contains(TUESDAY)},
-                                        "wednesday": ${space.settings[0].getEnableDays().contains(WEDNESDAY)},
-                                        "thursday": ${space.settings[0].getEnableDays().contains(THURSDAY)},
-                                        "friday": ${space.settings[0].getEnableDays().contains(FRIDAY)},
-                                        "saturday": ${space.settings[0].getEnableDays().contains(SATURDAY)},
-                                        "sunday": ${space.settings[0].getEnableDays().contains(SUNDAY)}
+                                        "monday": ${settings[0].getEnableDays().contains(MONDAY)},
+                                        "tuesday": ${settings[0].getEnableDays().contains(TUESDAY)},
+                                        "wednesday": ${settings[0].getEnableDays().contains(WEDNESDAY)},
+                                        "thursday": ${settings[0].getEnableDays().contains(THURSDAY)},
+                                        "friday": ${settings[0].getEnableDays().contains(FRIDAY)},
+                                        "saturday": ${settings[0].getEnableDays().contains(SATURDAY)},
+                                        "sunday": ${settings[0].getEnableDays().contains(SUNDAY)}
                                     }
                                 },
                                 {
-                                    "settingStartTime": "${space.settings[1].startTime}",
-                                    "settingEndTime": "${space.settings[1].endTime}",
+                                    "settingStartTime": "${settings[1].startTime}",
+                                    "settingEndTime": "${settings[1].endTime}",
                                     "reservationMinimumTimeUnit": 1,
-                                    "reservationMaximumTimeUnit": ${space.settings[1].maximumMinute},
+                                    "reservationMaximumTimeUnit": ${settings[1].maximumMinute},
                                     "enabledDayOfWeek": {
-                                        "monday": ${space.settings[1].getEnableDays().contains(MONDAY)},
-                                        "tuesday": ${space.settings[1].getEnableDays().contains(TUESDAY)},
-                                        "wednesday": ${space.settings[1].getEnableDays().contains(WEDNESDAY)},
-                                        "thursday": ${space.settings[1].getEnableDays().contains(THURSDAY)},
-                                        "friday": ${space.settings[1].getEnableDays().contains(FRIDAY)},
-                                        "saturday": ${space.settings[1].getEnableDays().contains(SATURDAY)},
-                                        "sunday": ${space.settings[1].getEnableDays().contains(SUNDAY)}
+                                        "monday": ${settings[1].getEnableDays().contains(MONDAY)},
+                                        "tuesday": ${settings[1].getEnableDays().contains(TUESDAY)},
+                                        "wednesday": ${settings[1].getEnableDays().contains(WEDNESDAY)},
+                                        "thursday": ${settings[1].getEnableDays().contains(THURSDAY)},
+                                        "friday": ${settings[1].getEnableDays().contains(FRIDAY)},
+                                        "saturday": ${settings[1].getEnableDays().contains(SATURDAY)},
+                                        "sunday": ${settings[1].getEnableDays().contains(SUNDAY)}
                                     }
                                 }
                             ]

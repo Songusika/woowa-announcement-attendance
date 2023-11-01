@@ -38,15 +38,15 @@ class UpdateCampusTest(
                 assertSoftly {
                     readCampus.statusCode() shouldBe 200
                     ResponseUtils.getPrettyJson(readCampus) shouldBe
-                            """
-                                {
-                                    "mapId": ${mapId},
-                                    "mapName": "${campusForUpdate.name}",
-                                    "mapDrawing": "${campusForUpdate.drawing}",
-                                    "thumbnail": "${campusForUpdate.thumbnail}",
-                                    "slackUrl": "$slackUrl"
-                                }
-                            """.trimIndent()
+                        """
+                            {
+                                "mapId": $mapId,
+                                "mapName": "${campusForUpdate.name}",
+                                "mapDrawing": "${campusForUpdate.drawing}",
+                                "thumbnail": "${campusForUpdate.thumbnail}",
+                                "slackUrl": "$slackUrl"
+                            }
+                        """.trimIndent()
                 }
             }
         }

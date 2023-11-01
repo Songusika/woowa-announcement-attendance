@@ -35,17 +35,17 @@ class ReadCampusTest(
                 assertSoftly {
                     response.statusCode() shouldBe 200
                     ResponseUtils.getPrettyJson(response) shouldBe
-                            """
-                                [
-                                    {
-                                        "mapId": $mapId,
-                                        "mapName": "${campus.name}",
-                                        "mapDrawing": "${campus.drawing}",
-                                        "thumbnail": "${campus.thumbnail}",
-                                        "slackUrl": "$slackUrl"
-                                    }
-                                ]
-                            """.trimIndent()
+                        """
+                            [
+                                {
+                                    "mapId": $mapId,
+                                    "mapName": "${campus.name}",
+                                    "mapDrawing": "${campus.drawing}",
+                                    "thumbnail": "${campus.thumbnail}",
+                                    "slackUrl": "$slackUrl"
+                                }
+                            ]
+                        """.trimIndent()
                 }
             }
         }
@@ -57,15 +57,15 @@ class ReadCampusTest(
                 assertSoftly {
                     response.statusCode() shouldBe 200
                     ResponseUtils.getPrettyJson(response) shouldBe
-                            """
-                                {
-                                    "mapId": ${mapId},
-                                    "mapName": "${campus.name}",
-                                    "mapDrawing": "${campus.drawing}",
-                                    "thumbnail": "${campus.thumbnail}",
-                                    "slackUrl": "$slackUrl"
-                                }
-                            """.trimIndent()
+                        """
+                            {
+                                "mapId": $mapId,
+                                "mapName": "${campus.name}",
+                                "mapDrawing": "${campus.drawing}",
+                                "thumbnail": "${campus.thumbnail}",
+                                "slackUrl": "$slackUrl"
+                            }
+                        """.trimIndent()
                 }
             }
         }

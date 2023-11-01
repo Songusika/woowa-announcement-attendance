@@ -758,17 +758,17 @@ components:
           type: boolean
           example: true
         settings:
-          description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
+          description: 'reservationEnable이 true인 경우에만 settings가 필요로 존재하다.'
           type: array
           items:
             type: object
             properties:
               settingStartTime:
                 type: string
-                example: '10:00:00'
+                example: '12:00:00'
               settingEndTime:
                 type: string
-                example: '22:00:00'
+                example: '20:00:00'
               reservationMinimumTimeUnit:
                 type: integer
                 example: 10
@@ -783,7 +783,7 @@ components:
                     example: true
                   tuesday:
                     type: boolean
-                    example: true
+                    example: false
                   wednesday:
                     type: boolean
                     example: true
@@ -792,21 +792,27 @@ components:
                     example: true
                   friday:
                     type: boolean
-                    example: true
+                    example: false
                   saturday:
                     type: boolean
                     example: true
                   sunday:
                     type: boolean
                     example: true
+                required:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
             required:
-              - monday
-              - tuesday
-              - wednesday
-              - thursday
-              - friday
-              - saturday
-              - sunday
+              - settingStartTime
+              - settingEndTime
+              - reservationMinimumTimeUnit
+              - reservationMaximumTimeUnit
+              - enabledDayOfWeek
       required:
         - name
         - color

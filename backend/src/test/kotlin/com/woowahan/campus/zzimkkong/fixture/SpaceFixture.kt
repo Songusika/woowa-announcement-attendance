@@ -14,19 +14,17 @@ import openapi.model.SpacePutSettingsInner
 import openapi.model.SpacePutSettingsInnerEnabledDayOfWeek
 import org.springframework.http.HttpHeaders
 import java.time.DayOfWeek
-import java.time.LocalTime
 
 class SpaceFixture {
 
     companion object {
 
-        fun 랜딩_강의장(campusId: Long, settings: List<Setting>) = Space(
+        fun 굿샷_강의장(campusId: Long) = Space(
             campusId = campusId,
-            name = "랜딩 강의장",
-            color = "#FFFFFF",
-            area = "{ \"id\": \"1\", \"type\" : \"rect\", \"x\": \"10\", \"y\": \"10\", \"width\": \"30\", \"height\": \"30\" }",
-            reservationEnabled = true,
-            settings = settings
+            name = "굿샷 강의장",
+            color = "#00000",
+            area = "{ \"id\": \"2\", \"type\" : \"rect\", \"x\": \"10\", \"y\": \"20\", \"width\": \"50\", \"height\": \"70\" }",
+            reservationEnabled = false
         )
 
         fun 랜딩_강의장(campusId: Long) = Space(
@@ -34,23 +32,20 @@ class SpaceFixture {
             name = "랜딩 강의장",
             color = "#FFFFFF",
             area = "{ \"id\": \"1\", \"type\" : \"rect\", \"x\": \"10\", \"y\": \"10\", \"width\": \"30\", \"height\": \"30\" }",
-            reservationEnabled = true,
-            settings = listOf(
-                SettingFixture.회의실_예약_설정_1(),
-                SettingFixture.회의실_예약_설정_2()
-            )
+            reservationEnabled = true
         )
 
         fun `회의실_생성`(
             space: Space,
             thumbnail: String,
+            settings: List<Setting>,
         ): ExtractableResponse<Response> = RestAssured
             .given().log().all()
             .contentType(ContentType.JSON)
             .body(
                 SpacePost(
                     space.name, space.color, space.area, thumbnail, space.reservationEnabled,
-                    space.settings.map { setting ->
+                    settings.map { setting ->
                         SpacePostSettingsInner(
                             settingStartTime = setting.startTime.toString(),
                             settingEndTime = setting.endTime.toString(),
@@ -68,13 +63,14 @@ class SpaceFixture {
         fun `회의실_생성_ID_반환`(
             space: Space,
             thumbnail: String,
+            settings: List<Setting>,
         ): Long = RestAssured
             .given().log().all()
             .contentType(ContentType.JSON)
             .body(
                 SpacePost(
                     space.name, space.color, space.area, thumbnail, space.reservationEnabled,
-                    space.settings.map { setting ->
+                    settings.map { setting ->
                         SpacePostSettingsInner(
                             settingStartTime = setting.startTime.toString(),
                             settingEndTime = setting.endTime.toString(),
@@ -138,6 +134,7 @@ class SpaceFixture {
             spaceId: String,
             space: Space,
             thumbnail: String,
+            settings: List<Setting>,
         ): ExtractableResponse<Response> = RestAssured
             .given().log().all()
             .contentType(ContentType.JSON)
@@ -148,7 +145,7 @@ class SpaceFixture {
                     area = space.area,
                     thumbnail = thumbnail,
                     reservationEnable = space.reservationEnabled,
-                    settings = space.settings.map {
+                    settings = settings.map {
                         SpacePutSettingsInner(
                             settingStartTime = it.startTime.toString(),
                             settingEndTime = it.endTime.toString(),
@@ -162,25 +159,5 @@ class SpaceFixture {
             .`when`().put("/api/maps/$mapId/spaces/$spaceId")
             .then().log().all()
             .extract()
-    }
-}
-
-class SettingFixture {
-
-    companion object {
-
-        fun 회의실_예약_설정_1() = Setting(
-            startTime = LocalTime.of(10, 0, 0),
-            endTime = LocalTime.of(11, 0, 0),
-            maximumMinute = 60,
-            enableDays = "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
-        )
-
-        fun 회의실_예약_설정_2() = Setting(
-            startTime = LocalTime.of(11, 0, 0),
-            endTime = LocalTime.of(12, 0, 0),
-            maximumMinute = 60,
-            enableDays = "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
-        )
     }
 }

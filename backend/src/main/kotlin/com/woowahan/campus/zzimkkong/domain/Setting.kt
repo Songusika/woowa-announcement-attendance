@@ -9,6 +9,7 @@ import java.time.LocalTime
 
 @Entity
 class Setting(
+    val spaceId: Long,
     val startTime: LocalTime,
     val endTime: LocalTime,
     val maximumMinute: Int,
