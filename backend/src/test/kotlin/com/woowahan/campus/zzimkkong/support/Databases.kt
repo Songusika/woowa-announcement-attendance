@@ -13,21 +13,21 @@ interface Database {
 }
 
 abstract class AbstractDatabase(
-        private val entityManager: EntityManager,
-        private val properties: DatabaseInitializationProperties
+    private val entityManager: EntityManager,
+    private val properties: DatabaseInitializationProperties
 ) : Database {
     override fun retrieveTables(): List<String> {
         return entityManager.createNativeQuery(metaTablesSql).resultList
-                .map { it.toString() }
-                .excluded()
+            .map { it.toString() }
+            .excluded()
     }
 
     @Transactional
     override fun clear(tableNames: List<String>) {
         entityManager.createNativeQuery(constraintsOffSql).executeUpdate()
         tableNames
-                .excluded()
-                .forEach { entityManager.createNativeQuery(createTruncateTableSql(it)).executeUpdate() }
+            .excluded()
+            .forEach { entityManager.createNativeQuery(createTruncateTableSql(it)).executeUpdate() }
         entityManager.createNativeQuery(constraintsOnSql).executeUpdate()
     }
 
@@ -43,10 +43,11 @@ abstract class AbstractDatabase(
 
 @Component
 class H2(
-        entityManager: EntityManager,
-        properties: DatabaseInitializationProperties
+    entityManager: EntityManager,
+    properties: DatabaseInitializationProperties
 ) : AbstractDatabase(entityManager, properties) {
-    override val metaTablesSql: String = "select table_name from information_schema.tables where table_schema = 'PUBLIC'"
+    override val metaTablesSql: String =
+        "select table_name from information_schema.tables where table_schema = 'PUBLIC'"
 
     //    override val metaTablesSql: String = "show tables"
     override val constraintsOffSql: String = "set referential_integrity false"

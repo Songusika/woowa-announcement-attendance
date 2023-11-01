@@ -566,58 +566,60 @@ components:
           example: true
         settings:
           description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
-          type: object
-          properties:
-            settingStartTime:
-              type: string
-              example: '10:00:00'
-            settingEndTime:
-              type: string
-              example: '22:00:00'
-            reservationMinimumTimeUnit:
-              type: integer
-              example: 10
-            reservationMaximumTimeUnit:
-              type: integer
-              example: 120
-            enabledDayOfWeek:
-              type: object
-              properties:
-                monday:
-                  type: boolean
-                  example: true
-                tuesday:
-                  type: boolean
-                  example: true
-                wednesday:
-                  type: boolean
-                  example: true
-                thursday:
-                  type: boolean
-                  example: true
-                friday:
-                  type: boolean
-                  example: true
-                saturday:
-                  type: boolean
-                  example: true
-                sunday:
-                  type: boolean
-                  example: true
-              required:
-                - monday
-                - tuesday
-                - wednesday
-                - thursday
-                - friday
-                - saturday
-                - sunday
-          required:
-            - settingStartTime
-            - settingEndTime
-            - reservationMinimumTimeUnit
-            - reservationMaximumTimeUnit
-            - enabledDayOfWeek
+          type: array
+          items:
+            type: object
+            properties:
+              settingStartTime:
+                type: string
+                example: '10:00:00'
+              settingEndTime:
+                type: string
+                example: '22:00:00'
+              reservationMinimumTimeUnit:
+                type: integer
+                example: 10
+              reservationMaximumTimeUnit:
+                type: integer
+                example: 120
+              enabledDayOfWeek:
+                type: object
+                properties:
+                  monday:
+                    type: boolean
+                    example: true
+                  tuesday:
+                    type: boolean
+                    example: true
+                  wednesday:
+                    type: boolean
+                    example: true
+                  thursday:
+                    type: boolean
+                    example: true
+                  friday:
+                    type: boolean
+                    example: true
+                  saturday:
+                    type: boolean
+                    example: true
+                  sunday:
+                    type: boolean
+                    example: true
+                required:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
+            required:
+              - settingStartTime
+              - settingEndTime
+              - reservationMinimumTimeUnit
+              - reservationMaximumTimeUnit
+              - enabledDayOfWeek
       required:
         - name
         - color
@@ -757,52 +759,54 @@ components:
           example: true
         settings:
           description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
-          type: object
-          properties:
-            settingStartTime:
-              type: string
-              example: '10:00:00'
-            settingEndTime:
-              type: string
-              example: '22:00:00'
-            reservationMinimumTimeUnit:
-              type: integer
-              example: 10
-            reservationMaximumTimeUnit:
-              type: integer
-              example: 120
-            enabledDayOfWeek:
-              type: object
-              properties:
-                monday:
-                  type: boolean
-                  example: true
-                tuesday:
-                  type: boolean
-                  example: true
-                wednesday:
-                  type: boolean
-                  example: true
-                thursday:
-                  type: boolean
-                  example: true
-                friday:
-                  type: boolean
-                  example: true
-                saturday:
-                  type: boolean
-                  example: true
-                sunday:
-                  type: boolean
-                  example: true
-          required:
-            - monday
-            - tuesday
-            - wednesday
-            - thursday
-            - friday
-            - saturday
-            - sunday
+          type: array
+          items:
+            type: object
+            properties:
+              settingStartTime:
+                type: string
+                example: '10:00:00'
+              settingEndTime:
+                type: string
+                example: '22:00:00'
+              reservationMinimumTimeUnit:
+                type: integer
+                example: 10
+              reservationMaximumTimeUnit:
+                type: integer
+                example: 120
+              enabledDayOfWeek:
+                type: object
+                properties:
+                  monday:
+                    type: boolean
+                    example: true
+                  tuesday:
+                    type: boolean
+                    example: true
+                  wednesday:
+                    type: boolean
+                    example: true
+                  thursday:
+                    type: boolean
+                    example: true
+                  friday:
+                    type: boolean
+                    example: true
+                  saturday:
+                    type: boolean
+                    example: true
+                  sunday:
+                    type: boolean
+                    example: true
+            required:
+              - monday
+              - tuesday
+              - wednesday
+              - thursday
+              - friday
+              - saturday
+              - sunday
       required:
         - name
         - color

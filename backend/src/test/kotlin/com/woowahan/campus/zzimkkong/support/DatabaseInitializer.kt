@@ -9,11 +9,10 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 @Transactional
 class DatabaseInitializer(
-        private val database: Database
+    private val database: Database
 ) : BeforeContainerListener {
     override suspend fun beforeContainer(testCase: TestCase) {
         if (!testCase.isRootTest()) return
-        println("DB 초기화를 시작합니다. beforeSpec")
         cleanUp()
     }
 

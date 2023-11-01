@@ -51,14 +51,26 @@ class CreateSpace(
 
     private fun parseToEnableDays(it: SpacePostSettingsInnerEnabledDayOfWeek): String {
         val enabledDayOfWeek = mutableListOf<String>()
-        when {
-            it.monday -> enabledDayOfWeek.add(DayOfWeek.MONDAY.name)
-            it.tuesday -> enabledDayOfWeek.add(DayOfWeek.TUESDAY.name)
-            it.wednesday -> enabledDayOfWeek.add(DayOfWeek.WEDNESDAY.name)
-            it.thursday -> enabledDayOfWeek.add(DayOfWeek.THURSDAY.name)
-            it.friday -> enabledDayOfWeek.add(DayOfWeek.FRIDAY.name)
-            it.saturday -> enabledDayOfWeek.add(DayOfWeek.SATURDAY.name)
-            it.sunday -> enabledDayOfWeek.add(DayOfWeek.SUNDAY.name)
+        if (it.monday) {
+            enabledDayOfWeek.add(DayOfWeek.MONDAY.name)
+        }
+        if (it.tuesday) {
+            enabledDayOfWeek.add(DayOfWeek.TUESDAY.name)
+        }
+        if (it.wednesday) {
+            enabledDayOfWeek.add(DayOfWeek.WEDNESDAY.name)
+        }
+        if (it.thursday) {
+            enabledDayOfWeek.add(DayOfWeek.THURSDAY.name)
+        }
+        if (it.friday) {
+            enabledDayOfWeek.add(DayOfWeek.FRIDAY.name)
+        }
+        if (it.saturday) {
+            enabledDayOfWeek.add(DayOfWeek.SATURDAY.name)
+        }
+        if (it.sunday) {
+            enabledDayOfWeek.add(DayOfWeek.SUNDAY.name)
         }
         return enabledDayOfWeek.joinToString(",")
     }
