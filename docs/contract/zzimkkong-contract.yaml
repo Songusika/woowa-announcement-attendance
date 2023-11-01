@@ -18,8 +18,14 @@ tags:
     description: Map(캠퍼스) 삭제와 관련된 도메인입니다.
   - name: Reservation
     description: 예약과 관련된 도메인입니다.
-  - name: Space
-    description: Space(강의장)과 관련된 도메인입니다.
+  - name: CreateSpace
+    description: Space(강의장)생성과 관련된 도메인입니다.
+  - name: FindSpace
+    description: Space(강의장)조회와 관련된 도메인입니다.
+  - name: UpdateSpace
+    description: Space(강의장)수정과 관련된 도메인입니다.
+  - name: DeleteSpace
+    description: Space(강의장)삭제와 관련된 도메인입니다.
   - name: Slack
     description: Slack과 관련된 도메인입니다.
 paths:
@@ -237,7 +243,7 @@ paths:
     post:
       operationId: createSpace
       tags:
-        - Space
+        - CreateSpace
       summary: Space 생성
       description: Space를 생성한다.
       requestBody:
@@ -259,7 +265,7 @@ paths:
     get:
       operationId: findAllSpace
       tags:
-        - Space
+        - FindSpace
       summary: Space 전체 조회
       description: 특정 Map의 Space 전체 목록을 조회한다.
       responses:
@@ -290,7 +296,7 @@ paths:
     get:
       operationId: findSpace
       tags:
-        - Space
+        - FindSpace
       summary: Space 단건 조회
       description: 특정 Map의 Space 단건을 조회한다.
       responses:
@@ -307,7 +313,7 @@ paths:
     delete:
       operationId: removeSpace
       tags:
-        - Space
+        - DeleteSpace
       summary: Space 삭제
       description: 특정 Space를 삭제한다.
       requestBody:
@@ -324,7 +330,7 @@ paths:
     put:
       operationId: updateSpace
       tags:
-        - Space
+        - UpdateSpace
       summary: Space 수정
       description: 특정 Space를 수정한다.
       requestBody:
@@ -598,6 +604,20 @@ components:
                 sunday:
                   type: boolean
                   example: true
+              required:
+                - monday
+                - tuesday
+                - wednesday
+                - thursday
+                - friday
+                - saturday
+                - sunday
+          required:
+            - settingStartTime
+            - settingEndTime
+            - reservationMinimumTimeUnit
+            - reservationMaximumTimeUnit
+            - enabledDayOfWeek
       required:
         - name
         - color
@@ -652,47 +672,63 @@ components:
           example: true
         settings:
           description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
-          type: object
-          properties:
-            settingStartTime:
-              type: string
-              example: '10:00:00'
-            settingEndTime:
-              type: string
-              example: '22:00:00'
-            reservationMinimumTimeUnit:
-              type: integer
-              example: 10
-              nullable: false
-            reservationMaximumTimeUnit:
-              type: integer
-              example: 120
-              nullable: false
-            enabledDayOfWeek:
-              type: object
-              nullable: false
-              properties:
-                monday:
-                  type: boolean
-                  example: true
-                tuesday:
-                  type: boolean
-                  example: true
-                wednesday:
-                  type: boolean
-                  example: true
-                thursday:
-                  type: boolean
-                  example: true
-                friday:
-                  type: boolean
-                  example: true
-                saturday:
-                  type: boolean
-                  example: true
-                sunday:
-                  type: boolean
-                  example: true
+          type: array
+          items:
+            type: object
+            properties:
+              settingStartTime:
+                type: string
+                example: '10:00:00'
+              settingEndTime:
+                type: string
+                example: '22:00:00'
+              reservationMinimumTimeUnit:
+                type: integer
+                example: 10
+                nullable: false
+              reservationMaximumTimeUnit:
+                type: integer
+                example: 120
+                nullable: false
+              enabledDayOfWeek:
+                type: object
+                nullable: false
+                properties:
+                  monday:
+                    type: boolean
+                    example: true
+                  tuesday:
+                    type: boolean
+                    example: true
+                  wednesday:
+                    type: boolean
+                    example: true
+                  thursday:
+                    type: boolean
+                    example: true
+                  friday:
+                    type: boolean
+                    example: true
+                  saturday:
+                    type: boolean
+                    example: true
+                  sunday:
+                    type: boolean
+                    example: true
+                required:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
+            required:
+              - settingStartTime
+              - settingEndTime
+              - reservationMinimumTimeUnit
+              - reservationMaximumTimeUnit
+              - enabledDayOfWeek
       required:
         - name
         - color
@@ -759,6 +795,14 @@ components:
                 sunday:
                   type: boolean
                   example: true
+          required:
+            - monday
+            - tuesday
+            - wednesday
+            - thursday
+            - friday
+            - saturday
+            - sunday
       required:
         - name
         - color

@@ -19,6 +19,7 @@ class UpdateCampus(
         val campus = campusRepository.findById(mapId.toLong())
             .orElseThrow { IllegalArgumentException() }
         val slackChannel = slackChannelRepository.findByCampusId(campus.id)
+
         campusRepository.save(
             Campus(
                 name = mapPut.mapName,

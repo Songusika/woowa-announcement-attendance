@@ -1,12 +1,14 @@
 package com.woowahan.campus.zzimkkong.fixture
 
 import com.woowahan.campus.zzimkkong.domain.Campus
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
 import openapi.model.MapPost
 import openapi.model.MapPut
+import org.springframework.http.HttpHeaders
 
 class CampusFixture {
 
@@ -34,6 +36,13 @@ class CampusFixture {
             .`when`().post("/api/maps")
             .then().log().all()
             .extract()
+
+        fun `캠퍼스_생성_ID_반환`(
+            campus: Campus,
+            slackUrl: String
+        ): Long = 캠퍼스_생성(campus, slackUrl)
+            .header(HttpHeaders.LOCATION).shouldNotBeNull().split("/").last()
+            .toLong()
 
         fun `캠퍼스_전체_조회`(): ExtractableResponse<Response> = RestAssured
             .given().log().all()
