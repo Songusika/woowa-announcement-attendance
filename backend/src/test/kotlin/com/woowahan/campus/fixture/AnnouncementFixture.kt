@@ -2,6 +2,7 @@ package com.woowahan.campus.fixture
 
 import com.woowahan.campus.announcement.domain.Announcement
 import openapi.model.AnnouncementInfoResponse
+import openapi.model.AnnouncementsInfoByCursorResponse
 import openapi.model.AnnouncementsInfoByOffsetResponse
 import java.time.LocalDateTime
 
@@ -29,6 +30,18 @@ fun createAnnouncementsInfoByOffsetResponse(
         size,
         totalElements,
         totalPages
+    )
+}
+
+fun createAnnouncementsInfoByCursorResponse(
+    announcements: List<Announcement>,
+    hasNext: Boolean,
+    lastCursorId: Int,
+): AnnouncementsInfoByCursorResponse {
+    return AnnouncementsInfoByCursorResponse(
+        announcements.map { createAnnouncementInfoResponse(it) },
+        hasNext,
+        lastCursorId
     )
 }
 
