@@ -28,6 +28,6 @@ class DatabaseCleaner : InitializingBean {
     }
 
     fun executeQuery(query: String) {
-        entityManager.createNativeQuery(query).executeUpdate();
+        entityManager.createNativeQuery(query).executeUpdate()
     }
 }

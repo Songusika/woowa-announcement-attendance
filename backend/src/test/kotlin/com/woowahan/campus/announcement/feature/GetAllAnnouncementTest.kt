@@ -48,7 +48,7 @@ class GetAllAnnouncementTest(
         When("옳바른 비밀번호, 페이지 번호, 조회하는 공지 개수를 요청하면") {
 
             val queryStrings = mapOf(Pair("page", 1), Pair("size", 5))
-            val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/offset", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByOffsetResponse::class.java)
 
             Then("해당 페이지에 존재하는 공지의 id, 제목, 작성자, 작성일 목록을 요청 개수 만큼 반환한다.") {
@@ -66,7 +66,7 @@ class GetAllAnnouncementTest(
         When("옳바른 비밀번호와 조회하는 공지 개수만 요청하면") {
 
             val queryStrings = mapOf(Pair("size", 5))
-            val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/offset", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByOffsetResponse::class.java)
 
             Then("0번째 페이지가 반환된다.") {
@@ -84,7 +84,7 @@ class GetAllAnnouncementTest(
         When("옳바른 비밀번호와 조회하는 페이지 번호만 요청하면") {
 
             val queryStrings = mapOf(Pair("page", 1))
-            val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/offset", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByOffsetResponse::class.java)
 
             Then("해당 페이지의 10개의 공지 목록이 반환된다.") {
@@ -102,7 +102,7 @@ class GetAllAnnouncementTest(
         When("커서 방식을 통해 옳바른 비밀번호와 조회하려는 공지 개수만 요청하면") {
 
             val queryStrings = mapOf(Pair("size", 10))
-            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
 
             Then("제일 최신 공지만 요청한 개수만큼 반환한다") {
@@ -118,7 +118,7 @@ class GetAllAnnouncementTest(
         When("커서 방식을 통해 옳바른 비밀번호와 마지막으로 본 공지 ID, 공지 개수를 요청하면") {
             //5,4,3,2,1
             val queryStrings = mapOf(Pair("cursorId", 6), Pair("size", 3))
-            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
 
             Then("마지막으로 본 공지 ID 다음 공지부터 공지개수 만큼 반환한다.") {
@@ -134,7 +134,7 @@ class GetAllAnnouncementTest(
         When("커서 방식을 통해 옳바른 비밀번호와 마지막으로 본 공지 ID와 남은 공지 보다 큰 사이즈를 요청하면") {
             //5,4,3,2,1
             val queryStrings = mapOf(Pair("cursorId", 6), Pair("size", 100))
-            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
 
             Then("남은 공지 목록과 다음 공지는 없다는 응답을 반환한다") {
@@ -150,7 +150,7 @@ class GetAllAnnouncementTest(
         xWhen("옳바른 비밀번호만 요청하면") {
 
             val queryStrings = emptyMap<String, Int>()
-            val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/offset", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByOffsetResponse::class.java)
 
             Then("0번째 페이지의 10개의 공지 목록을 조회한다.") {
@@ -178,7 +178,7 @@ class GetAllAnnouncementTest(
         When("공지 목록을 조회하면") {
 
             val queryStrings = mapOf(Pair("page", 1), Pair("size", 5))
-            val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
+            val response = sendRequest("/api/announcements/offset", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByOffsetResponse::class.java)
 
             Then("빈 결과를 응답한다") {
