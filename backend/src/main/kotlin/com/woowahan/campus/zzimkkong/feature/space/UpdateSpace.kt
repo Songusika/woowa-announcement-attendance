@@ -1,6 +1,7 @@
 package com.woowahan.campus.zzimkkong.feature.space
 
 import com.woowahan.campus.zzimkkong.domain.CampusRepository
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks
 import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.SettingRepository
 import com.woowahan.campus.zzimkkong.domain.Space
@@ -12,7 +13,6 @@ import openapi.model.SpacePutSettingsInnerEnabledDayOfWeek
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 @RestController
@@ -67,16 +67,16 @@ class UpdateSpace(
     }
 
     private fun parseToEnableDays(it: SpacePutSettingsInnerEnabledDayOfWeek): String {
-        return DayOfWeek.values()
+        return DayOfWeeks.values()
             .filter { day ->
                 when (day) {
-                    DayOfWeek.MONDAY -> it.monday
-                    DayOfWeek.TUESDAY -> it.tuesday
-                    DayOfWeek.WEDNESDAY -> it.wednesday
-                    DayOfWeek.THURSDAY -> it.thursday
-                    DayOfWeek.FRIDAY -> it.friday
-                    DayOfWeek.SATURDAY -> it.saturday
-                    DayOfWeek.SUNDAY -> it.sunday
+                    DayOfWeeks.MONDAY -> it.monday
+                    DayOfWeeks.TUESDAY -> it.tuesday
+                    DayOfWeeks.WEDNESDAY -> it.wednesday
+                    DayOfWeeks.THURSDAY -> it.thursday
+                    DayOfWeeks.FRIDAY -> it.friday
+                    DayOfWeeks.SATURDAY -> it.saturday
+                    DayOfWeeks.SUNDAY -> it.sunday
                 }
             }.joinToString(",") { it.name }
     }

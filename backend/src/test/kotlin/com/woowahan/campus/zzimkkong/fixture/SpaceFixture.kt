@@ -1,5 +1,6 @@
 package com.woowahan.campus.zzimkkong.fixture
 
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks
 import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.Space
 import io.restassured.RestAssured
@@ -14,7 +15,6 @@ import openapi.model.SpacePut
 import openapi.model.SpacePutSettingsInner
 import openapi.model.SpacePutSettingsInnerEnabledDayOfWeek
 import org.springframework.http.HttpHeaders
-import java.time.DayOfWeek
 
 class SpaceFixture {
 
@@ -86,27 +86,27 @@ class SpaceFixture {
             .header(HttpHeaders.LOCATION).split("/").last()
             .toLong()
 
-        private fun getDayOfWeekForPost(enableDays: List<DayOfWeek>): SpacePostSettingsInnerEnabledDayOfWeek {
+        private fun getDayOfWeekForPost(enableDays: List<DayOfWeeks>): SpacePostSettingsInnerEnabledDayOfWeek {
             return SpacePostSettingsInnerEnabledDayOfWeek(
-                monday = enableDays.contains(DayOfWeek.MONDAY),
-                tuesday = enableDays.contains(DayOfWeek.TUESDAY),
-                wednesday = enableDays.contains(DayOfWeek.WEDNESDAY),
-                thursday = enableDays.contains(DayOfWeek.THURSDAY),
-                friday = enableDays.contains(DayOfWeek.FRIDAY),
-                saturday = enableDays.contains(DayOfWeek.SATURDAY),
-                sunday = enableDays.contains(DayOfWeek.SUNDAY),
+                monday = enableDays.contains(DayOfWeeks.MONDAY),
+                tuesday = enableDays.contains(DayOfWeeks.TUESDAY),
+                wednesday = enableDays.contains(DayOfWeeks.WEDNESDAY),
+                thursday = enableDays.contains(DayOfWeeks.THURSDAY),
+                friday = enableDays.contains(DayOfWeeks.FRIDAY),
+                saturday = enableDays.contains(DayOfWeeks.SATURDAY),
+                sunday = enableDays.contains(DayOfWeeks.SUNDAY),
             )
         }
 
-        private fun getDayOfWeekForPut(enableDays: List<DayOfWeek>): SpacePutSettingsInnerEnabledDayOfWeek {
+        private fun getDayOfWeekForPut(enableDays: List<DayOfWeeks>): SpacePutSettingsInnerEnabledDayOfWeek {
             return SpacePutSettingsInnerEnabledDayOfWeek(
-                monday = enableDays.contains(DayOfWeek.MONDAY),
-                tuesday = enableDays.contains(DayOfWeek.TUESDAY),
-                wednesday = enableDays.contains(DayOfWeek.WEDNESDAY),
-                thursday = enableDays.contains(DayOfWeek.THURSDAY),
-                friday = enableDays.contains(DayOfWeek.FRIDAY),
-                saturday = enableDays.contains(DayOfWeek.SATURDAY),
-                sunday = enableDays.contains(DayOfWeek.SUNDAY),
+                monday = enableDays.contains(DayOfWeeks.MONDAY),
+                tuesday = enableDays.contains(DayOfWeeks.TUESDAY),
+                wednesday = enableDays.contains(DayOfWeeks.WEDNESDAY),
+                thursday = enableDays.contains(DayOfWeeks.THURSDAY),
+                friday = enableDays.contains(DayOfWeeks.FRIDAY),
+                saturday = enableDays.contains(DayOfWeeks.SATURDAY),
+                sunday = enableDays.contains(DayOfWeeks.SUNDAY),
             )
         }
 

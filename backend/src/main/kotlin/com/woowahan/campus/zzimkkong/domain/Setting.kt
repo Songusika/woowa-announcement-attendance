@@ -4,7 +4,6 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import java.time.DayOfWeek
 import java.time.LocalTime
 
 @Entity
@@ -20,6 +19,7 @@ class Setting(
 ) {
     init {
         validateTime(startTime, endTime)
+        validateEnableDays(enableDays)
     }
 
     private fun validateTime(startTime: LocalTime, endTime: LocalTime) {
@@ -27,9 +27,12 @@ class Setting(
         require(startTime != endTime) { "시작 시간과 종료 시간이 같을 수 없습니다." }
     }
 
-    fun getEnableDays(): List<DayOfWeek> {
-        return enableDays.split(",")
-            .map { DayOfWeek.valueOf(it) }
-            .toList()
+    private fun validateEnableDays(enableDays: String) {
+        val days = DayOfWeeks.from(enableDays.split(","))
+        require(days.size == days.toSet().size) { "중복된 요일이 있습니다." }
+    }
+
+    fun getEnableDays(): List<DayOfWeeks> {
+        return DayOfWeeks.from(enableDays.split(","))
     }
 }

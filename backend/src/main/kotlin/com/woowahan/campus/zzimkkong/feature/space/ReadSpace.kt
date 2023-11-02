@@ -1,5 +1,6 @@
 package com.woowahan.campus.zzimkkong.feature.space
 
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks
 import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.SettingRepository
 import com.woowahan.campus.zzimkkong.domain.Space
@@ -10,7 +11,6 @@ import openapi.model.SpaceGetSingleSettingsInner
 import openapi.model.SpaceGetSingleSettingsInnerEnabledDayOfWeek
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.time.DayOfWeek
 
 @RestController
 class ReadSpace(
@@ -53,13 +53,13 @@ class ReadSpace(
             settingEndTime = it.endTime.toString(),
             reservationMaximumTimeUnit = it.maximumMinute,
             enabledDayOfWeek = SpaceGetSingleSettingsInnerEnabledDayOfWeek(
-                monday = it.getEnableDays().contains(DayOfWeek.MONDAY),
-                tuesday = it.getEnableDays().contains(DayOfWeek.TUESDAY),
-                wednesday = it.getEnableDays().contains(DayOfWeek.WEDNESDAY),
-                thursday = it.getEnableDays().contains(DayOfWeek.THURSDAY),
-                friday = it.getEnableDays().contains(DayOfWeek.FRIDAY),
-                saturday = it.getEnableDays().contains(DayOfWeek.SATURDAY),
-                sunday = it.getEnableDays().contains(DayOfWeek.SUNDAY),
+                monday = it.getEnableDays().contains(DayOfWeeks.MONDAY),
+                tuesday = it.getEnableDays().contains(DayOfWeeks.TUESDAY),
+                wednesday = it.getEnableDays().contains(DayOfWeeks.WEDNESDAY),
+                thursday = it.getEnableDays().contains(DayOfWeeks.THURSDAY),
+                friday = it.getEnableDays().contains(DayOfWeeks.FRIDAY),
+                saturday = it.getEnableDays().contains(DayOfWeeks.SATURDAY),
+                sunday = it.getEnableDays().contains(DayOfWeeks.SUNDAY),
             )
         )
     }.toList()

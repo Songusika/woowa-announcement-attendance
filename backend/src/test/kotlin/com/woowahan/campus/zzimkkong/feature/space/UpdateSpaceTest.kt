@@ -1,5 +1,12 @@
 package com.woowahan.campus.zzimkkong.feature.space
 
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.FRIDAY
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.MONDAY
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.SATURDAY
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.SUNDAY
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.THURSDAY
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.TUESDAY
+import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.WEDNESDAY
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_1
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_2
@@ -12,13 +19,6 @@ import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
-import java.time.DayOfWeek.FRIDAY
-import java.time.DayOfWeek.MONDAY
-import java.time.DayOfWeek.SATURDAY
-import java.time.DayOfWeek.SUNDAY
-import java.time.DayOfWeek.THURSDAY
-import java.time.DayOfWeek.TUESDAY
-import java.time.DayOfWeek.WEDNESDAY
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UpdateSpaceTest(
@@ -57,7 +57,7 @@ class UpdateSpaceTest(
                 val updatedResponse = SpaceFixture.회의실_단건_조회(campusId.toString(), spaceId.toString())
                 updatedResponse.statusCode() shouldBe 200
                 ResponseUtils.getPrettyJson(updatedResponse) shouldBe
-                    """
+                        """
                         {
                             "name": "${updatedSpace.name}",
                             "color": "${updatedSpace.color}",
