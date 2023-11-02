@@ -2,6 +2,7 @@ package com.woowahan.campus.announcement.feature
 
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
 import com.woowahan.campus.fixture.createAnnouncement
+import com.woowahan.campus.fixture.createAnnouncementsInfoByCursorResponse
 import com.woowahan.campus.fixture.createAnnouncementsInfoByOffsetResponse
 import com.woowahan.campus.utils.DatabaseCleaner
 import com.woowahan.campus.utils.basicEncodePassword
@@ -12,6 +13,7 @@ import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
+import openapi.model.AnnouncementsInfoByCursorResponse
 import openapi.model.AnnouncementsInfoByOffsetResponse
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -61,7 +63,7 @@ class GetAllAnnouncementTest(
             }
         }
 
-        When("옳바른 비밀번호와 조회하는 공지 개수만 입력하면") {
+        When("옳바른 비밀번호와 조회하는 공지 개수만 요청하면") {
 
             val queryStrings = mapOf(Pair("size", 5))
             val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
@@ -79,7 +81,7 @@ class GetAllAnnouncementTest(
             }
         }
 
-        When("옳바른 비밀번호와 조회하는 페이지 번호만 입력하면") {
+        When("옳바른 비밀번호와 조회하는 페이지 번호만 요청하면") {
 
             val queryStrings = mapOf(Pair("page", 1))
             val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
@@ -97,7 +99,55 @@ class GetAllAnnouncementTest(
             }
         }
 
-        xWhen("옳바른 비밀번호만 입력하면") {
+        When("커서 방식을 통해 옳바른 비밀번호와 조회하려는 공지 개수만 요청하면") {
+
+            val queryStrings = mapOf(Pair("size", 10))
+            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234");
+            val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
+
+            Then("제일 최신 공지만 요청한 개수만큼 반환한다") {
+                response.statusCode() shouldBe 200
+                responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByCursorResponse(
+                    announcements.slice(19 downTo 10),
+                    true,
+                    11,
+                )
+            }
+        }
+
+        When("커서 방식을 통해 옳바른 비밀번호와 마지막으로 본 공지 ID, 공지 개수를 요청하면") {
+            //5,4,3,2,1
+            val queryStrings = mapOf(Pair("cursorId", 6), Pair("size", 3))
+            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234");
+            val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
+
+            Then("마지막으로 본 공지 ID 다음 공지부터 공지개수 만큼 반환한다.") {
+                response.statusCode() shouldBe 200
+                responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByCursorResponse(
+                    announcements.slice(4 downTo 2),
+                    true,
+                    3,
+                )
+            }
+        }
+
+        When("커서 방식을 통해 옳바른 비밀번호와 마지막으로 본 공지 ID와 남은 공지 보다 큰 사이즈를 요청하면") {
+            //5,4,3,2,1
+            val queryStrings = mapOf(Pair("cursorId", 6), Pair("size", 100))
+            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234");
+            val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
+
+            Then("남은 공지 목록과 다음 공지는 없다는 응답을 반환한다") {
+                response.statusCode() shouldBe 200
+                responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByCursorResponse(
+                    announcements.slice(4 downTo 0),
+                    false,
+                    1,
+                )
+            }
+        }
+
+        xWhen("옳바른 비밀번호만 요청하면") {
 
             val queryStrings = emptyMap<String, Int>()
             val response = sendRequest("/api/announcements/offset", queryStrings, "1234");
@@ -115,7 +165,7 @@ class GetAllAnnouncementTest(
             }
         }
 
-        xWhen("틀린 비밀번호와 페이지 번호, 조회하는 공지 개수를 입력하면") {
+        xWhen("틀린 비밀번호와 페이지 번호, 조회하는 공지 개수를 요청하면") {
 
             Then("401 응답이 반환된다.") {
 
