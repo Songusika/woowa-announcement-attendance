@@ -369,31 +369,6 @@ components:
         - announcements
         - hasNext
         - lastCursorId
-    announcementsInfoResponse:
-      type: object
-      properties:
-        announcements:
-          type: array
-          items:
-            $ref: '#/components/schemas/announcementInfoResponse'
-        page:
-          type: integer
-          example: 0
-        size:
-          type: integer
-          example: 10
-        totalElements:
-          type: integer
-          example: 1
-        totalPages:
-          type: integer
-          example: 1
-      required:
-        - announcements
-        - page
-        - size
-        - totalElements
-        - totalPages
     announcementInfoResponse:
       type: object
       properties:
