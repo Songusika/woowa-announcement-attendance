@@ -4,7 +4,8 @@ create table announcement
     title            varchar(255)   not null,
     content          varchar(65535) not null,
     author           varchar(65535) not null,
-    slack_channel_id bigint         not null
+    slack_channel_id bigint         not null,
+    created_At        date           not null
 );
 
 create table campus

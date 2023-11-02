@@ -1,9 +1,6 @@
 package com.woowahan.campus.announcement.domain
 
-import org.springframework.data.repository.Repository
+import org.springframework.data.jpa.repository.JpaRepository
 
-interface AnnouncementRepository : Repository<Announcement, Long> {
-
-    fun save(announcement: Announcement): Announcement
-    fun findById(id: Long): Announcement
+interface AnnouncementRepository : JpaRepository<Announcement, Long> {
 }
