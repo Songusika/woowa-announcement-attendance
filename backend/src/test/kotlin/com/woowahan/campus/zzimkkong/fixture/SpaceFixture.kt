@@ -50,7 +50,6 @@ class SpaceFixture {
                         SpacePostSettingsInner(
                             settingStartTime = setting.startTime.toString(),
                             settingEndTime = setting.endTime.toString(),
-                            reservationMinimumTimeUnit = 1,
                             reservationMaximumTimeUnit = setting.maximumMinute,
                             enabledDayOfWeek = getDayOfWeekForPost(setting.getEnableDays()),
                         )
@@ -75,7 +74,6 @@ class SpaceFixture {
                         SpacePostSettingsInner(
                             settingStartTime = setting.startTime.toString(),
                             settingEndTime = setting.endTime.toString(),
-                            reservationMinimumTimeUnit = 1,
                             reservationMaximumTimeUnit = setting.maximumMinute,
                             enabledDayOfWeek = getDayOfWeekForPost(setting.getEnableDays()),
                         )
@@ -152,7 +150,6 @@ class SpaceFixture {
                         SpacePutSettingsInner(
                             settingStartTime = it.startTime.toString(),
                             settingEndTime = it.endTime.toString(),
-                            reservationMinimumTimeUnit = 1,
                             reservationMaximumTimeUnit = it.maximumMinute,
                             getDayOfWeekForPut(it.getEnableDays())
                         )

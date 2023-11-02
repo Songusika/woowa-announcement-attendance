@@ -576,9 +576,6 @@ components:
               settingEndTime:
                 type: string
                 example: '22:00:00'
-              reservationMinimumTimeUnit:
-                type: integer
-                example: 10
               reservationMaximumTimeUnit:
                 type: integer
                 example: 120
@@ -617,7 +614,6 @@ components:
             required:
               - settingStartTime
               - settingEndTime
-              - reservationMinimumTimeUnit
               - reservationMaximumTimeUnit
               - enabledDayOfWeek
       required:
@@ -684,10 +680,6 @@ components:
               settingEndTime:
                 type: string
                 example: '22:00:00'
-              reservationMinimumTimeUnit:
-                type: integer
-                example: 10
-                nullable: false
               reservationMaximumTimeUnit:
                 type: integer
                 example: 120
@@ -728,7 +720,6 @@ components:
             required:
               - settingStartTime
               - settingEndTime
-              - reservationMinimumTimeUnit
               - reservationMaximumTimeUnit
               - enabledDayOfWeek
       required:
@@ -769,9 +760,6 @@ components:
               settingEndTime:
                 type: string
                 example: '20:00:00'
-              reservationMinimumTimeUnit:
-                type: integer
-                example: 10
               reservationMaximumTimeUnit:
                 type: integer
                 example: 120
@@ -810,7 +798,6 @@ components:
             required:
               - settingStartTime
               - settingEndTime
-              - reservationMinimumTimeUnit
               - reservationMaximumTimeUnit
               - enabledDayOfWeek
       required:

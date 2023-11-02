@@ -67,7 +67,6 @@ class UpdateSpaceTest(
                                 {
                                     "settingStartTime": "${updatedSettings[0].startTime}",
                                     "settingEndTime": "${updatedSettings[0].endTime}",
-                                    "reservationMinimumTimeUnit": 1,
                                     "reservationMaximumTimeUnit": ${updatedSettings[0].maximumMinute},
                                     "enabledDayOfWeek": {
                                         "monday": ${updatedSettings[0].getEnableDays().contains(MONDAY)},
@@ -82,7 +81,6 @@ class UpdateSpaceTest(
                                 {
                                     "settingStartTime": "${updatedSettings[1].startTime}",
                                     "settingEndTime": "${updatedSettings[1].endTime}",
-                                    "reservationMinimumTimeUnit": 1,
                                     "reservationMaximumTimeUnit": ${updatedSettings[1].maximumMinute},
                                     "enabledDayOfWeek": {
                                         "monday": ${updatedSettings[1].getEnableDays().contains(MONDAY)},

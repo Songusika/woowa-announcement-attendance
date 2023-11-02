@@ -51,7 +51,6 @@ class ReadSpace(
         SpaceGetSingleSettingsInner(
             settingStartTime = it.startTime.toString(),
             settingEndTime = it.endTime.toString(),
-            reservationMinimumTimeUnit = 1,
             reservationMaximumTimeUnit = it.maximumMinute,
             enabledDayOfWeek = SpaceGetSingleSettingsInnerEnabledDayOfWeek(
                 monday = it.getEnableDays().contains(DayOfWeek.MONDAY),

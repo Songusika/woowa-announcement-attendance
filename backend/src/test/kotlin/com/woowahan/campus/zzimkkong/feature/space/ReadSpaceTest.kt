@@ -56,7 +56,6 @@ class ReadSpaceTest(
                                     {
                                         "settingStartTime": "${settings[0].startTime}",
                                         "settingEndTime": "${settings[0].endTime}",
-                                        "reservationMinimumTimeUnit": 1,
                                         "reservationMaximumTimeUnit": ${settings[0].maximumMinute},
                                         "enabledDayOfWeek": {
                                             "monday": ${settings[0].getEnableDays().contains(MONDAY)},
@@ -71,7 +70,6 @@ class ReadSpaceTest(
                                     {
                                         "settingStartTime": "${settings[1].startTime}",
                                         "settingEndTime": "${settings[1].endTime}",
-                                        "reservationMinimumTimeUnit": 1,
                                         "reservationMaximumTimeUnit": ${settings[1].maximumMinute},
                                         "enabledDayOfWeek": {
                                             "monday": ${settings[1].getEnableDays().contains(MONDAY)},
@@ -106,7 +104,6 @@ class ReadSpaceTest(
                                 {
                                     "settingStartTime": "${settings[0].startTime}",
                                     "settingEndTime": "${settings[0].endTime}",
-                                    "reservationMinimumTimeUnit": 1,
                                     "reservationMaximumTimeUnit": ${settings[0].maximumMinute},
                                     "enabledDayOfWeek": {
                                         "monday": ${settings[0].getEnableDays().contains(MONDAY)},
@@ -121,7 +118,6 @@ class ReadSpaceTest(
                                 {
                                     "settingStartTime": "${settings[1].startTime}",
                                     "settingEndTime": "${settings[1].endTime}",
-                                    "reservationMinimumTimeUnit": 1,
                                     "reservationMaximumTimeUnit": ${settings[1].maximumMinute},
                                     "enabledDayOfWeek": {
                                         "monday": ${settings[1].getEnableDays().contains(MONDAY)},
