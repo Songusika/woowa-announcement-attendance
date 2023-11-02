@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.feature
+package com.woowahan.campus.zzimkkong.feature.space
 
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_1

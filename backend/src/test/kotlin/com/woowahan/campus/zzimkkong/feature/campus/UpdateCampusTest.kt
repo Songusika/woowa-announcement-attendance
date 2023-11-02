@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.feature
+package com.woowahan.campus.zzimkkong.feature.campus
 
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.support.ResponseUtils

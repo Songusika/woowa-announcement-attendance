@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.feature
+package com.woowahan.campus.zzimkkong.feature.campus
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture

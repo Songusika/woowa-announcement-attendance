@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.feature
+package com.woowahan.campus.zzimkkong.feature.space
 
 import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.SettingRepository
