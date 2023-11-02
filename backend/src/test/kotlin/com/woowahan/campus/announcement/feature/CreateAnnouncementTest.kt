@@ -25,7 +25,7 @@ class CreateAnnouncementTest(
         val contents = "민트는 짱이다. 이상 전달 끗"
         val slackChannelRequest = CreateAnnouncementRequestSlackChannel(1, "민트 채널")
         val writer = "민트"
-        val password = "민트짱1234"
+        val password = "1234"
         val createAnnouncementRequest = CreateAnnouncementRequest(title, contents, writer, slackChannelRequest)
 
         val givenSpec = RestAssured

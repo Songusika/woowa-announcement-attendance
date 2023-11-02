@@ -22,7 +22,7 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
         page: Int,
         size: Int,
     ): ResponseEntity<AnnouncementsInfoByOffsetResponse> {
-        val announcements: Page<Announcement> = announcementRepository.findAll(PageRequest.of(page, size))
+        val announcements: Page<Announcement> = announcementRepository.findAllBy(PageRequest.of(page, size))
 
         return ResponseEntity.ok(
             AnnouncementsInfoByOffsetResponse(

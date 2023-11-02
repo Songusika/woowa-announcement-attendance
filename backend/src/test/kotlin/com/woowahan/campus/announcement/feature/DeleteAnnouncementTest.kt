@@ -29,7 +29,7 @@ class DeleteAnnouncementTest(
         val contents = "민트는 짱이다. 이상 전달 끗"
         val slackChannelRequest = CreateAnnouncementRequestSlackChannel(1, "민트 채널")
         val writer = "민트"
-        val password = "민트짱1234".toByteArray()
+        val password = "1234".toByteArray()
         val createAnnouncementRequest =
             CreateAnnouncementRequest(title, contents, writer, slackChannelRequest)
 

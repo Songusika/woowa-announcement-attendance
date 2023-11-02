@@ -3,4 +3,4 @@ spring:
     active: local
 
 common:
-  password: 민트짱1234
+  password: 1234
