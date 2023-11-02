@@ -57,7 +57,7 @@ class UpdateSpaceTest(
                 val updatedResponse = SpaceFixture.회의실_단건_조회(campusId.toString(), spaceId.toString())
                 updatedResponse.statusCode() shouldBe 200
                 ResponseUtils.getPrettyJson(updatedResponse) shouldBe
-                        """
+                    """
                         {
                             "name": "${updatedSpace.name}",
                             "color": "${updatedSpace.color}",

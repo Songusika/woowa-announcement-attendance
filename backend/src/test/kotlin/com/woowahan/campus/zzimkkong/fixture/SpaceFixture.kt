@@ -20,12 +20,14 @@ class SpaceFixture {
 
     companion object {
 
-        fun 굿샷_강의장(campusId: Long) = Space(
+        fun 굿샷_강의장(campusId: Long) = 굿샷_강의장(campusId, false)
+
+        fun 굿샷_강의장(campusId: Long, reservationEnabled: Boolean) = Space(
             campusId = campusId,
             name = "굿샷 강의장",
             color = "#00000",
             area = "{ \"id\": \"2\", \"type\" : \"rect\", \"x\": \"10\", \"y\": \"20\", \"width\": \"50\", \"height\": \"70\" }",
-            reservationEnabled = false
+            reservationEnabled = reservationEnabled
         )
 
         fun 랜딩_강의장(campusId: Long) = Space(

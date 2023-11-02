@@ -6,6 +6,7 @@ import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.SettingRepository
 import com.woowahan.campus.zzimkkong.domain.Space
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
+import com.woowahan.campus.zzimkkong.domain.SpaceSettingsValidator
 import openapi.api.CreateSpaceApi
 import openapi.model.SpacePost
 import openapi.model.SpacePostSettingsInnerEnabledDayOfWeek
@@ -36,17 +37,17 @@ class CreateSpace(
                 reservationEnabled = spacePost.reservationEnable,
             )
         )
-        settingRepository.saveAll(
-            spacePost.settings.map {
-                Setting(
-                    spaceId = space.id,
-                    startTime = LocalTime.parse(it.settingStartTime),
-                    endTime = LocalTime.parse(it.settingEndTime),
-                    maximumMinute = it.reservationMaximumTimeUnit,
-                    enableDays = parseToEnableDays(it.enabledDayOfWeek)
-                )
-            }.toList()
-        )
+        val settings = spacePost.settings.map {
+            Setting(
+                spaceId = space.id,
+                startTime = LocalTime.parse(it.settingStartTime),
+                endTime = LocalTime.parse(it.settingEndTime),
+                maximumMinute = it.reservationMaximumTimeUnit,
+                enableDays = parseToEnableDays(it.enabledDayOfWeek)
+            )
+        }.toList()
+        SpaceSettingsValidator.validate(space, settings)
+        settingRepository.saveAll(settings)
 
         campus.updateThumbnail(spacePost.thumbnail)
         campusRepository.save(campus)

@@ -6,6 +6,7 @@ import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.SettingRepository
 import com.woowahan.campus.zzimkkong.domain.Space
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
+import com.woowahan.campus.zzimkkong.domain.SpaceSettingsValidator
 import openapi.api.UpdateSpaceApi
 import openapi.model.SpacePut
 import openapi.model.SpacePutSettingsInner
@@ -50,20 +51,20 @@ class UpdateSpace(
         return spaceRepository.save(findSpace)
     }
 
-    private fun updateSettings(findSpace: Space, settings: List<SpacePutSettingsInner>) {
+    private fun updateSettings(findSpace: Space, settingRequests: List<SpacePutSettingsInner>) {
         settingRepository.deleteAllBySpaceId(findSpace.id)
 
-        settingRepository.saveAll(
-            settings.map {
-                Setting(
-                    spaceId = findSpace.id,
-                    startTime = LocalTime.parse(it.settingStartTime),
-                    endTime = LocalTime.parse(it.settingEndTime),
-                    maximumMinute = it.reservationMaximumTimeUnit,
-                    enableDays = parseToEnableDays(it.enabledDayOfWeek)
-                )
-            }.toList()
-        )
+        val settings = settingRequests.map {
+            Setting(
+                spaceId = findSpace.id,
+                startTime = LocalTime.parse(it.settingStartTime),
+                endTime = LocalTime.parse(it.settingEndTime),
+                maximumMinute = it.reservationMaximumTimeUnit,
+                enableDays = parseToEnableDays(it.enabledDayOfWeek)
+            )
+        }.toList()
+        SpaceSettingsValidator.validate(findSpace, settings)
+        settingRepository.saveAll(settings)
     }
 
     private fun parseToEnableDays(it: SpacePutSettingsInnerEnabledDayOfWeek): String {

@@ -25,7 +25,7 @@ class SettingFixture {
         fun 회의실_예약_설정_3() = Setting(
             spaceId = 0L,
             startTime = LocalTime.of(9, 0, 0),
-            endTime = LocalTime.of(16, 0, 0),
+            endTime = LocalTime.of(10, 0, 0),
             maximumMinute = 60,
             enableDays = "SATURDAY,SUNDAY",
         )

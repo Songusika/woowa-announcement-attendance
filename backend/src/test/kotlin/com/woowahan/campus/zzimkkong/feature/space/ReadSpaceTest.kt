@@ -45,7 +45,7 @@ class ReadSpaceTest(
             Then("200 응답과 저장된 회의실 정보들을 반환한다.") {
                 response.statusCode() shouldBe 200
                 ResponseUtils.getPrettyJson(response) shouldBe
-                        """
+                    """
                         [
                             {
                                 "name": "${space.name}",
@@ -94,7 +94,7 @@ class ReadSpaceTest(
             Then("200 응답과 저장된 회의실 정보들을 반환한다.") {
                 response.statusCode() shouldBe 200
                 ResponseUtils.getPrettyJson(response) shouldBe
-                        """
+                    """
                         {
                             "name": "${space.name}",
                             "color": "${space.color}",
