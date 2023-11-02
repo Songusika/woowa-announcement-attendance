@@ -25,7 +25,7 @@ class CreateAnnouncement(
                 createAnnouncementRequest.title,
                 createAnnouncementRequest.content,
                 createAnnouncementRequest.author,
-                createAnnouncementRequest.slackChannel.channelId
+                createAnnouncementRequest.slackChannel.channelId,
             )
         )
         return ResponseEntity.created(URI.create("/api/announcements/${savedAnnouncement.id}")).build()
