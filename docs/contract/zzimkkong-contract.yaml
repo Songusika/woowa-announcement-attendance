@@ -16,8 +16,14 @@ tags:
     description: Map(캠퍼스) 수정과 관련된 도메인입니다.
   - name: DeleteMap
     description: Map(캠퍼스) 삭제와 관련된 도메인입니다.
-  - name: Reservation
-    description: 예약과 관련된 도메인입니다.
+  - name: CreateReservation
+    description: 예약 생성과 관련된 도메인입니다.
+  - name: FindReservation
+    description: 예약 조회와 관련된 도메인입니다.
+  - name: UpdateReservation
+    description: 예약 수정과 관련된 도메인입니다.
+  - name: DeleteReservation
+    description: 예약 삭제와 관련된 도메인입니다.
   - name: CreateSpace
     description: Space(강의장)생성과 관련된 도메인입니다.
   - name: FindSpace
@@ -44,7 +50,7 @@ paths:
     post:
       operationId: createReservation
       tags:
-        - Reservation
+        - CreateReservation
       summary: 예약 생성
       description: 사용자가 예약을 수행한다.
       requestBody:
@@ -81,7 +87,7 @@ paths:
     get:
       operationId: findReservation
       tags:
-        - Reservation
+        - FindReservation
       summary: 예약 조회
       description: 특정 Space의 date에 해당하는 예약 정보를 조회한다.
       parameters:
@@ -106,7 +112,7 @@ paths:
     delete:
       operationId: removeReservation
       tags:
-        - Reservation
+        - DeleteReservation
       summary: 예약 삭제
       description: 특정 예약을 삭제한다.
       requestBody:
@@ -124,7 +130,7 @@ paths:
     put:
       operationId: updateReservation
       tags:
-        - Reservation
+        - UpdateReservation
       summary: 예약 수정
       description: 특정 예약을 수정한다.
       requestBody:
@@ -355,7 +361,7 @@ paths:
     get:
       operationId: findSpaceAvailability
       tags:
-        - Reservation
+        - FindReservation
       summary: Space 예약 가능 여부 조회
       description: 예약 가능 여부를 조회합니다.
       parameters:
