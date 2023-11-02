@@ -56,7 +56,7 @@ paths:
       operationId: findAllAnnouncementByOffset
       tags:
         - GetAllAnnouncement
-      summary: 공지 전체 조회(페이징)
+      summary: 공지 전체 조회(페이징 - 오프셋 방식)
       description: 사용자가 공지를 전체 조회한다.
       parameters:
         - in: query
@@ -88,6 +88,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/announcementsInfoByOffsetResponse'
+        401:
+          description: Unauthorized
+        400:
+          description: Bad Request
+  /api/announcements/cursor:
+    get:
+      operationId: findAllAnnouncementByCursor
+      tags:
+        - GetAllAnnouncement
+      summary: 공지 전체 조회(페이징 - 커서 방식)
+      description: 사용자가 공지를 전체 조회한다.
+      parameters:
+        - in: query
+          name: cursorId
+          schema:
+            type: integer
+            example: 0
+            default: 0
+          required: false
+          description: 마지막으로 본 공지 ID
+        - in: query
+          name: size
+          schema:
+            type: integer
+            example: 10
+            default: 10
+          required: false
+          description: 게시글 개수
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+            example: 'Basic {token}'
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/announcementsInfoByCursorResponse'
         401:
           description: Unauthorized
         400:
@@ -311,6 +352,23 @@ components:
         - size
         - totalElements
         - totalPages
+    announcementsInfoByCursorResponse:
+      type: object
+      properties:
+        announcements:
+          type: array
+          items:
+            $ref: '#/components/schemas/announcementInfoResponse'
+        hasNext:
+          type: boolean
+          example: false
+        lastCursorId:
+          type: integer
+          example: 10
+      required:
+        - announcements
+        - hasNext
+        - lastCursorId
     announcementsInfoResponse:
       type: object
       properties:
