@@ -6,6 +6,7 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
+import openapi.model.SpaceDelete
 import openapi.model.SpacePost
 import openapi.model.SpacePostSettingsInner
 import openapi.model.SpacePostSettingsInnerEnabledDayOfWeek
@@ -123,8 +124,10 @@ class SpaceFixture {
             .then().log().all()
             .extract()
 
-        fun `회의실_단건_삭제`(mapId: String, spaceId: String): ExtractableResponse<Response> = RestAssured
+        fun `회의실_단건_삭제`(mapId: String, spaceId: String, thumbnail: String): ExtractableResponse<Response> = RestAssured
             .given().log().all()
+            .contentType(ContentType.JSON)
+            .body(SpaceDelete(thumbnail))
             .`when`().delete("/api/maps/$mapId/spaces/$spaceId")
             .then().log().all()
             .extract()
