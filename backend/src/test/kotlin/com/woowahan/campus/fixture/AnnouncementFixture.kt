@@ -1,6 +1,9 @@
 package com.woowahan.campus.fixture
 
 import com.woowahan.campus.announcement.domain.Announcement
+import com.woowahan.campus.announcement.domain.Author
+import com.woowahan.campus.announcement.domain.Content
+import com.woowahan.campus.announcement.domain.Title
 import openapi.model.AnnouncementInfoResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
 import openapi.model.AnnouncementsInfoByOffsetResponse
@@ -12,7 +15,7 @@ fun createAnnouncement(
     slackChannelId: Int,
     id: Long = 0L,
 ): Announcement {
-    return Announcement(title, content, author, slackChannelId, id)
+    return Announcement(Title(title), Content(content), Author(author), slackChannelId, id)
 }
 
 fun createAnnouncementsInfoByOffsetResponse(
@@ -46,8 +49,8 @@ fun createAnnouncementsInfoByCursorResponse(
 fun createAnnouncementInfoResponse(announcement: Announcement): AnnouncementInfoResponse {
     return AnnouncementInfoResponse(
         announcement.id.toInt(),
-        announcement.title,
-        announcement.author,
+        announcement.title.title,
+        announcement.author.author,
         announcement.createdAt.toString()
     )
 }

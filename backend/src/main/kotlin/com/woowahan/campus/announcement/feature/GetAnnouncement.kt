@@ -18,15 +18,15 @@ class GetAnnouncement(
     override fun findAnnouncementById(id: Long, authorization: String): ResponseEntity<AnnouncementResponse> {
         val announcement = announcementRepository.findById(id)
             ?: throw AnnouncementNotFoundException("존재하지 않는 announcement입니다.")
-        return ResponseEntity.ok().body(toResponse(announcement));
+        return ResponseEntity.ok().body(toResponse(announcement))
     }
 
     private fun toResponse(announcement: Announcement): AnnouncementResponse {
         return AnnouncementResponse(
             announcement.id.toInt(),
-            announcement.title,
-            announcement.content,
-            announcement.author,
+            announcement.title.title,
+            announcement.content.content,
+            announcement.author.author,
             announcement.createdAt.toString(),
         )
     }
