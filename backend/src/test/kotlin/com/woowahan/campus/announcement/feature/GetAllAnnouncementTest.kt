@@ -28,9 +28,14 @@ class GetAllAnnouncementTest(
     private val port: Int,
     private val announcementRepository: AnnouncementRepository,
     private val databaseCleaner: DatabaseCleaner
+
 ) : BehaviorSpec({
 
     RestAssured.port = port
+
+    beforeRootTest {
+        databaseCleaner.clean()
+    }
 
     Given("등록된 공지가 20개가 있을 때") {
 
@@ -116,7 +121,7 @@ class GetAllAnnouncementTest(
         }
 
         When("커서 방식을 통해 옳바른 비밀번호와 마지막으로 본 공지 ID, 공지 개수를 요청하면") {
-            //5,4,3,2,1
+
             val queryStrings = mapOf(Pair("cursorId", 6), Pair("size", 3))
             val response = sendRequest("/api/announcements/cursor", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
@@ -132,7 +137,7 @@ class GetAllAnnouncementTest(
         }
 
         When("커서 방식을 통해 옳바른 비밀번호와 마지막으로 본 공지 ID와 남은 공지 보다 큰 사이즈를 요청하면") {
-            //5,4,3,2,1
+
             val queryStrings = mapOf(Pair("cursorId", 6), Pair("size", 100))
             val response = sendRequest("/api/announcements/cursor", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
@@ -147,7 +152,7 @@ class GetAllAnnouncementTest(
             }
         }
 
-        xWhen("옳바른 비밀번호만 요청하면") {
+        When("옳바른 비밀번호만 요청하면") {
 
             val queryStrings = emptyMap<String, Int>()
             val response = sendRequest("/api/announcements/offset", queryStrings, "1234")
@@ -165,10 +170,13 @@ class GetAllAnnouncementTest(
             }
         }
 
-        xWhen("틀린 비밀번호와 페이지 번호, 조회하는 공지 개수를 요청하면") {
+        When("틀린 비밀번호와 페이지 번호, 조회하는 공지 개수를 요청하면") {
+
+            val queryStrings = emptyMap<String, Int>()
+            val response = sendRequest("/api/announcements/offset", queryStrings, "12345")
 
             Then("401 응답이 반환된다.") {
-
+                response.statusCode() shouldBe 401
             }
         }
     }
@@ -190,10 +198,6 @@ class GetAllAnnouncementTest(
                 responseBody.totalPages shouldBe 0
             }
         }
-    }
-
-    beforeRootTest {
-        databaseCleaner.clean()
     }
 })
 

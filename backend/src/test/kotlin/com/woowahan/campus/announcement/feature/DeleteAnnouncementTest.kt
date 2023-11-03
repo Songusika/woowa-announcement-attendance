@@ -14,8 +14,8 @@ import org.springframework.http.HttpHeaders
 import support.test.beforeRootTest
 import java.util.*
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(DatabaseCleaner::class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DeleteAnnouncementTest(
     @LocalServerPort
     val port: Int,
@@ -23,6 +23,10 @@ class DeleteAnnouncementTest(
 ) : BehaviorSpec({
 
     RestAssured.port = port
+
+    beforeRootTest {
+        databaseCleaner.clean()
+    }
 
     Given("공지글 ID, 관리자 비밀번호를 받는다.") {
         val title = "민트는 짱이다."
@@ -98,7 +102,5 @@ class DeleteAnnouncementTest(
                 response.statusCode() shouldBe 401
             }
         }
-
-        beforeRootTest { databaseCleaner.clean() }
     }
 })

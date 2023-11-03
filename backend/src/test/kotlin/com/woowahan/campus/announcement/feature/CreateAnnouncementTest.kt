@@ -1,5 +1,6 @@
 package com.woowahan.campus.announcement.feature
 
+import com.woowahan.campus.utils.DatabaseCleaner
 import com.woowahan.campus.utils.basicEncodePassword
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -10,15 +11,23 @@ import openapi.model.CreateAnnouncementRequest
 import openapi.model.CreateAnnouncementRequestSlackChannel
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
+import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
+import support.test.beforeRootTest
 
+@Import(DatabaseCleaner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CreateAnnouncementTest(
     @LocalServerPort
-    val port: Int
+    private val port: Int,
+    private val databaseCleaner: DatabaseCleaner,
 ) : BehaviorSpec({
 
     RestAssured.port = port
+
+    beforeRootTest {
+        databaseCleaner.clean()
+    }
 
     Given("제목, 내용, 슬랙 채널, 작성자 닉네임, 관리자 비밀번호를 받는다.") {
         val title = "민트는 짱이다."

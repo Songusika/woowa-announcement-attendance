@@ -7,6 +7,8 @@ import org.springframework.data.repository.Repository
 
 interface AnnouncementRepository : Repository<Announcement, Long> {
 
+    fun findById(id: Long) : Announcement?
+
     fun save(announcement: Announcement): Announcement
 
     fun findAllBy(pageRequest: PageRequest): Page<Announcement>
