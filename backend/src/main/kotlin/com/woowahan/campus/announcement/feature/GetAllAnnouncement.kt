@@ -38,8 +38,8 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
     fun toAnnouncementPageResponses(announcement: Announcement): AnnouncementInfoResponse {
         return AnnouncementInfoResponse(
             announcement.id.toInt(),
-            announcement.title,
-            announcement.author,
+            announcement.title.title,
+            announcement.author.author,
             announcement.createdAt.toString()
         )
     }

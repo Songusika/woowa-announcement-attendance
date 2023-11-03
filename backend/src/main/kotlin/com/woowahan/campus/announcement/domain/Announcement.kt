@@ -1,14 +1,37 @@
 package com.woowahan.campus.announcement.domain
 
+import com.woowahan.campus.announcement.exception.AuthorizationException
 import com.woowahan.campus.announcement.support.BaseRootEntity
+import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 
 @Entity
 class Announcement(
-    val title: String,
-    val content: String,
-    val author: String,
+    @Embedded
+    var title: Title,
+    @Embedded
+    var content: Content,
+    @Embedded
+    var author: Author,
     val slackChannelId: Int,
     id: Long = 0L,
-) : BaseRootEntity<Announcement>(id)
+) : BaseRootEntity<Announcement>(id) {
+    fun withId(id: Long): Announcement = Announcement(title, content, author, slackChannelId, id)
 
+    fun update(title: String, content: String, author: String) {
+        if (title.isBlank() || content.isBlank() || author.isBlank()) {
+            throw IllegalArgumentException("공지의 제목, 내용, 작성자는 빈 칸으로 입력할 수 없습니다.")
+        }
+        this.title = Title(title)
+        this.content = Content(content)
+        if (this.author != Author(author)) {
+            throw AuthorizationException("공지 작성자만이 공지를 수정할 수 있습니다.")
+        }
+        this.author = Author(author)
+    }
+
+    companion object {
+        fun create(title: String, content: String, author: String, slackChannelId: Int): Announcement =
+            Announcement(Title(title), Content(content), Author(author), slackChannelId)
+    }
+}

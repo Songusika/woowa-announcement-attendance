@@ -12,7 +12,7 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
 import support.test.beforeRootTest
-import java.util.*
+import java.util.Base64
 
 @Import(DatabaseCleaner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -60,4 +60,3 @@ class GetAnnouncementTest(
         }
     }
 })
-
