@@ -5,11 +5,11 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.web.servlet.HandlerInterceptor
-import java.util.*
+import java.util.Base64
 
 class AuthorizeUser(
     val password: String
-): HandlerInterceptor {
+) : HandlerInterceptor {
     override fun preHandle(
         request: HttpServletRequest,
         response: HttpServletResponse,
