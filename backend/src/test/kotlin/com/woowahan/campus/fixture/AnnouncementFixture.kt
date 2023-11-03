@@ -7,6 +7,9 @@ import com.woowahan.campus.announcement.domain.Title
 import openapi.model.AnnouncementInfoResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
 import openapi.model.AnnouncementsInfoByOffsetResponse
+import openapi.model.CreateAnnouncementRequest
+import openapi.model.CreateAnnouncementRequestSlackChannel
+import openapi.model.UpdateAnnouncementRequest
 
 fun createAnnouncement(
     title: String,
@@ -53,4 +56,27 @@ fun createAnnouncementInfoResponse(announcement: Announcement): AnnouncementInfo
         announcement.author.author,
         announcement.createdAt.toString()
     )
+}
+
+fun createAnnouncementRequest(
+    title: String = "title",
+    content: String = "content",
+    author: String,
+    slackChannelId: Int = 1,
+    slackChannelName: String = "slackChannelName"
+): CreateAnnouncementRequest {
+    return CreateAnnouncementRequest(
+        title,
+        content,
+        author,
+        CreateAnnouncementRequestSlackChannel(slackChannelId, slackChannelName)
+    )
+}
+
+fun createUpdateAnnouncementRequest(
+    title: String = "updateTitle",
+    content: String = "updateContent",
+    author: String
+): UpdateAnnouncementRequest {
+    return UpdateAnnouncementRequest(title, content, author)
 }
