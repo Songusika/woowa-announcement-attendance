@@ -280,26 +280,10 @@ components:
           minLength: 1
           maxLength: 20
           description: '원본 공지와 작성자가 같아야합니다.'
-        slackChannel:
-          type: object
-          properties:
-            channelId:
-              type: string
-              example: 'C01RZGZQZ9K'
-              nullable: false
-              minLength: 1
-              maxLength: 50
-            channelName:
-              type: string
-              example: '#5기-캠플폼-잡담'
-              nullable: false
-              minLength: 1
-              maxLength: 50
       required:
         - title
         - content
         - author
-        - slackChannel
     announcementResponse:
       type: object
       properties:
