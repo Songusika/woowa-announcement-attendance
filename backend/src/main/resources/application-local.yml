@@ -4,3 +4,7 @@ spring:
       enabled: true
   datasource:
     generate-unique-name: false
+
+slack:
+  user:
+    token: 토큰

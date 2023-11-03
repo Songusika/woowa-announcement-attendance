@@ -16,9 +16,10 @@ create table campus
     thumbnail varchar(65535) not null
 );
 
-create table slack_channel
+create table announcement_slack_channel
 (
-    id        bigint auto_increment primary key,
-    url       varchar(255) not null,
-    campus_id bigint       not null
+    id          bigint auto_increment primary key,
+    provider_id varchar(255) not null,
+    name        varchar(80)  not null
 );
+

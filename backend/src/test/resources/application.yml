@@ -13,3 +13,7 @@ logging:
 
 common:
   password: 1234
+
+slack:
+  user:
+    token: 토큰

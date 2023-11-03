@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class AnnouncementValidator(
-    private val slackChannelRepository: SlackChannelRepository
+    private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository
 ) {
 
     fun validate(
@@ -18,7 +18,7 @@ class AnnouncementValidator(
     }
 
     fun validateExistsSlackChannel(slackChannelId: Long) {
-        if (slackChannelRepository.existsById(slackChannelId)) {
+        if (announcementSlackChannelRepository.existsById(slackChannelId)) {
             throw SlackChannelNotFoundException("존재하지 않는 슬랙 채널입니다.")
         }
     }
