@@ -34,8 +34,4 @@ class Announcement(
         return this.andEvent(event)
     }
 
-    companion object {
-        fun create(title: String, content: String, author: String, slackChannelId: Int): Announcement =
-            Announcement(Title(title), Content(content), Author(author), slackChannelId)
-    }
 }
