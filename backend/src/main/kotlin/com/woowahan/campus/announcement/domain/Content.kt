@@ -6,8 +6,8 @@ import jakarta.persistence.Embeddable
 data class Content(val content: String) {
     init {
         val trimmedContent = content.trim()
-        if (trimmedContent.isEmpty() || trimmedContent.length > MAX_LENGTH) {
-            throw IllegalArgumentException("공지의 내용은 1자 이상, 65,535자 이하로 작성 가능합니다.")
+        require(trimmedContent.isNotEmpty() && trimmedContent.length <= MAX_LENGTH) {
+            "공지의 내용은 1자 이상, 65,535자 이하로 작성 가능합니다."
         }
     }
 

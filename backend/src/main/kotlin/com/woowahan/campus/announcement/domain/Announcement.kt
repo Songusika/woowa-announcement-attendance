@@ -18,8 +18,8 @@ class Announcement(
 ) : BaseRootEntity<Announcement>(id) {
 
     fun update(title: String, content: String, author: String) {
-        if (title.isBlank() || content.isBlank() || author.isBlank()) {
-            throw IllegalArgumentException("공지의 제목, 내용, 작성자는 빈 칸으로 입력할 수 없습니다.")
+        require(title.isNotBlank() && content.isNotBlank() && author.isNotBlank()) {
+            "공지의 제목, 내용, 작성자는 빈 칸으로 입력할 수 없습니다."
         }
         this.title = Title(title)
         this.content = Content(content)
