@@ -12,5 +12,4 @@ class AnnouncementExceptionHandler {
     fun handleAnnouncementNotFoundException(exception: IllegalArgumentException): ResponseEntity<ErrorMessage> {
         return ResponseEntity.badRequest().body(ErrorMessage(exception.message))
     }
-
 }
