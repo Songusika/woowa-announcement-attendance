@@ -1,6 +1,5 @@
 package com.woowahan.campus.announcement.domain
 
-import com.woowahan.campus.announcement.exception.AuthorizationException
 import com.woowahan.campus.announcement.support.BaseRootEntity
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -23,8 +22,8 @@ class Announcement(
         }
         this.title = Title(title)
         this.content = Content(content)
-        if (this.author != Author(author)) {
-            throw AuthorizationException("공지 작성자만이 공지를 수정할 수 있습니다.")
+        require(this.author == Author(author)) {
+            "공지의 작성자만이 공지를 수정할 수 있습니다."
         }
         this.author = Author(author)
     }
