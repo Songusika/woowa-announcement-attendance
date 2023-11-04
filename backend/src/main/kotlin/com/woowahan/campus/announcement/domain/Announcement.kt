@@ -17,15 +17,16 @@ class Announcement(
 ) : BaseRootEntity<Announcement>(id) {
 
     fun update(title: String, content: String, author: String) {
+        require(this.author == Author(author)) {
+            "공지의 작성자만이 공지를 수정할 수 있습니다."
+        }
+        this.author = Author(author)
+
         require(title.isNotBlank() && content.isNotBlank() && author.isNotBlank()) {
             "공지의 제목, 내용, 작성자는 빈 칸으로 입력할 수 없습니다."
         }
         this.title = Title(title)
         this.content = Content(content)
-        require(this.author == Author(author)) {
-            "공지의 작성자만이 공지를 수정할 수 있습니다."
-        }
-        this.author = Author(author)
     }
 
     private fun publish(): Announcement {
