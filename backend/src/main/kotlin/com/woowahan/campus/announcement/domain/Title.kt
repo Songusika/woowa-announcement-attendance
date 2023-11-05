@@ -5,8 +5,7 @@ import jakarta.persistence.Embeddable
 @Embeddable
 data class Title(val title: String) {
     init {
-        val trimmedTitle = title.trim()
-        require(trimmedTitle.isNotEmpty() && trimmedTitle.length <= MAX_LENGTH) {
+        require(title.isNotEmpty() && title.length <= MAX_LENGTH) {
             "공지의 제목은 1자 이상, 50자 이하로 작성 가능합니다."
         }
     }
