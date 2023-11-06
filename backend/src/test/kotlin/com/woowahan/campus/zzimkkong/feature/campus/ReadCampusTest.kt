@@ -1,6 +1,5 @@
 package com.woowahan.campus.zzimkkong.feature.campus
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
 import com.woowahan.campus.zzimkkong.support.ResponseUtils
@@ -18,7 +17,6 @@ class ReadCampusTest(
     val databaseInitializer: DatabaseInitializer
 ) : BehaviorSpec({
 
-    val mapper = jacksonObjectMapper()
     extensions(databaseInitializer)
 
     RestAssured.port = port

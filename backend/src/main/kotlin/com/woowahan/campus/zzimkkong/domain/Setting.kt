@@ -4,6 +4,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @Entity
@@ -33,5 +34,22 @@ class Setting(
 
     fun getEnableDays(): List<DayOfWeeks> {
         return DayOfWeeks.from(enableDays.split(","))
+    }
+
+    fun validate(startDateTime: LocalDateTime, endDateTime: LocalDateTime): Boolean {
+        val startDate = startDateTime.toLocalDate()
+        if (!getEnableDays().contains(DayOfWeeks.valueOf(startDate.dayOfWeek.name))) {
+            return false
+        }
+        if (startDateTime.toLocalTime().isBefore(startTime)) {
+            return false
+        }
+        if (endDateTime.toLocalTime().isAfter(endTime)) {
+            return false
+        }
+        if (startDateTime.plusMinutes(maximumMinute.toLong()).isAfter(endDateTime)) {
+            return false
+        }
+        return true
     }
 }
