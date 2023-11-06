@@ -4,6 +4,6 @@ data class MessageSendEvent(
     val announcement: Announcement,
 ) {
     val channelId = announcement.slackChannelId.toLong()
-    val author = announcement.author.author
-    val content = announcement.content.content
+    val author = announcement.author
+    val content = announcement.content
 }
