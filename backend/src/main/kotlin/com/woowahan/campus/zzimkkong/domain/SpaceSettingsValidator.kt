@@ -3,9 +3,9 @@ package com.woowahan.campus.zzimkkong.domain
 class SpaceSettingsValidator {
 
     companion object {
-        fun validate(space: Space, settings: List<Setting>) {
-            validateReservationEnabled(settings, space)
-            validateSettings(settings)
+        fun validate(space: Space) {
+            validateReservationEnabled(space.settings, space)
+            validateSettings(space.settings)
         }
 
         private fun validateSettings(settings: List<Setting>) {

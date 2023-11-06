@@ -2,9 +2,9 @@ package com.woowahan.campus.zzimkkong.feature.space
 
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks
 import com.woowahan.campus.zzimkkong.domain.Setting
-import com.woowahan.campus.zzimkkong.domain.SettingRepository
 import com.woowahan.campus.zzimkkong.domain.Space
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
+import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.FindSpaceApi
 import openapi.model.SpaceGetSingle
 import openapi.model.SpaceGetSingleSettingsInner
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ReadSpace(
     val spaceRepository: SpaceRepository,
-    val settingRepository: SettingRepository,
 ) : FindSpaceApi {
 
     override fun findAllSpace(mapId: Int): ResponseEntity<List<SpaceGetSingle>> {
@@ -23,28 +22,25 @@ class ReadSpace(
 
         return ResponseEntity.ok(
             spaces.map {
-                val settings = settingRepository.findSettingsBySpaceId(spaceId = it.id)
-                createSpaceSingleResponse(it, settings)
+                createSpaceSingleResponse(it)
             }.toList()
         )
     }
 
     override fun findSpace(mapId: Int, spaceId: Int): ResponseEntity<SpaceGetSingle> {
-        val space = spaceRepository.findById(spaceId.toLong())
-            .orElseThrow { IllegalArgumentException() }
-        val settings = settingRepository.findSettingsBySpaceId(spaceId = spaceId.toLong())
+        val space = spaceRepository.getById(spaceId.toLong())
 
         return ResponseEntity.ok(
-            createSpaceSingleResponse(space, settings)
+            createSpaceSingleResponse(space)
         )
     }
 
-    private fun createSpaceSingleResponse(space: Space, settings: List<Setting>) = SpaceGetSingle(
+    private fun createSpaceSingleResponse(space: Space) = SpaceGetSingle(
         name = space.name,
         color = space.color,
         area = space.area,
         reservationEnable = space.reservationEnabled,
-        settings = parseToSettingResponses(settings),
+        settings = parseToSettingResponses(space.settings),
     )
 
     private fun parseToSettingResponses(settings: List<Setting>): List<SpaceGetSingleSettingsInner> = settings.map {

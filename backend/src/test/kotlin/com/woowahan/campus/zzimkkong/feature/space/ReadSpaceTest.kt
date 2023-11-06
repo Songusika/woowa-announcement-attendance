@@ -34,9 +34,9 @@ class ReadSpaceTest(
         val campus = CampusFixture.잠실_캠퍼스()
         val slackUrl = "https://slackexample.com"
         val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
-        val space = SpaceFixture.랜딩_강의장(campusId)
-        val thumbnail = "thumbnail"
         val settings = listOf(회의실_예약_설정_1(), 회의실_예약_설정_3())
+        val space = SpaceFixture.랜딩_강의장(campusId, settings)
+        val thumbnail = "thumbnail"
         val spaceId = SpaceFixture.회의실_생성_ID_반환(space, thumbnail, settings)
 
         When("회의실 정보를 모두 조회한다.") {

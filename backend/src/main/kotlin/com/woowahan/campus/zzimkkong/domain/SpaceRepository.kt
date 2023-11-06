@@ -1,8 +1,16 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.Repository
 
-interface SpaceRepository : CrudRepository<Space, Long> {
+fun SpaceRepository.getById(id: Long): Space = findById(id) ?: throw IllegalArgumentException()
 
-    fun findAllByCampusId(toLong: Long): List<Space>
+interface SpaceRepository : Repository<Space, Long> {
+
+    fun save(space: Space): Space
+
+    fun findById(id: Long): Space?
+
+    fun findAllByCampusId(campusId: Long): List<Space>
+
+    fun delete(space: Space)
 }

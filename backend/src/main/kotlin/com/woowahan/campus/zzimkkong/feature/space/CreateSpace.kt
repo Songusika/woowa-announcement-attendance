@@ -3,10 +3,10 @@ package com.woowahan.campus.zzimkkong.feature.space
 import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks
 import com.woowahan.campus.zzimkkong.domain.Setting
-import com.woowahan.campus.zzimkkong.domain.SettingRepository
 import com.woowahan.campus.zzimkkong.domain.Space
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
 import com.woowahan.campus.zzimkkong.domain.SpaceSettingsValidator
+import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.CreateSpaceApi
 import openapi.model.SpacePost
 import openapi.model.SpacePostSettingsInnerEnabledDayOfWeek
@@ -20,13 +20,11 @@ import java.time.LocalTime
 class CreateSpace(
     val campusRepository: CampusRepository,
     val spaceRepository: SpaceRepository,
-    val settingRepository: SettingRepository,
 ) : CreateSpaceApi {
 
     @Transactional
     override fun createSpace(mapId: Int, spacePost: SpacePost): ResponseEntity<Unit> {
-        val campus = campusRepository.findById(mapId.toLong())
-            .orElseThrow { IllegalArgumentException() }
+        val campus = campusRepository.getById(mapId.toLong())
 
         val space = spaceRepository.save(
             Space(
@@ -35,19 +33,17 @@ class CreateSpace(
                 color = spacePost.color,
                 area = spacePost.area,
                 reservationEnabled = spacePost.reservationEnable,
+                settings = spacePost.settings.map {
+                    Setting(
+                        startTime = LocalTime.parse(it.settingStartTime),
+                        endTime = LocalTime.parse(it.settingEndTime),
+                        maximumMinute = it.reservationMaximumTimeUnit,
+                        enableDays = parseToEnableDays(it.enabledDayOfWeek)
+                    )
+                }.toMutableList()
             )
         )
-        val settings = spacePost.settings.map {
-            Setting(
-                spaceId = space.id,
-                startTime = LocalTime.parse(it.settingStartTime),
-                endTime = LocalTime.parse(it.settingEndTime),
-                maximumMinute = it.reservationMaximumTimeUnit,
-                enableDays = parseToEnableDays(it.enabledDayOfWeek)
-            )
-        }.toList()
-        SpaceSettingsValidator.validate(space, settings)
-        settingRepository.saveAll(settings)
+        SpaceSettingsValidator.validate(space)
 
         campus.updateThumbnail(spacePost.thumbnail)
         campusRepository.save(campus)

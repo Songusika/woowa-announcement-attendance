@@ -7,7 +7,6 @@ class SettingFixture {
     companion object {
 
         fun 회의실_예약_설정_1() = Setting(
-            spaceId = 0L,
             startTime = LocalTime.of(10, 0, 0),
             endTime = LocalTime.of(11, 0, 0),
             maximumMinute = 60,
@@ -15,7 +14,6 @@ class SettingFixture {
         )
 
         fun 회의실_예약_설정_2() = Setting(
-            spaceId = 0L,
             startTime = LocalTime.of(11, 0, 0),
             endTime = LocalTime.of(12, 0, 0),
             maximumMinute = 60,
@@ -23,7 +21,6 @@ class SettingFixture {
         )
 
         fun 회의실_예약_설정_3() = Setting(
-            spaceId = 0L,
             startTime = LocalTime.of(9, 0, 0),
             endTime = LocalTime.of(10, 0, 0),
             maximumMinute = 60,
@@ -31,7 +28,6 @@ class SettingFixture {
         )
 
         fun 회의실_예약_설정_4() = Setting(
-            spaceId = 0L,
             startTime = LocalTime.of(10, 0, 0),
             endTime = LocalTime.of(18, 0, 0),
             maximumMinute = 60,

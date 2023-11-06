@@ -32,11 +32,11 @@ class UpdateSpaceTest(
         val campus = CampusFixture.잠실_캠퍼스()
         val slackUrl = "https://slackexample.com"
         val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
-        val space = SpaceFixture.랜딩_강의장(campusId)
-        val thumbnail = "thumbnail"
-        val updatedSpace = SpaceFixture.굿샷_강의장(campusId)
-        val updatedThumbnail = "newThumbnail"
         val settings = listOf(회의실_예약_설정_1(), 회의실_예약_설정_2())
+        val space = SpaceFixture.랜딩_강의장(campusId, settings)
+        val thumbnail = "thumbnail"
+        val updatedSpace = SpaceFixture.굿샷_강의장(campusId, settings)
+        val updatedThumbnail = "newThumbnail"
         val spaceId = SpaceFixture.회의실_생성_ID_반환(space, thumbnail, settings)
 
         When("회의실 정보를 수정한다") {

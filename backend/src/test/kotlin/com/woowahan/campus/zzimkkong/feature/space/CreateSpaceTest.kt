@@ -23,9 +23,9 @@ class CreateSpaceTest(
         val campus = CampusFixture.잠실_캠퍼스()
         val slackUrl = "https://slackexample.com"
         val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
-        val space = SpaceFixture.랜딩_강의장(campusId)
-        val thumbnail = "thumbnail"
         val settings = listOf(SettingFixture.회의실_예약_설정_1())
+        val space = SpaceFixture.랜딩_강의장(campusId, settings)
+        val thumbnail = "thumbnail"
 
         When("공간 정보를 저장한다.") {
             val response = SpaceFixture.회의실_생성(space, thumbnail, settings)

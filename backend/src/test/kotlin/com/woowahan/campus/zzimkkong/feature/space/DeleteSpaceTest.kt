@@ -21,9 +21,9 @@ class DeleteSpaceTest(
         val campus = CampusFixture.잠실_캠퍼스()
         val slackUrl = "https://slackexample.com"
         val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
-        val space = SpaceFixture.랜딩_강의장(campusId)
-        val thumbnail = "thumbnail"
         val settings = listOf(SettingFixture.회의실_예약_설정_1(), SettingFixture.회의실_예약_설정_2())
+        val space = SpaceFixture.랜딩_강의장(campusId, settings)
+        val thumbnail = "thumbnail"
         val spaceId = SpaceFixture.회의실_생성_ID_반환(space, thumbnail, settings)
         val newThumbnail = "newThumbnail"
 

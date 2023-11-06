@@ -11,7 +11,6 @@ class SettingTest : StringSpec({
         val endTime = LocalTime.of(10, 0)
 
         Setting(
-            spaceId = 1L,
             startTime = startTime,
             endTime = endTime,
             maximumMinute = 30,
@@ -25,7 +24,6 @@ class SettingTest : StringSpec({
 
         shouldThrow<IllegalArgumentException> {
             Setting(
-                spaceId = 1L,
                 startTime = startTime,
                 endTime = endTime,
                 maximumMinute = 30,
@@ -40,7 +38,6 @@ class SettingTest : StringSpec({
 
         shouldThrow<IllegalArgumentException> {
             Setting(
-                spaceId = 1L,
                 startTime = startTime,
                 endTime = endTime,
                 maximumMinute = 30,
@@ -55,7 +52,6 @@ class SettingTest : StringSpec({
 
         shouldThrow<IllegalArgumentException> {
             Setting(
-                spaceId = 1L,
                 startTime = startTime,
                 endTime = endTime,
                 maximumMinute = 30,
@@ -70,7 +66,6 @@ class SettingTest : StringSpec({
 
         shouldThrow<IllegalArgumentException> {
             Setting(
-                spaceId = 1L,
                 startTime = startTime,
                 endTime = endTime,
                 maximumMinute = 30,
