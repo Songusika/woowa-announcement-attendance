@@ -1,5 +1,9 @@
 package com.woowahan.campus.zzimkkong.domain
 
+import org.springframework.stereotype.Component
+import java.time.LocalDateTime
+
+@Component
 class ReservationValidator {
 
     companion object {
@@ -23,6 +27,11 @@ class ReservationValidator {
             findReservations.forEach {
                 require(it.isContain(reservation).not()) { "시간이 겹칩니다." }
             }
+        }
+
+        fun validateTime(startDateTime: LocalDateTime, endDateTime: LocalDateTime, now: LocalDateTime) {
+            require(startDateTime.toLocalDate() == endDateTime.toLocalDate()) { "시작 날짜와 종료 날짜는 동일해야 합니다." }
+            require(startDateTime >= now) { "현재 시간 이후로 예약해야 합니다." }
         }
     }
 }

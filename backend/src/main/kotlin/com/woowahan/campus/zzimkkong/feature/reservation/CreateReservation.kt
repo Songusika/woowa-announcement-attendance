@@ -10,12 +10,14 @@ import openapi.model.ReservationPost
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
+import java.time.Clock
 import java.time.LocalDateTime
 
 @RestController
 class CreateReservation(
     val reservationRepository: ReservationRepository,
     val spaceRepository: SpaceRepository,
+    val clock: Clock,
 ) : CreateReservationApi {
 
     @Transactional
@@ -23,15 +25,13 @@ class CreateReservation(
         val space = spaceRepository.getById(spaceId.toLong())
         val startDateTime = LocalDateTime.parse(reservationPost.startDateTime)
         val endDateTime = LocalDateTime.parse(reservationPost.endDateTime)
-        val startDate = startDateTime.toLocalDate()
-        val endDate = endDateTime.toLocalDate()
-
-        require(startDate == endDate) { "시작 날짜와 종료 날짜는 동일해야 합니다." }
+        val date = startDateTime.toLocalDate()
+        ReservationValidator.validateTime(startDateTime, endDateTime, LocalDateTime.now(clock))
 
         val reservation = reservationRepository.save(
             Reservation(
                 spaceId = space.id,
-                date = startDate,
+                date = date,
                 startTime = startDateTime.toLocalTime(),
                 endTime = endDateTime.toLocalTime(),
                 name = reservationPost.name,
@@ -40,7 +40,7 @@ class CreateReservation(
             )
         )
 
-        val findReservations = reservationRepository.findAllBySpaceIdAndDate(space.id, startDate)
+        val findReservations = reservationRepository.findAllBySpaceIdAndDate(space.id, date)
         ReservationValidator.validate(space, reservation, findReservations)
         return ResponseEntity.ok().build()
     }

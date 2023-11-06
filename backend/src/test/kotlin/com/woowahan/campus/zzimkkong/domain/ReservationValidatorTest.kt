@@ -6,6 +6,7 @@ import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 class ReservationValidatorTest : StringSpec({
@@ -229,6 +230,30 @@ class ReservationValidatorTest : StringSpec({
                     space, ReservationFixture.회의실_예약("2023-11-12", "19:30", "20:00"), reservations
                 )
             }
+        }
+    }
+
+    "현재 시간 이전에 예약을 할 시 예외가 발생한다." {
+        val now = LocalDateTime.now()
+
+        shouldThrow<IllegalArgumentException> {
+            ReservationValidator.validateTime(
+                startDateTime = now.minusMinutes(10),
+                endDateTime = now.plusMinutes(10),
+                now = now
+            )
+        }
+    }
+
+    "예약 시작일자와 종료일자가 다른 날이면 예외가 발생한다." {
+        val now = LocalDateTime.now()
+
+        shouldThrow<IllegalArgumentException> {
+            ReservationValidator.validateTime(
+                startDateTime = now.plusMinutes(10),
+                endDateTime = now.plusDays(2).plusMinutes(20),
+                now = now
+            )
         }
     }
 })
