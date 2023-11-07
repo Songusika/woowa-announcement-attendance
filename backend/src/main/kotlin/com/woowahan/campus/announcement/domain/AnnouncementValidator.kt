@@ -11,9 +11,9 @@ class AnnouncementValidator(
         title: String,
         content: String,
         author: String,
-        slackChannelId: Int,
+        slackChannelId: Long,
     ) {
-        require(announcementSlackChannelRepository.existsById(slackChannelId.toLong())) {
+        require(announcementSlackChannelRepository.existsById(slackChannelId)) {
             "존재하지 않는 슬랙 채널입니다."
         }
     }

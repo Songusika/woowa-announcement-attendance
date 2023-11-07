@@ -13,7 +13,7 @@ class Announcement(
     var content: Content,
     @Embedded
     var author: Author,
-    val slackChannelId: Int,
+    val slackChannelId: Long,
     id: Long = 0L,
 ) : BaseRootEntity<Announcement>(id) {
 

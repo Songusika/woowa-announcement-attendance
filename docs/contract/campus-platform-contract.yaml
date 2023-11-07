@@ -104,6 +104,7 @@ paths:
           name: cursorId
           schema:
             type: integer
+            format: int64
             example: 0
             default: 0
           required: false
@@ -242,6 +243,7 @@ components:
           properties:
             channelId:
               type: integer
+              format: int64
               example: 1
               nullable: false
             channelName:
@@ -289,6 +291,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         title:
           type: string
@@ -348,6 +351,7 @@ components:
           example: false
         lastCursorId:
           type: integer
+          format: int64
           example: 10
       required:
         - announcements
@@ -358,6 +362,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         title:
           type: string

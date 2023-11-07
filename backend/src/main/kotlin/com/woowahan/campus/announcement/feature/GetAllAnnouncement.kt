@@ -37,7 +37,7 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
 
     fun toAnnouncementPageResponses(announcement: Announcement): AnnouncementInfoResponse {
         return AnnouncementInfoResponse(
-            announcement.id.toInt(),
+            announcement.id,
             announcement.title.title,
             announcement.author.author,
             announcement.createdAt.toString()
@@ -46,7 +46,7 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
 
     override fun findAllAnnouncementByCursor(
         authorization: String,
-        cursorId: Int,
+        cursorId: Long,
         size: Int
     ): ResponseEntity<AnnouncementsInfoByCursorResponse> {
         val pageRequest = PageRequest.of(0, size)
@@ -56,15 +56,15 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
             AnnouncementsInfoByCursorResponse(
                 announcements.get().map(::toAnnouncementPageResponses).toList(),
                 announcements.hasNext(),
-                announcements.last().id.toInt()
+                announcements.last().id
             )
         )
     }
 
-    fun getAnnouncements(cursorId: Int, pageRequest: PageRequest): Slice<Announcement> {
+    fun getAnnouncements(cursorId: Long, pageRequest: PageRequest): Slice<Announcement> {
         return when (cursorId) {
-            0 -> announcementRepository.findByOrderByIdDesc(pageRequest)
-            else -> announcementRepository.findByIdLessThanOrderByIdDesc(cursorId.toLong(), pageRequest)
+            0L -> announcementRepository.findByOrderByIdDesc(pageRequest)
+            else -> announcementRepository.findByIdLessThanOrderByIdDesc(cursorId, pageRequest)
         }
     }
 }

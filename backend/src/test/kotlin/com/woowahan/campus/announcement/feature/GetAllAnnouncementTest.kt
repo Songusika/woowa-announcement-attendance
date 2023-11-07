@@ -107,7 +107,7 @@ class GetAllAnnouncementTest(
         When("커서 방식을 통해 옳바른 비밀번호와 조회하려는 공지 개수만 요청하면") {
 
             val queryStrings = mapOf(Pair("size", 10))
-            val response = sendRequest("/api/announcements/cursor", queryStrings, "1234")
+            val response = sendRequest("/api/announcements/cursor?size=10", queryStrings, "1234")
             val responseBody = response.`as`(AnnouncementsInfoByCursorResponse::class.java)
 
             Then("제일 최신 공지만 요청한 개수만큼 반환한다") {

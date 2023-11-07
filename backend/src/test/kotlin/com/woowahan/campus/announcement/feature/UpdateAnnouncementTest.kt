@@ -54,7 +54,7 @@ class UpdateAnnouncementTest(
         }
     }
 
-    Given("글ID, 제목, 내용, 작성자, 관리자 비밀번호를 받는다.") {
+    Given("글ID, 제목, 내용, 실제 작성자와 다른 작성자, 관리자 비밀번호를 받는다.") {
         val password = "1234".toByteArray()
         val savedAnnouncementId = createAnnouncement(password, createAnnouncementRequest(author = "author"))
 
@@ -89,4 +89,4 @@ private fun createAnnouncement(
     .then().log().all()
     .extract()
     .header(HttpHeaders.LOCATION)
-    .split("/").last().toInt()
+    .split("/").last().toLong()

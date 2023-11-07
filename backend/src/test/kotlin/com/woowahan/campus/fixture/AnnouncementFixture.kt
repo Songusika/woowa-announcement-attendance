@@ -15,7 +15,7 @@ fun createAnnouncement(
     title: String,
     content: String,
     author: String,
-    slackChannelId: Int,
+    slackChannelId: Long,
     id: Long = 0L,
 ): Announcement {
     return Announcement(Title(title), Content(content), Author(author), slackChannelId, id)
@@ -40,7 +40,7 @@ fun createAnnouncementsInfoByOffsetResponse(
 fun createAnnouncementsInfoByCursorResponse(
     announcements: List<Announcement>,
     hasNext: Boolean,
-    lastCursorId: Int,
+    lastCursorId: Long,
 ): AnnouncementsInfoByCursorResponse {
     return AnnouncementsInfoByCursorResponse(
         announcements.map { createAnnouncementInfoResponse(it) },
@@ -51,7 +51,7 @@ fun createAnnouncementsInfoByCursorResponse(
 
 fun createAnnouncementInfoResponse(announcement: Announcement): AnnouncementInfoResponse {
     return AnnouncementInfoResponse(
-        announcement.id.toInt(),
+        announcement.id,
         announcement.title.title,
         announcement.author.author,
         announcement.createdAt.toString()
@@ -62,7 +62,7 @@ fun createAnnouncementRequest(
     title: String = "title",
     content: String = "content",
     author: String,
-    slackChannelId: Int = 1,
+    slackChannelId: Long = 1L,
     slackChannelName: String = "slackChannelName"
 ): CreateAnnouncementRequest {
     return CreateAnnouncementRequest(

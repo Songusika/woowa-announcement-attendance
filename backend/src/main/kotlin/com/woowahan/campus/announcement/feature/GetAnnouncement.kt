@@ -22,7 +22,7 @@ class GetAnnouncement(
 
     private fun toResponse(announcement: Announcement): AnnouncementResponse {
         return AnnouncementResponse(
-            announcement.id.toInt(),
+            announcement.id,
             announcement.title.title,
             announcement.content.content,
             announcement.author.author,
