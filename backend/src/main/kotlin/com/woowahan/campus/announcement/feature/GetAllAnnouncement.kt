@@ -2,6 +2,8 @@ package com.woowahan.campus.announcement.feature
 
 import com.woowahan.campus.announcement.domain.Announcement
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.announcement.domain.getById
 import openapi.api.GetAllAnnouncementApi
 import openapi.model.AnnouncementInfoResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 @Transactional(readOnly = true)
 class GetAllAnnouncement(
     private val announcementRepository: AnnouncementRepository,
+    private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
 ) : GetAllAnnouncementApi {
 
     override fun findAllAnnouncementByOffset(
@@ -42,7 +45,8 @@ class GetAllAnnouncement(
             announcement.id,
             announcement.title.title,
             announcement.author.author,
-            announcement.createdAt.toString()
+            announcement.createdAt.toString(),
+            announcementSlackChannelRepository.getById(announcement.slackChannelId).name
         )
     }
 

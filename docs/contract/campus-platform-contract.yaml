@@ -307,6 +307,9 @@ components:
         createdAt:
           type: string
           example: '2021-08-01T00:00:00.000'
+        slackChannel:
+          type: string
+          example: '6기-공지사항'
       required:
         - id
         - title
@@ -374,6 +377,9 @@ components:
         createdAt:
           type: string
           example: '2021-08-01T00:00:00.000'
+        slackChannel:
+          type: string
+          example: '6기-공지사항'
       required:
         - id
         - title
