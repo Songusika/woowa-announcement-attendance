@@ -10,14 +10,13 @@ import openapi.model.ReservationPost
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
-import java.time.Clock
+import java.net.URI
 import java.time.LocalDateTime
 
 @RestController
 class CreateReservation(
     val reservationRepository: ReservationRepository,
     val spaceRepository: SpaceRepository,
-    val clock: Clock,
 ) : CreateReservationApi {
 
     @Transactional
@@ -28,6 +27,7 @@ class CreateReservation(
         val date = startDateTime.toLocalDate()
         ReservationValidator.validateTime(startDateTime, endDateTime, LocalDateTime.now())
 
+        val findReservations = reservationRepository.findAllBySpaceIdAndDate(space.id, date)
         val reservation = reservationRepository.save(
             Reservation(
                 spaceId = space.id,
@@ -40,8 +40,8 @@ class CreateReservation(
             )
         )
 
-        val findReservations = reservationRepository.findAllBySpaceIdAndDate(space.id, date)
         ReservationValidator.validate(space, reservation, findReservations)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.created(URI.create("/api/maps/$mapId/spaces/$spaceId/reservations/${reservation.id}"))
+            .build()
     }
 }

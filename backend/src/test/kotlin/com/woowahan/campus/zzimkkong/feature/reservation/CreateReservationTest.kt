@@ -10,18 +10,15 @@ import com.woowahan.campus.zzimkkong.fixture.SpaceFixture
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.mockk.every
+import io.mockk.mockkStatic
 import io.restassured.RestAssured
-import org.mockito.Mockito.doReturn
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.SpyBean
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
-import java.time.Clock
-import java.time.Instant
+import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CreateReservationTest(
@@ -33,19 +30,13 @@ class CreateReservationTest(
     val spaceRepository: SpaceRepository,
     @Autowired
     val campusRepository: CampusRepository,
-    @SpyBean
-    val clock: Clock,
 ) : BehaviorSpec({
 
     RestAssured.port = port
 
-    val now = ZonedDateTime.parse("2023-11-07T00:00:00.000+09:00[Asia/Seoul]").toInstant()
-    val fixedClock = Clock.fixed(now, ZoneId.systemDefault())
-
-    beforeEach {
-        doReturn(Instant.now(fixedClock))
-            .`when`(clock)
-            .instant()
+    beforeTest {
+        mockkStatic(LocalDateTime::class)
+        every { LocalDateTime.now() } returns LocalDateTime.parse("2023-11-07T00:00:00.000")
     }
 
     Given("캠퍼스와 회의실이 생성된다.") {
