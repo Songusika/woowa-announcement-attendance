@@ -31,4 +31,10 @@ class Announcement(
         val event = MessageSendEvent(this)
         return this.andEvent(event)
     }
+
+    companion object {
+        fun create(title: Title, content: Content, author: Author, slackChannelId: Long): Announcement {
+            return Announcement(title, content, author, slackChannelId).publish()
+        }
+    }
 }
