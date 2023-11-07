@@ -31,6 +31,8 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
 }
 
 ktlint {

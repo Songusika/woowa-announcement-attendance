@@ -26,7 +26,7 @@ class CreateReservation(
         val startDateTime = LocalDateTime.parse(reservationPost.startDateTime)
         val endDateTime = LocalDateTime.parse(reservationPost.endDateTime)
         val date = startDateTime.toLocalDate()
-        ReservationValidator.validateTime(startDateTime, endDateTime, LocalDateTime.now(clock))
+        ReservationValidator.validateTime(startDateTime, endDateTime, LocalDateTime.now())
 
         val reservation = reservationRepository.save(
             Reservation(
