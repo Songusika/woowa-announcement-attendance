@@ -2,6 +2,7 @@ package com.woowahan.campus.announcement.feature
 
 import com.woowahan.campus.announcement.domain.Announcement
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.getById
 import openapi.api.GetAnnouncementApi
 import openapi.model.AnnouncementResponse
 import org.springframework.http.ResponseEntity
@@ -15,8 +16,7 @@ class GetAnnouncement(
 ) : GetAnnouncementApi {
 
     override fun findAnnouncementById(id: Long, authorization: String): ResponseEntity<AnnouncementResponse> {
-        val announcement = announcementRepository.findById(id)
-            ?: throw IllegalArgumentException("존재하지 않는 announcement입니다.")
+        val announcement = announcementRepository.getById(id)
         return ResponseEntity.ok().body(toResponse(announcement))
     }
 
