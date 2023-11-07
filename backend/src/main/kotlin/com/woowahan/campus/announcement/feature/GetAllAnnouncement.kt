@@ -35,8 +35,8 @@ class GetAllAnnouncement(
                 announcements.number,
                 announcements.size,
                 announcements.totalElements.toInt(),
-                announcements.totalPages
-            )
+                announcements.totalPages,
+            ),
         )
     }
 
@@ -46,14 +46,14 @@ class GetAllAnnouncement(
             announcement.title.title,
             announcement.author.author,
             announcement.createdAt.toString(),
-            announcementSlackChannelRepository.getById(announcement.slackChannelId).name
+            announcementSlackChannelRepository.getById(announcement.slackChannelId).name,
         )
     }
 
     override fun findAllAnnouncementByCursor(
         authorization: String,
         cursorId: Int,
-        size: Int
+        size: Int,
     ): ResponseEntity<AnnouncementsInfoByCursorResponse> {
         val pageRequest = PageRequest.of(0, size)
         val announcements: Slice<Announcement> = getAnnouncements(cursorId.toLong(), pageRequest)
@@ -62,8 +62,8 @@ class GetAllAnnouncement(
             AnnouncementsInfoByCursorResponse(
                 announcements.get().map(::toAnnouncementPageResponses).toList(),
                 announcements.hasNext(),
-                announcements.last().id
-            )
+                announcements.last().id,
+            ),
         )
     }
 

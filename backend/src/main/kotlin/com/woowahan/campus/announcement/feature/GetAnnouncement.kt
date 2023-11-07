@@ -30,7 +30,7 @@ class GetAnnouncement(
             announcement.content.content,
             announcement.author.author,
             announcement.createdAt.toString(),
-            announcementSlackChannelRepository.getById(announcement.slackChannelId).name
+            announcementSlackChannelRepository.getById(announcement.slackChannelId).name,
         )
     }
 }

@@ -1,7 +1,17 @@
 package com.woowahan.campus.fixture
 
-import com.woowahan.campus.announcement.domain.*
-import openapi.model.*
+import com.woowahan.campus.announcement.domain.Announcement
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
+import com.woowahan.campus.announcement.domain.Author
+import com.woowahan.campus.announcement.domain.Content
+import com.woowahan.campus.announcement.domain.Title
+import openapi.model.AnnouncementInfoResponse
+import openapi.model.AnnouncementResponse
+import openapi.model.AnnouncementsInfoByCursorResponse
+import openapi.model.AnnouncementsInfoByOffsetResponse
+import openapi.model.CreateAnnouncementRequest
+import openapi.model.CreateAnnouncementRequestSlackChannel
+import openapi.model.UpdateAnnouncementRequest
 
 fun createAnnouncement(
     title: String,
@@ -25,7 +35,7 @@ fun createAnnouncementsInfoByOffsetResponse(
         page,
         size,
         totalElements,
-        totalPages
+        totalPages,
     )
 }
 
@@ -37,27 +47,27 @@ fun createAnnouncementsInfoByCursorResponse(
     return AnnouncementsInfoByCursorResponse(
         announcements,
         hasNext,
-        lastCursorId
+        lastCursorId,
     )
 }
 
 fun createAnnouncementInfoResponses(
     announcements: List<Announcement>,
-    slackChannel: AnnouncementSlackChannel
+    slackChannel: AnnouncementSlackChannel,
 ): List<AnnouncementInfoResponse> {
     return announcements.map { createAnnouncementInfoResponse(it, slackChannel) }
 }
 
 fun createAnnouncementInfoResponse(
     announcement: Announcement,
-    slackChannel: AnnouncementSlackChannel
+    slackChannel: AnnouncementSlackChannel,
 ): AnnouncementInfoResponse {
     return AnnouncementInfoResponse(
         announcement.id,
         announcement.title.title,
         announcement.author.author,
         announcement.createdAt.toString(),
-        slackChannel.name
+        slackChannel.name,
     )
 }
 
@@ -66,19 +76,19 @@ fun createAnnouncementRequest(
     content: String = "content",
     author: String,
     slackChannelId: Long = 1L,
-    slackChannelName: String = "slackChannelName"
+    slackChannelName: String = "slackChannelName",
 ): CreateAnnouncementRequest {
     return CreateAnnouncementRequest(
         title,
         content,
         author,
-        CreateAnnouncementRequestSlackChannel(slackChannelId, slackChannelName)
+        CreateAnnouncementRequestSlackChannel(slackChannelId, slackChannelName),
     )
 }
 
 fun createAnnouncementResponse(
     announcement: Announcement,
-    slackChannel: AnnouncementSlackChannel
+    slackChannel: AnnouncementSlackChannel,
 ): AnnouncementResponse {
     return AnnouncementResponse(
         announcement.id,
@@ -86,14 +96,14 @@ fun createAnnouncementResponse(
         announcement.content.content,
         announcement.author.author,
         announcement.createdAt.toString(),
-        slackChannel.name
+        slackChannel.name,
     )
 }
 
 fun createUpdateAnnouncementRequest(
     title: String = "updateTitle",
     content: String = "updateContent",
-    author: String
+    author: String,
 ): UpdateAnnouncementRequest {
     return UpdateAnnouncementRequest(title, content, author)
 }
