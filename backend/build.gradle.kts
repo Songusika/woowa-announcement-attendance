@@ -31,6 +31,10 @@ dependencies {
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     implementation("com.slack.api:slack-api-client:1.30.0")
+
+    // mockk
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("com.ninja-squad:springmockk:3.0.1")
 }
 
 ktlint {
