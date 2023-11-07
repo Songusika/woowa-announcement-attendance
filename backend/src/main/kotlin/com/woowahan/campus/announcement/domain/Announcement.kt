@@ -6,7 +6,7 @@ import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 
 @Entity
-class Announcement(
+class Announcement private constructor(
     @Embedded
     var title: Title,
     @Embedded

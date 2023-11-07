@@ -16,9 +16,8 @@ fun createAnnouncement(
     content: String,
     author: String,
     slackChannelId: Long,
-    id: Long = 0L,
 ): Announcement {
-    return Announcement(Title(title), Content(content), Author(author), slackChannelId, id)
+    return Announcement.create(Title(title), Content(content), Author(author), slackChannelId)
 }
 
 fun createAnnouncementsInfoByOffsetResponse(
