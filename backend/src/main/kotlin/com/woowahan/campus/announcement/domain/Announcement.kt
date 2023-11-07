@@ -24,6 +24,7 @@ class Announcement(
         this.title = title
         this.content = content
         this.author = author
+        this.publish()
     }
 
     private fun publish(): Announcement {

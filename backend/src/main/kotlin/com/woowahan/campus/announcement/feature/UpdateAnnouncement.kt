@@ -30,7 +30,7 @@ class UpdateAnnouncement(
             Author(updateAnnouncementRequest.author)
         )
 
-        // TODO: 슬랙 API 호출
+        announcementRepository.save(announcement)
 
         return ResponseEntity.ok().build()
     }
