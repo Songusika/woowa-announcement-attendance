@@ -104,7 +104,6 @@ paths:
           name: cursorId
           schema:
             type: integer
-            format: int64
             example: 0
             default: 0
           required: false

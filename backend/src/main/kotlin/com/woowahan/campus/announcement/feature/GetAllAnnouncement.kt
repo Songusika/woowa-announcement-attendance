@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Transactional(readOnly = true)
-class GetAllAnnouncement(private val announcementRepository: AnnouncementRepository) : GetAllAnnouncementApi {
-    //TODO: 패스워드 레포지터리 및 디코더 구현
+class GetAllAnnouncement(
+    private val announcementRepository: AnnouncementRepository,
+) : GetAllAnnouncementApi {
+
     override fun findAllAnnouncementByOffset(
         authorization: String,
         page: Int,
@@ -46,11 +48,11 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
 
     override fun findAllAnnouncementByCursor(
         authorization: String,
-        cursorId: Long,
+        cursorId: Int,
         size: Int
     ): ResponseEntity<AnnouncementsInfoByCursorResponse> {
         val pageRequest = PageRequest.of(0, size)
-        val announcements: Slice<Announcement> = getAnnouncements(cursorId, pageRequest)
+        val announcements: Slice<Announcement> = getAnnouncements(cursorId.toLong(), pageRequest)
 
         return ResponseEntity.ok(
             AnnouncementsInfoByCursorResponse(
