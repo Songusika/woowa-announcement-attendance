@@ -12,13 +12,15 @@ import java.time.LocalTime
 class ReservationFixture {
 
     companion object {
+
         fun 회의실_예약(
+            spaceId: Long,
             date: String,
             startTime: String,
             endTime: String,
         ): Reservation {
             return Reservation(
-                spaceId = 0L,
+                spaceId = spaceId,
                 date = LocalDate.parse(date),
                 startTime = LocalTime.parse(startTime),
                 endTime = LocalTime.parse(endTime),
@@ -26,6 +28,14 @@ class ReservationFixture {
                 description = "회의실 예약 설명",
                 password = "1234"
             )
+        }
+
+        fun 회의실_예약(
+            date: String,
+            startTime: String,
+            endTime: String,
+        ): Reservation {
+            return 회의실_예약(0L, date, startTime, endTime)
         }
 
         fun 예약_생성(mapId: Long, spaceId: Long, reservation: Reservation): ExtractableResponse<Response> {

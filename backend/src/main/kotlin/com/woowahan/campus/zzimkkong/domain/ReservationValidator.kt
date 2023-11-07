@@ -1,9 +1,7 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
-@Component
 class ReservationValidator {
 
     companion object {
@@ -16,11 +14,10 @@ class ReservationValidator {
             val validSettings = space.settings.filter {
                 it.getEnableDays().contains(DayOfWeeks.valueOf(reservation.date.dayOfWeek.name))
             }
+
             require(
                 validSettings.any {
-                    (it.startTime <= startTime) &&
-                        (it.endTime >= endTime) &&
-                        (startTime.plusMinutes(it.maximumMinute.toLong()) >= endTime)
+                    it.isEnableTime(startTime, endTime)
                 }
             ) { "예약이 불가능한 시간입니다." }
 

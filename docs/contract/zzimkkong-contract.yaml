@@ -67,6 +67,31 @@ paths:
               schema:
                 type: string
                 example: '/api/maps/1/spaces/1/reservations/8'
+    get:
+      operationId: findReservations
+      tags:
+        - FindReservation
+      summary: 예약 전체 조회
+      description: 특정 Space의 date에 해당하는 예약 정보를 조회한다.
+      parameters:
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2023-03-25'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservations_get'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
   /api/maps/{mapId}/spaces/{spaceId}/reservations/{reservationId}:
     parameters:
       - in: path
@@ -88,16 +113,8 @@ paths:
       operationId: findReservation
       tags:
         - FindReservation
-      summary: 예약 조회
-      description: 특정 Space의 date에 해당하는 예약 정보를 조회한다.
-      parameters:
-        - in: query
-          name: date
-          required: true
-          schema:
-            type: string
-            format: date
-            example: '2023-03-25'
+      summary: 예약 단건 조회
+      description: 특정 예약의 정보를 조회한다.
       responses:
         200:
           description: OK
@@ -434,6 +451,32 @@ paths:
 
 components:
   schemas:
+    reservations_get:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 4
+          startDateTime:
+            type: string
+            example: '2023-03-25 01:00'
+          endDateTime:
+            type: string
+            example: '2023-03-25 02:00'
+          name:
+            type: string
+            example: 제이슨
+          description:
+            type: string
+            example: 찜꽁 근로 회의
+        required:
+          - id
+          - startDateTime
+          - endDateTime
+          - name
+          - description
     reservation_get_single:
       type: object
       properties:
@@ -645,6 +688,9 @@ components:
               isAvailable:
                 type: boolean
                 example: true
+            required:
+              - spaceId
+              - isAvailable
       required:
         - mapId
         - spaces

@@ -21,7 +21,11 @@ class Reservation(
     var id: Long = 0L,
 ) {
     fun isContain(otherReservation: Reservation): Boolean {
-        return (startTime <= otherReservation.startTime && otherReservation.startTime < endTime) ||
-            (startTime < otherReservation.endTime && otherReservation.endTime <= endTime)
+        return isContain(otherReservation.startTime, otherReservation.endTime)
+    }
+
+    fun isContain(startTime: LocalTime, endTime: LocalTime): Boolean {
+        return (this.startTime <= startTime && startTime < this.endTime) ||
+            (this.startTime < endTime && endTime <= this.endTime)
     }
 }

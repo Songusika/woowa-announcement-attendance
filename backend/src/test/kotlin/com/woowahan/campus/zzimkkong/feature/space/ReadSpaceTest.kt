@@ -23,7 +23,7 @@ import org.springframework.boot.test.web.server.LocalServerPort
 class ReadSpaceTest(
     @LocalServerPort
     val port: Int,
-    val databaseInitializer: DatabaseInitializer
+    val databaseInitializer: DatabaseInitializer,
 ) : BehaviorSpec({
 
     extensions(databaseInitializer)
