@@ -3,7 +3,10 @@ package com.woowahan.campus.announcement.feature
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
-import com.woowahan.campus.fixture.*
+import com.woowahan.campus.fixture.createAnnouncement
+import com.woowahan.campus.fixture.createAnnouncementInfoResponses
+import com.woowahan.campus.fixture.createAnnouncementsInfoByCursorResponse
+import com.woowahan.campus.fixture.createAnnouncementsInfoByOffsetResponse
 import com.woowahan.campus.utils.DatabaseCleaner
 import com.woowahan.campus.utils.basicEncodePassword
 import io.kotest.core.spec.style.BehaviorSpec
@@ -28,7 +31,7 @@ class GetAllAnnouncementTest(
     private val port: Int,
     private val announcementRepository: AnnouncementRepository,
     private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
-    private val databaseCleaner: DatabaseCleaner
+    private val databaseCleaner: DatabaseCleaner,
 
 ) : BehaviorSpec({
 
@@ -46,8 +49,8 @@ class GetAllAnnouncementTest(
                     "${count}번 째 공지",
                     "${count}번 째 공지입니다.",
                     "작성자",
-                    slackChannel.id
-                )
+                    slackChannel.id,
+                ),
             )
         }.toList()
 
@@ -64,7 +67,7 @@ class GetAllAnnouncementTest(
                     1,
                     5,
                     20,
-                    4
+                    4,
                 )
             }
         }
@@ -82,7 +85,7 @@ class GetAllAnnouncementTest(
                     0,
                     5,
                     20,
-                    4
+                    4,
                 )
             }
         }
@@ -100,7 +103,7 @@ class GetAllAnnouncementTest(
                     1,
                     10,
                     20,
-                    2
+                    2,
                 )
             }
         }
@@ -166,7 +169,7 @@ class GetAllAnnouncementTest(
                     0,
                     10,
                     20,
-                    2
+                    2,
                 )
             }
         }
