@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable
 data class Title(val title: String) {
     init {
         require(title.isNotEmpty() && title.length <= MAX_LENGTH) {
-            "공지의 제목은 1자 이상, 50자 이하로 작성 가능합니다."
+            "공지의 제목은 1자 이상, ${MAX_LENGTH}자 이하로 작성 가능합니다."
         }
     }
 
