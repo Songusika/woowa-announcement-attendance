@@ -14,10 +14,28 @@ class ReservationFixture {
     companion object {
 
         fun 회의실_예약(
+            date: String,
+            startTime: String,
+            endTime: String,
+        ): Reservation {
+            return 회의실_예약(0L, date, startTime, endTime)
+        }
+
+        fun 회의실_예약(
             spaceId: Long,
             date: String,
             startTime: String,
             endTime: String,
+        ): Reservation {
+            return 회의실_예약(spaceId, date, startTime, endTime, "1234")
+        }
+
+        fun 회의실_예약(
+            spaceId: Long,
+            date: String,
+            startTime: String,
+            endTime: String,
+            password: String,
         ): Reservation {
             return Reservation(
                 spaceId = spaceId,
@@ -26,16 +44,8 @@ class ReservationFixture {
                 endTime = LocalTime.parse(endTime),
                 name = "회의실 예약",
                 description = "회의실 예약 설명",
-                password = "1234"
+                password = password
             )
-        }
-
-        fun 회의실_예약(
-            date: String,
-            startTime: String,
-            endTime: String,
-        ): Reservation {
-            return 회의실_예약(0L, date, startTime, endTime)
         }
 
         fun 예약_생성(mapId: Long, spaceId: Long, reservation: Reservation): ExtractableResponse<Response> {

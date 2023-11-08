@@ -155,8 +155,7 @@ paths:
         content:
           application/json:
             schema:
-              type: string
-              example: 1234
+              $ref: '#/components/schemas/reservation_put'
       responses:
         200:
           description: OK
@@ -387,13 +386,13 @@ paths:
           required: true
           schema:
             type: string
-            example: '2023-03-25 10:00'
+            example: '2023-03-25T10:00'
         - in: query
           name: endDateTime
           required: true
           schema:
             type: string
-            example: '2023-03-25 11:00'
+            example: '2023-03-25T11:00'
       responses:
         200:
           description: OK
@@ -461,10 +460,10 @@ components:
             example: 4
           startDateTime:
             type: string
-            example: '2023-03-25 01:00'
+            example: '2023-03-25T01:00'
           endDateTime:
             type: string
-            example: '2023-03-25 02:00'
+            example: '2023-03-25T02:00'
           name:
             type: string
             example: 제이슨
@@ -485,10 +484,10 @@ components:
           example: 4
         startDateTime:
           type: string
-          example: '2023-03-25 01:00'
+          example: '2023-03-25T01:00'
         endDateTime:
           type: string
-          example: '2023-03-25 02:00'
+          example: '2023-03-25T02:00'
         name:
           type: string
           example: 제이슨
@@ -516,6 +515,30 @@ components:
         description:
           type: string
           example: 찜꽁 근로 회의
+        password:
+          type: string
+          example: 1234
+      required:
+        - startDateTime
+        - endDateTime
+        - name
+        - description
+        - password
+    reservation_put:
+      type: object
+      properties:
+        startDateTime:
+          type: string
+          example: '2023-03-28T01:00'
+        endDateTime:
+          type: string
+          example: '2023-03-28T02:00'
+        name:
+          type: string
+          example: 브리
+        description:
+          type: string
+          example: 찜꽁 근로 회식
         password:
           type: string
           example: 1234

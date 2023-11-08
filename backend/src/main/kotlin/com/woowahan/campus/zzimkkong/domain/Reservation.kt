@@ -28,4 +28,8 @@ class Reservation(
         return (this.startTime <= startTime && startTime < this.endTime) ||
             (this.startTime < endTime && endTime <= this.endTime)
     }
+
+    fun checkPassword(password: String) {
+        require(this.password == password) { "예약 비밀번호가 일치하지 않습니다." }
+    }
 }
