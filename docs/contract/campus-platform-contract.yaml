@@ -242,6 +242,7 @@ components:
           properties:
             channelId:
               type: integer
+              format: int64
               example: 1
               nullable: false
             channelName:
@@ -289,6 +290,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         title:
           type: string
@@ -305,6 +307,9 @@ components:
         createdAt:
           type: string
           example: '2021-08-01T00:00:00.000'
+        slackChannel:
+          type: string
+          example: '6기-공지사항'
       required:
         - id
         - title
@@ -348,6 +353,7 @@ components:
           example: false
         lastCursorId:
           type: integer
+          format: int64
           example: 10
       required:
         - announcements
@@ -358,6 +364,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         title:
           type: string
@@ -370,6 +377,9 @@ components:
         createdAt:
           type: string
           example: '2021-08-01T00:00:00.000'
+        slackChannel:
+          type: string
+          example: '6기-공지사항'
       required:
         - id
         - title

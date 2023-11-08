@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class AnnouncementExceptionHandler {
 
-    @ExceptionHandler
-    fun handleAnnouncementNotFoundException(exception: AnnouncementNotFoundException): ResponseEntity<ErrorMessage> {
+    @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
+    fun handleBadRequestException(exception: RuntimeException): ResponseEntity<ErrorMessage> {
         return ResponseEntity.badRequest().body(ErrorMessage(exception.message))
     }
 
-    @ExceptionHandler
-    fun handleAuthorizationException(exception: AuthorizationException): ResponseEntity<ErrorMessage> {
+    @ExceptionHandler(AuthorizationException::class)
+    fun handleUnauthorizedException(exception: AuthorizationException): ResponseEntity<ErrorMessage> {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ErrorMessage(exception.message))
     }
 }
