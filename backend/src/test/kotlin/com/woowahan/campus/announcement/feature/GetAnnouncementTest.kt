@@ -1,24 +1,31 @@
 package com.woowahan.campus.announcement.feature
 
+import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.fixture.createAnnouncement
+import com.woowahan.campus.fixture.createAnnouncementResponse
 import com.woowahan.campus.utils.DatabaseCleaner
+import com.woowahan.campus.utils.basicEncodePassword
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.equality.shouldBeEqualToComparingFields
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
-import openapi.model.CreateAnnouncementRequest
-import openapi.model.CreateAnnouncementRequestSlackChannel
+import openapi.model.AnnouncementResponse
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
 import support.test.beforeRootTest
-import java.util.Base64
 
 @Import(DatabaseCleaner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GetAnnouncementTest(
     @LocalServerPort
     val port: Int,
+    private val announcementRepository: AnnouncementRepository,
+    private val announcementSlackRepository: AnnouncementSlackChannelRepository,
     private val databaseCleaner: DatabaseCleaner,
 ) : BehaviorSpec({
 
@@ -28,34 +35,30 @@ class GetAnnouncementTest(
         databaseCleaner.clean()
     }
 
-    Given("단건 공지를 확인할 수 있다.") {
+    Given("하나의 공지가 있을 때") {
         val title = "민트는 짱이다."
         val contents = "민트는 짱이다. 이상 전달 끗"
-        val slackChannelRequest = CreateAnnouncementRequestSlackChannel(1, "민트 채널")
-        val writer = "민트"
-        val password = "1234".toByteArray()
-        val createAnnouncementRequest = CreateAnnouncementRequest(title, contents, writer, slackChannelRequest)
+        val author = "민트"
+        val password = "1234"
 
-        val announcement = RestAssured.given().log().all()
-            .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Basic ${String(Base64.getEncoder().encode(password))}")
-            .body(createAnnouncementRequest)
-            .`when`().post("/api/announcements")
-            .then().log().all()
-            .extract()
+        val slackChannel = announcementSlackRepository.save(AnnouncementSlackChannel("CX0L", "6기-공지사항"))
+        val announcement = announcementRepository.save(createAnnouncement(title, contents, author, slackChannel.id))
 
         val givenSpec = RestAssured
             .given().log().all()
             .contentType(ContentType.JSON)
-            .header(HttpHeaders.AUTHORIZATION, "Basic ${String(Base64.getEncoder().encode(password))}")
+            .header(HttpHeaders.AUTHORIZATION, basicEncodePassword(password))
 
-        When("해당 공지글이 보인다.") {
-            val response = givenSpec.`when`().get("/api/announcements/1")
+        When("해당 공지를 조회하면") {
+            val response = givenSpec.`when`().get("/api/announcements/${announcement.id}")
                 .then().log().all()
                 .extract()
 
-            Then("200 응답") {
+            val responseBody = response.`as`(AnnouncementResponse::class.java)
+
+            Then("200 응답과 공지의 세부 내용을 응답한다.") {
                 response.statusCode() shouldBe 200
+                responseBody shouldBeEqualToComparingFields createAnnouncementResponse(announcement, slackChannel)
             }
         }
     }

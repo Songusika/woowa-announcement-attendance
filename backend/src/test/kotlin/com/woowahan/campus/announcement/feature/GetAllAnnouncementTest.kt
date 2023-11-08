@@ -1,7 +1,10 @@
 package com.woowahan.campus.announcement.feature
 
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
 import com.woowahan.campus.fixture.createAnnouncement
+import com.woowahan.campus.fixture.createAnnouncementInfoResponses
 import com.woowahan.campus.fixture.createAnnouncementsInfoByCursorResponse
 import com.woowahan.campus.fixture.createAnnouncementsInfoByOffsetResponse
 import com.woowahan.campus.utils.DatabaseCleaner
@@ -27,7 +30,8 @@ class GetAllAnnouncementTest(
     @LocalServerPort
     private val port: Int,
     private val announcementRepository: AnnouncementRepository,
-    private val databaseCleaner: DatabaseCleaner
+    private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
+    private val databaseCleaner: DatabaseCleaner,
 
 ) : BehaviorSpec({
 
@@ -38,15 +42,15 @@ class GetAllAnnouncementTest(
     }
 
     Given("등록된 공지가 20개가 있을 때") {
-
+        val slackChannel = announcementSlackChannelRepository.save(AnnouncementSlackChannel("CK01", "6기-공지사항"))
         val announcements = (1..20).map { count ->
             announcementRepository.save(
                 createAnnouncement(
                     "${count}번 째 공지",
                     "${count}번 째 공지입니다.",
                     "작성자",
-                    1
-                )
+                    slackChannel.id,
+                ),
             )
         }.toList()
 
@@ -59,11 +63,11 @@ class GetAllAnnouncementTest(
             Then("해당 페이지에 존재하는 공지의 id, 제목, 작성자, 작성일 목록을 요청 개수 만큼 반환한다.") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByOffsetResponse(
-                    announcements.slice(5..9),
+                    createAnnouncementInfoResponses(announcements.slice(5..9), slackChannel),
                     1,
                     5,
                     20,
-                    4
+                    4,
                 )
             }
         }
@@ -77,11 +81,11 @@ class GetAllAnnouncementTest(
             Then("0번째 페이지가 반환된다.") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByOffsetResponse(
-                    announcements.slice(0..4),
+                    createAnnouncementInfoResponses(announcements.slice(0..4), slackChannel),
                     0,
                     5,
                     20,
-                    4
+                    4,
                 )
             }
         }
@@ -95,11 +99,11 @@ class GetAllAnnouncementTest(
             Then("해당 페이지의 10개의 공지 목록이 반환된다.") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByOffsetResponse(
-                    announcements.slice(10..19),
+                    createAnnouncementInfoResponses(announcements.slice(10..19), slackChannel),
                     1,
                     10,
                     20,
-                    2
+                    2,
                 )
             }
         }
@@ -113,7 +117,7 @@ class GetAllAnnouncementTest(
             Then("제일 최신 공지만 요청한 개수만큼 반환한다") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByCursorResponse(
-                    announcements.slice(19 downTo 10),
+                    createAnnouncementInfoResponses(announcements.slice(19 downTo 10), slackChannel),
                     true,
                     11,
                 )
@@ -129,7 +133,7 @@ class GetAllAnnouncementTest(
             Then("마지막으로 본 공지 ID 다음 공지부터 공지개수 만큼 반환한다.") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByCursorResponse(
-                    announcements.slice(4 downTo 2),
+                    createAnnouncementInfoResponses(announcements.slice(4 downTo 2), slackChannel),
                     true,
                     3,
                 )
@@ -145,7 +149,7 @@ class GetAllAnnouncementTest(
             Then("남은 공지 목록과 다음 공지는 없다는 응답을 반환한다") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByCursorResponse(
-                    announcements.slice(4 downTo 0),
+                    createAnnouncementInfoResponses(announcements.slice(4 downTo 0), slackChannel),
                     false,
                     1,
                 )
@@ -161,11 +165,11 @@ class GetAllAnnouncementTest(
             Then("0번째 페이지의 10개의 공지 목록을 조회한다.") {
                 response.statusCode() shouldBe 200
                 responseBody shouldBeEqualToComparingFields createAnnouncementsInfoByOffsetResponse(
-                    announcements.slice(0..9),
+                    createAnnouncementInfoResponses(announcements.slice(0..9), slackChannel),
                     0,
                     10,
                     20,
-                    2
+                    2,
                 )
             }
         }

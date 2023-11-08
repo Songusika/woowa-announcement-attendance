@@ -2,6 +2,8 @@ package com.woowahan.campus.announcement.feature
 
 import com.woowahan.campus.announcement.domain.Announcement
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.announcement.domain.getById
 import openapi.api.GetAllAnnouncementApi
 import openapi.model.AnnouncementInfoResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
@@ -17,8 +19,9 @@ import org.springframework.web.bind.annotation.RestController
 @Transactional(readOnly = true)
 class GetAllAnnouncement(
     private val announcementRepository: AnnouncementRepository,
+    private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
 ) : GetAllAnnouncementApi {
-    // TODO: 패스워드 레포지터리 및 디코더 구현
+
     override fun findAllAnnouncementByOffset(
         authorization: String,
         page: Int,
@@ -32,8 +35,8 @@ class GetAllAnnouncement(
                 announcements.number,
                 announcements.size,
                 announcements.totalElements.toInt(),
-                announcements.totalPages
-            )
+                announcements.totalPages,
+            ),
         )
     }
 
@@ -42,24 +45,25 @@ class GetAllAnnouncement(
             announcement.id,
             announcement.title.title,
             announcement.author.author,
-            announcement.createdAt.toString()
+            announcement.createdAt.toString(),
+            announcementSlackChannelRepository.getById(announcement.slackChannelId).name,
         )
     }
 
     override fun findAllAnnouncementByCursor(
         authorization: String,
-        cursorId: Long,
-        size: Int
+        cursorId: Int,
+        size: Int,
     ): ResponseEntity<AnnouncementsInfoByCursorResponse> {
         val pageRequest = PageRequest.of(0, size)
-        val announcements: Slice<Announcement> = getAnnouncements(cursorId, pageRequest)
+        val announcements: Slice<Announcement> = getAnnouncements(cursorId.toLong(), pageRequest)
 
         return ResponseEntity.ok(
             AnnouncementsInfoByCursorResponse(
                 announcements.get().map(::toAnnouncementPageResponses).toList(),
                 announcements.hasNext(),
-                announcements.last().id
-            )
+                announcements.last().id,
+            ),
         )
     }
 
