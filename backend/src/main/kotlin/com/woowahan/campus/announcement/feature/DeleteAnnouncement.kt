@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DeleteAnnouncement(
-    val announcementRepository: AnnouncementRepository
+    val announcementRepository: AnnouncementRepository,
 ) : DeleteAnnouncementApi {
 
     @Transactional

@@ -14,7 +14,7 @@ import java.net.URI
 
 @RestController
 class CreateAnnouncement(
-    val announcementRepository: AnnouncementRepository
+    val announcementRepository: AnnouncementRepository,
 ) : CreateAnnouncementApi {
 
     @Transactional

@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class UpdateAnnouncement(
-    val announcementRepository: AnnouncementRepository
+    val announcementRepository: AnnouncementRepository,
 ) : UpdateAnnouncementApi {
 
     @Transactional
     override fun updateAnnouncement(
         id: Long,
         authorization: String,
-        updateAnnouncementRequest: UpdateAnnouncementRequest
+        updateAnnouncementRequest: UpdateAnnouncementRequest,
     ): ResponseEntity<Unit> {
         val announcement = announcementRepository.getById(id)
 

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Transactional(readOnly = true)
-class GetAllAnnouncement(private val announcementRepository: AnnouncementRepository) : GetAllAnnouncementApi {
+class GetAllAnnouncement(
+    private val announcementRepository: AnnouncementRepository,
+) : GetAllAnnouncementApi {
     // TODO: 패스워드 레포지터리 및 디코더 구현
     override fun findAllAnnouncementByOffset(
         authorization: String,

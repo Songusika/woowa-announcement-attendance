@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @Transactional(readOnly = true)
 class GetAnnouncement(
-    val announcementRepository: AnnouncementRepository
+    val announcementRepository: AnnouncementRepository,
 ) : GetAnnouncementApi {
 
     override fun findAnnouncementById(id: Long, authorization: String): ResponseEntity<AnnouncementResponse> {
