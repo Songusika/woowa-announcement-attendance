@@ -14,7 +14,7 @@ import java.net.URI
 
 @RestController
 class CreateAnnouncement(
-    val announcementRepository: AnnouncementRepository
+    val announcementRepository: AnnouncementRepository,
 ) : CreateAnnouncementApi {
 
     @Transactional
@@ -24,7 +24,7 @@ class CreateAnnouncement(
     ): ResponseEntity<Unit> {
 
         val savedAnnouncement = announcementRepository.save(
-            Announcement(
+            Announcement.create(
                 Title(createAnnouncementRequest.title),
                 Content(createAnnouncementRequest.content),
                 Author(createAnnouncementRequest.author),

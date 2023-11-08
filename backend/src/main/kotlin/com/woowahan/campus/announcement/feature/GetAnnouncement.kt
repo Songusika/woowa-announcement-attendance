@@ -18,8 +18,7 @@ class GetAnnouncement(
 ) : GetAnnouncementApi {
 
     override fun findAnnouncementById(id: Long, authorization: String): ResponseEntity<AnnouncementResponse> {
-        val announcement = announcementRepository.findById(id)
-            ?: throw IllegalArgumentException("존재하지 않는 announcement입니다.")
+        val announcement = announcementRepository.getById(id)
         return ResponseEntity.ok().body(toResponse(announcement))
     }
 

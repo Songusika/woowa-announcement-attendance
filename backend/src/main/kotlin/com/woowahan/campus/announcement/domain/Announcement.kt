@@ -6,7 +6,7 @@ import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 
 @Entity
-class Announcement(
+class Announcement private constructor(
     @Embedded
     var title: Title,
     @Embedded
@@ -24,10 +24,17 @@ class Announcement(
         this.title = title
         this.content = content
         this.author = author
+        this.publish()
     }
 
     private fun publish(): Announcement {
         val event = MessageSendEvent(this)
         return this.andEvent(event)
+    }
+
+    companion object {
+        fun create(title: Title, content: Content, author: Author, slackChannelId: Long): Announcement {
+            return Announcement(title, content, author, slackChannelId).publish()
+        }
     }
 }

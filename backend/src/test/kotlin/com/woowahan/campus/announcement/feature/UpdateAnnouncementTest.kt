@@ -1,10 +1,19 @@
 package com.woowahan.campus.announcement.feature
 
+import com.ninjasquad.springmockk.MockkBean
+import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.announcement.infrastructure.SlackMessageSender
 import com.woowahan.campus.fixture.createAnnouncementRequest
 import com.woowahan.campus.fixture.createUpdateAnnouncementRequest
 import com.woowahan.campus.utils.DatabaseCleaner
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.verify
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import openapi.model.CreateAnnouncementRequest
@@ -19,12 +28,23 @@ class UpdateAnnouncementTest(
     @LocalServerPort
     val port: Int,
     private val databaseCleaner: DatabaseCleaner,
+    private val announcementRepository: AnnouncementRepository,
+    @MockkBean
+    private val slackMessageSender: SlackMessageSender,
+    @MockkBean
+    private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
 ) : BehaviorSpec({
 
     RestAssured.port = port
 
     beforeRootTest {
         databaseCleaner.clean()
+        every { announcementSlackChannelRepository.findById(any()) } returns AnnouncementSlackChannel(
+            "providerId",
+            "channelName",
+            1L
+        )
+        every { slackMessageSender.sendMessage(any(), any(), any()) } just Runs
     }
 
     Given("글ID, 제목, 내용, 작성자, 관리자 비밀번호를 받는다.") {
@@ -43,13 +63,15 @@ class UpdateAnnouncementTest(
                 .then().log().all()
                 .extract()
 
+            val updatedAnnouncement = announcementRepository.findById(savedAnnouncementId)!!
+
             Then("200 응답과 저장된 글의 ID를 반환한다.") {
                 response.statusCode() shouldBe 200
-                // TODO: announcement 프로퍼티 값 수정됐는지 검증
+                updatedAnnouncement.title.title shouldBe "updateTitle"
             }
 
             Then("슬랙에 수정을 요청한다.") {
-                // TODO: 슬랙 연동 및 모킹 테스트
+                verify(exactly = 1) { slackMessageSender.sendMessage(any(), "author", "updateContent") }
             }
         }
     }
