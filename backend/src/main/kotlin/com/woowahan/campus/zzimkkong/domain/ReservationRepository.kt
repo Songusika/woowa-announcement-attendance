@@ -1,6 +1,5 @@
 package com.woowahan.campus.zzimkkong.domain
 
-import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.Repository
 import java.time.LocalDate
 
@@ -14,9 +13,6 @@ interface ReservationRepository : Repository<Reservation, Long> {
     fun findAllBySpaceIdAndDate(spaceId: Long, date: LocalDate): List<Reservation>
 
     fun delete(reservation: Reservation)
-
-    @Query("select (count(r) > 0) from Reservation r")
-    fun existsByStartTimeAndEndTime(): Boolean
 
     fun findAllBySpaceIdIn(spaceIds: List<Long>): List<Reservation>
 }
