@@ -22,7 +22,7 @@ class DeleteReservation(
     ): ResponseEntity<Unit> {
         val reservation = reservationRepository.getById(reservationId.toLong())
         reservation.checkPassword(removeReservationRequest.password)
-        reservationRepository.delete(reservation.publishRemovedEvent())
+        reservationRepository.delete(reservation)
         return ResponseEntity.noContent().build()
     }
 }

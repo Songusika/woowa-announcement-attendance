@@ -3,6 +3,7 @@ package com.woowahan.campus.zzimkkong.domain
 import com.woowahan.campus.zzimkkong.support.BaseRootEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.PostPersist
+import jakarta.persistence.PreRemove
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -43,9 +44,9 @@ class Reservation(
         return this
     }
 
-    fun publishRemovedEvent(): Reservation {
+    @PreRemove
+    fun remove() {
         registerEvent(DeletedReservationEvent(this))
-        return this
     }
 
     fun isContain(otherReservation: Reservation): Boolean {
