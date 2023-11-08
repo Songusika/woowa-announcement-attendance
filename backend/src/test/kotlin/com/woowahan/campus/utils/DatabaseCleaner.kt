@@ -23,7 +23,7 @@ class DatabaseCleaner : InitializingBean {
     @Transactional
     fun clean() {
         executeQuery("SET REFERENTIAL_INTEGRITY FALSE")
-        tableNames.forEach { executeQuery("TRUNCATE TABLE ${it} RESTART IDENTITY") }
+        tableNames.forEach { executeQuery("TRUNCATE TABLE $it RESTART IDENTITY") }
 
         executeQuery("SET REFERENTIAL_INTEGRITY TRUE")
     }

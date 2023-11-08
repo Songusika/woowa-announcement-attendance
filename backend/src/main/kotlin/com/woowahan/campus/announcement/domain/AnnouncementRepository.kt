@@ -5,9 +5,12 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Slice
 import org.springframework.data.repository.Repository
 
+fun AnnouncementRepository.getById(id: Long) = findById(id)
+    ?: throw IllegalArgumentException("존재하지 않는 announcement입니다.")
+
 interface AnnouncementRepository : Repository<Announcement, Long> {
 
-    fun findById(id: Long) : Announcement?
+    fun findById(id: Long): Announcement?
 
     fun save(announcement: Announcement): Announcement
 

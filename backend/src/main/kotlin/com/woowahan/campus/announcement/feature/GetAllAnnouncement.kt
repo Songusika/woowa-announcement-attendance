@@ -2,6 +2,8 @@ package com.woowahan.campus.announcement.feature
 
 import com.woowahan.campus.announcement.domain.Announcement
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.announcement.domain.getById
 import openapi.api.GetAllAnnouncementApi
 import openapi.model.AnnouncementInfoResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @Transactional(readOnly = true)
-class GetAllAnnouncement(private val announcementRepository: AnnouncementRepository) : GetAllAnnouncementApi {
-    //TODO: 패스워드 레포지터리 및 디코더 구현
+class GetAllAnnouncement(
+    private val announcementRepository: AnnouncementRepository,
+    private val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
+) : GetAllAnnouncementApi {
+
     override fun findAllAnnouncementByOffset(
         authorization: String,
         page: Int,
@@ -30,41 +35,42 @@ class GetAllAnnouncement(private val announcementRepository: AnnouncementReposit
                 announcements.number,
                 announcements.size,
                 announcements.totalElements.toInt(),
-                announcements.totalPages
-            )
+                announcements.totalPages,
+            ),
         )
     }
 
     fun toAnnouncementPageResponses(announcement: Announcement): AnnouncementInfoResponse {
         return AnnouncementInfoResponse(
-            announcement.id.toInt(),
+            announcement.id,
             announcement.title.title,
             announcement.author.author,
-            announcement.createdAt.toString()
+            announcement.createdAt.toString(),
+            announcementSlackChannelRepository.getById(announcement.slackChannelId).name,
         )
     }
 
     override fun findAllAnnouncementByCursor(
         authorization: String,
         cursorId: Int,
-        size: Int
+        size: Int,
     ): ResponseEntity<AnnouncementsInfoByCursorResponse> {
         val pageRequest = PageRequest.of(0, size)
-        val announcements: Slice<Announcement> = getAnnouncements(cursorId, pageRequest)
+        val announcements: Slice<Announcement> = getAnnouncements(cursorId.toLong(), pageRequest)
 
         return ResponseEntity.ok(
             AnnouncementsInfoByCursorResponse(
                 announcements.get().map(::toAnnouncementPageResponses).toList(),
                 announcements.hasNext(),
-                announcements.last().id.toInt()
-            )
+                announcements.last().id,
+            ),
         )
     }
 
-    fun getAnnouncements(cursorId: Int, pageRequest: PageRequest): Slice<Announcement> {
+    fun getAnnouncements(cursorId: Long, pageRequest: PageRequest): Slice<Announcement> {
         return when (cursorId) {
-            0 -> announcementRepository.findByOrderByIdDesc(pageRequest)
-            else -> announcementRepository.findByIdLessThanOrderByIdDesc(cursorId.toLong(), pageRequest)
+            0L -> announcementRepository.findByOrderByIdDesc(pageRequest)
+            else -> announcementRepository.findByIdLessThanOrderByIdDesc(cursorId, pageRequest)
         }
     }
 }

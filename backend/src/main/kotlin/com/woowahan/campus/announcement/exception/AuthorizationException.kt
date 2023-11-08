@@ -1,3 +1,5 @@
 package com.woowahan.campus.announcement.exception
 
-class AuthorizationException(message: String) : Throwable(message)
+class AuthorizationException(
+    message: String,
+) : RuntimeException(message)
