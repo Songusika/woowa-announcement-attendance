@@ -15,5 +15,5 @@ common:
   password: 1234
 
 slack:
-  user:
-    token: 토큰
+  bot:
+    token: 슬랙 API 봇 토큰

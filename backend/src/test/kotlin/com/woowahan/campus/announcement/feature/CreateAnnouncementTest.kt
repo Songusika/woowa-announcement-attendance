@@ -3,6 +3,8 @@ package com.woowahan.campus.announcement.feature
 import com.ninjasquad.springmockk.MockkBean
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.announcement.domain.Author
+import com.woowahan.campus.announcement.domain.Content
 import com.woowahan.campus.announcement.infrastructure.SlackMessageSender
 import com.woowahan.campus.utils.DatabaseCleaner
 import com.woowahan.campus.utils.basicEncodePassword
@@ -42,7 +44,7 @@ class CreateAnnouncementTest(
         every { announcementSlackChannelRepository.findById(any()) } returns AnnouncementSlackChannel(
             "providerId",
             "channelName",
-            1L
+            1L,
         )
         every { slackMessageSender.sendMessage(any(), any(), any()) } just Runs
     }
@@ -51,9 +53,9 @@ class CreateAnnouncementTest(
         val title = "민트는 짱이다."
         val contents = "민트는 짱이다. 이상 전달 끗"
         val slackChannelRequest = CreateAnnouncementRequestSlackChannel(1, "민트 채널")
-        val writer = "민트"
+        val author = "민트"
         val password = "1234"
-        val createAnnouncementRequest = CreateAnnouncementRequest(title, contents, writer, slackChannelRequest)
+        val createAnnouncementRequest = CreateAnnouncementRequest(title, contents, author, slackChannelRequest)
 
         val givenSpec = RestAssured
             .given().log().all()
@@ -73,7 +75,7 @@ class CreateAnnouncementTest(
             }
 
             Then("슬랙에 메세지를 요청한다.") {
-                verify(exactly = 1) { slackMessageSender.sendMessage(any(), "민트", "민트는 짱이다. 이상 전달 끗") }
+                verify(exactly = 1) { slackMessageSender.sendMessage(any(), Author(author), Content(contents)) }
             }
         }
     }

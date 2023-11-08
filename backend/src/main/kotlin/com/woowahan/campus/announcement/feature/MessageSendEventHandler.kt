@@ -17,7 +17,7 @@ class MessageSendEventHandler(
     @TransactionalEventListener
     fun handle(messageSendEvent: MessageSendEvent) {
         val slackChannel = announcementSlackChannelRepository.findById(messageSendEvent.channelId)
-            ?: throw IllegalArgumentException()
+            ?: throw IllegalArgumentException("존재하지 않는 채널입니다.")
         messageSender.sendMessage(
             slackChannel.providerId,
             messageSendEvent.author,

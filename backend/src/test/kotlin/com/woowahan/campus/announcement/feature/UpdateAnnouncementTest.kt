@@ -4,6 +4,8 @@ import com.ninjasquad.springmockk.MockkBean
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
+import com.woowahan.campus.announcement.domain.Author
+import com.woowahan.campus.announcement.domain.Content
 import com.woowahan.campus.announcement.infrastructure.SlackMessageSender
 import com.woowahan.campus.fixture.createAnnouncementRequest
 import com.woowahan.campus.fixture.createUpdateAnnouncementRequest
@@ -21,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
 import support.test.beforeRootTest
-import java.util.Base64
+import java.util.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UpdateAnnouncementTest(
@@ -42,7 +44,7 @@ class UpdateAnnouncementTest(
         every { announcementSlackChannelRepository.findById(any()) } returns AnnouncementSlackChannel(
             "providerId",
             "channelName",
-            1L
+            1L,
         )
         every { slackMessageSender.sendMessage(any(), any(), any()) } just Runs
     }
@@ -71,7 +73,13 @@ class UpdateAnnouncementTest(
             }
 
             Then("슬랙에 수정을 요청한다.") {
-                verify(exactly = 1) { slackMessageSender.sendMessage(any(), "author", "updateContent") }
+                verify(exactly = 1) {
+                    slackMessageSender.sendMessage(
+                        any(),
+                        Author("author"),
+                        Content("updateContent"),
+                    )
+                }
             }
         }
     }
@@ -101,7 +109,7 @@ class UpdateAnnouncementTest(
 
 private fun createAnnouncement(
     password: ByteArray,
-    createAnnouncementRequest: CreateAnnouncementRequest
+    createAnnouncementRequest: CreateAnnouncementRequest,
 ) = RestAssured
     .given().log().all()
     .contentType(ContentType.JSON)

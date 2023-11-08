@@ -4,3 +4,7 @@ spring:
 
 common:
   password: 1234
+
+slack:
+  bot:
+    token: 슬랙 API 봇 토큰
