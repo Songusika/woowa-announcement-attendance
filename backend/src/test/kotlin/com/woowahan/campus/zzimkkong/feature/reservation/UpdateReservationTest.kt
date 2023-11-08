@@ -44,13 +44,12 @@ class UpdateReservationTest(
         every { LocalDateTime.now() } returns LocalDateTime.parse("2023-11-07T00:00:00.000")
     }
 
-    Given("캠퍼스와 회의실이 생성된다.") {
+    Given("예약을 생성한다.") {
         val campus = campusRepository.save(CampusFixture.잠실_캠퍼스())
         val setting1 = getSetting("MONDAY,TUESDAY", "11:00", "14:00", 60)
         val setting2 = getSetting("SATURDAY,SUNDAY", "15:00", "20:00", 30)
         val space = spaceRepository.save(SpaceFixture.굿샷_강의장(0L, true, listOf(setting1, setting2)))
-        val reservation =
-            reservationRepository.save(ReservationFixture.회의실_예약(space.id, "2023-11-07", "11:00", "12:00"))
+        val reservation = reservationRepository.save(ReservationFixture.회의실_예약(space.id, "2023-11-07", "11:00", "12:00"))
 
         When("예약을 수정한다.") {
             val updateRequest = ReservationPut(
