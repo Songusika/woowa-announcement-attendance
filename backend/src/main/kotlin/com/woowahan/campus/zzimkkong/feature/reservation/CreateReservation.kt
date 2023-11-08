@@ -1,5 +1,6 @@
 package com.woowahan.campus.zzimkkong.feature.reservation
 
+import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.Reservation
 import com.woowahan.campus.zzimkkong.domain.ReservationRepository
 import com.woowahan.campus.zzimkkong.domain.ReservationValidator
@@ -15,8 +16,9 @@ import java.time.LocalDateTime
 
 @RestController
 class CreateReservation(
-    val reservationRepository: ReservationRepository,
+    val campusRepository: CampusRepository,
     val spaceRepository: SpaceRepository,
+    val reservationRepository: ReservationRepository,
 ) : CreateReservationApi {
 
     @Transactional

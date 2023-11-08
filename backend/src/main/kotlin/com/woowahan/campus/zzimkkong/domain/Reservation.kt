@@ -1,33 +1,66 @@
 package com.woowahan.campus.zzimkkong.domain
 
+import com.woowahan.campus.zzimkkong.support.BaseRootEntity
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.PostPersist
 import java.time.LocalDate
 import java.time.LocalTime
+
+data class CreatedReservationEvent(val reservation: Reservation)
+data class UpdatedReservationEvent(val reservation: Reservation)
+data class DeletedReservationEvent(val reservation: Reservation)
 
 @Entity
 class Reservation(
     val spaceId: Long,
     val date: LocalDate,
-    val startTime: LocalTime,
-    val endTime: LocalTime,
-    val name: String,
-    val description: String,
-    val password: String,
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L,
-) {
+    var startTime: LocalTime,
+    var endTime: LocalTime,
+    var name: String,
+    var description: String,
+    var password: String,
+    id: Long = 0L,
+) : BaseRootEntity<Reservation>(id) {
+
+    @PostPersist
+    fun persist() {
+        registerEvent(CreatedReservationEvent(this))
+    }
+
+    fun update(
+        startTime: LocalTime,
+        endTime: LocalTime,
+        name: String,
+        description: String,
+        password: String,
+    ): Reservation {
+        this.startTime = startTime
+        this.endTime = endTime
+        this.name = name
+        this.description = description
+        this.password = password
+        registerEvent(UpdatedReservationEvent(this))
+        return this
+    }
+
+    fun publishRemovedEvent(): Reservation {
+        registerEvent(DeletedReservationEvent(this))
+        return this
+    }
+
     fun isContain(otherReservation: Reservation): Boolean {
         return isContain(otherReservation.startTime, otherReservation.endTime)
     }
 
     fun isContain(startTime: LocalTime, endTime: LocalTime): Boolean {
-        return (this.startTime <= startTime && startTime < this.endTime) ||
-            (this.startTime < endTime && endTime <= this.endTime)
+        return startTime in startTimeRange || endTime in endTimeRange
     }
+
+    private val startTimeRange: ClosedRange<LocalTime>
+        get() = this.startTime..this.endTime.minusMinutes(1)
+
+    private val endTimeRange: ClosedRange<LocalTime>
+        get() = this.startTime.plusMinutes(1)..this.endTime
 
     fun checkPassword(password: String) {
         require(this.password == password) { "예약 비밀번호가 일치하지 않습니다." }

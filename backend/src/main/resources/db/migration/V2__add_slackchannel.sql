@@ -29,3 +29,10 @@ create table reservation
     name        varchar(255) not null,
     password    varchar(255) not null
 );
+
+create table zzimkkong_slack_channel
+(
+    id        bigint auto_increment primary key,
+    url       varchar(255) not null,
+    campus_id bigint       not null
+);

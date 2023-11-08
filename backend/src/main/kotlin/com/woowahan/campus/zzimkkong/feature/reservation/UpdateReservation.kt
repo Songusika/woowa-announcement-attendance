@@ -1,6 +1,5 @@
 package com.woowahan.campus.zzimkkong.feature.reservation
 
-import com.woowahan.campus.zzimkkong.domain.Reservation
 import com.woowahan.campus.zzimkkong.domain.ReservationRepository
 import com.woowahan.campus.zzimkkong.domain.ReservationValidator
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
@@ -36,10 +35,7 @@ class UpdateReservation(
         val findReservations = reservationRepository.findAllBySpaceIdAndDate(space.id, date)
             .filterNot { it.id == reservationId.toLong() }
         val updateReservation = reservationRepository.save(
-            Reservation(
-                id = reservationId.toLong(),
-                spaceId = space.id,
-                date = date,
+            findReservation.update(
                 startTime = startDateTime.toLocalTime(),
                 endTime = endDateTime.toLocalTime(),
                 name = reservationPut.name,

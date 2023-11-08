@@ -6,9 +6,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.3"
     id("org.openapi.generator") version "6.6.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
-    kotlin("plugin.jpa") version "1.8.22"
+    kotlin("jvm") version "1.9.10"
+    kotlin("plugin.spring") version "1.9.10"
+    kotlin("plugin.jpa") version "1.9.10"
 }
 
 group = "com.woowahan"
@@ -33,6 +33,11 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
+    // slack api
+    implementation("com.slack.api:slack-api-client:1.30.0")
+
+    // mockk
+    testImplementation("io.mockk:mockk:1.13.5")
 }
 
 ktlint {

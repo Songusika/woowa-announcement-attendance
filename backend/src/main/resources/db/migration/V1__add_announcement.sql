@@ -14,10 +14,3 @@ create table campus
     drawing   varchar(65535) not null,
     thumbnail varchar(65535) not null
 );
-
-create table slack_channel
-(
-    id        bigint auto_increment primary key,
-    url       varchar(255) not null,
-    campus_id bigint       not null
-);

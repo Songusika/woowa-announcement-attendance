@@ -10,3 +10,10 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+
+slack:
+  bot:
+    token: 토큰
+  user:
+    token: 토큰

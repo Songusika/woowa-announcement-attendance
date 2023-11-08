@@ -24,7 +24,7 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import java.time.LocalTime
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class DeleteCampusTest(
+class DeleteReservationTest(
     @LocalServerPort
     val port: Int,
     @Autowired
