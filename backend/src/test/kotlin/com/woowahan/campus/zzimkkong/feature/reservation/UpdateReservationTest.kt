@@ -19,7 +19,6 @@ import io.restassured.http.ContentType
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
 import openapi.model.ReservationPut
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import java.time.LocalDateTime
@@ -29,11 +28,8 @@ import java.time.LocalTime
 class UpdateReservationTest(
     @LocalServerPort
     val port: Int,
-    @Autowired
     val reservationRepository: ReservationRepository,
-    @Autowired
     val spaceRepository: SpaceRepository,
-    @Autowired
     val campusRepository: CampusRepository,
 ) : BehaviorSpec({
 
@@ -49,7 +45,8 @@ class UpdateReservationTest(
         val setting1 = getSetting("MONDAY,TUESDAY", "11:00", "14:00", 60)
         val setting2 = getSetting("SATURDAY,SUNDAY", "15:00", "20:00", 30)
         val space = spaceRepository.save(SpaceFixture.굿샷_강의장(0L, true, listOf(setting1, setting2)))
-        val reservation = reservationRepository.save(ReservationFixture.회의실_예약(space.id, "2023-11-07", "11:00", "12:00"))
+        val reservation =
+            reservationRepository.save(ReservationFixture.회의실_예약(space.id, "2023-11-07", "11:00", "12:00"))
 
         When("예약을 수정한다.") {
             val updateRequest = ReservationPut(

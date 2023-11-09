@@ -13,4 +13,6 @@ interface CampusRepository : Repository<Campus, Long> {
     fun findAll(): List<Campus>
 
     fun delete(campus: Campus)
+
+    fun deleteById(id: Long)
 }

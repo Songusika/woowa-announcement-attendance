@@ -1,7 +1,6 @@
 package com.woowahan.campus.zzimkkong.feature.reservation
 
 import com.woowahan.campus.zzimkkong.domain.CampusRepository
-import com.woowahan.campus.zzimkkong.domain.ReservationRepository
 import com.woowahan.campus.zzimkkong.domain.Setting
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
@@ -13,7 +12,8 @@ import io.kotest.matchers.shouldNotBe
 import io.mockk.every
 import io.mockk.mockkStatic
 import io.restassured.RestAssured
-import org.springframework.beans.factory.annotation.Autowired
+import io.restassured.http.ContentType
+import openapi.model.ReservationPost
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
@@ -24,11 +24,7 @@ import java.time.LocalTime
 class CreateReservationTest(
     @LocalServerPort
     val port: Int,
-    @Autowired
-    val reservationRepository: ReservationRepository,
-    @Autowired
     val spaceRepository: SpaceRepository,
-    @Autowired
     val campusRepository: CampusRepository,
 ) : BehaviorSpec({
 
@@ -46,11 +42,22 @@ class CreateReservationTest(
         val space = spaceRepository.save(SpaceFixture.굿샷_강의장(0L, true, listOf(setting1, setting2)))
 
         When("예약을 생성한다.") {
-            val response = ReservationFixture.예약_생성(
-                campus.id,
-                space.id,
-                ReservationFixture.회의실_예약("2023-11-07", "11:00", "12:00")
-            )
+            val reservation = ReservationFixture.회의실_예약("2023-11-07", "11:00", "12:00")
+            val response = RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(
+                    ReservationPost(
+                        "${reservation.date}T${reservation.startTime}",
+                        "${reservation.date}T${reservation.endTime}",
+                        reservation.name,
+                        reservation.description,
+                        reservation.password
+                    )
+                )
+                .`when`().post("/api/maps/${campus.id}/spaces/${space.id}/reservations")
+                .then().log().all()
+                .extract()
 
             Then("201 응답과 생성된 예약의 URI를 Location Header로 반환한다.") {
                 response.statusCode() shouldBe 201

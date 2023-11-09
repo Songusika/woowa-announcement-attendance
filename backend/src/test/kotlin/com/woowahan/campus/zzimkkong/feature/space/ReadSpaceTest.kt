@@ -1,5 +1,6 @@
 package com.woowahan.campus.zzimkkong.feature.space
 
+import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.FRIDAY
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.MONDAY
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.SATURDAY
@@ -7,12 +8,13 @@ import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.SUNDAY
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.THURSDAY
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.TUESDAY
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.WEDNESDAY
+import com.woowahan.campus.zzimkkong.domain.SpaceRepository
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_1
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_3
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture
 import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
-import com.woowahan.campus.zzimkkong.support.ResponseUtils
+import com.woowahan.campus.zzimkkong.support.asPrettyJson
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
@@ -23,6 +25,8 @@ import org.springframework.boot.test.web.server.LocalServerPort
 class ReadSpaceTest(
     @LocalServerPort
     val port: Int,
+    val campusRepository: CampusRepository,
+    val spaceRepository: SpaceRepository,
     val databaseInitializer: DatabaseInitializer,
 ) : BehaviorSpec({
 
@@ -31,20 +35,20 @@ class ReadSpaceTest(
     RestAssured.port = port
 
     Given("회의실 정보를 등록한다.") {
-        val campus = CampusFixture.잠실_캠퍼스()
-        val slackUrl = "https://slackexample.com"
-        val campusId = CampusFixture.캠퍼스_생성_ID_반환(campus, slackUrl)
+        val campus = campusRepository.save(CampusFixture.잠실_캠퍼스())
         val settings = listOf(회의실_예약_설정_1(), 회의실_예약_설정_3())
-        val space = SpaceFixture.랜딩_강의장(campusId, settings)
-        val thumbnail = "thumbnail"
-        val spaceId = SpaceFixture.회의실_생성_ID_반환(space, thumbnail, settings)
+        val space = spaceRepository.save(SpaceFixture.랜딩_강의장(campus.id, settings))
 
         When("회의실 정보를 모두 조회한다.") {
-            val response = SpaceFixture.회의실_전체_조회(campusId.toString())
+            val response = RestAssured
+                .given().log().all()
+                .`when`().get("/api/maps/${campus.id}/spaces")
+                .then().log().all()
+                .extract()
 
             Then("200 응답과 저장된 회의실 정보들을 반환한다.") {
                 response.statusCode() shouldBe 200
-                ResponseUtils.getPrettyJson(response) shouldBe
+                response.asPrettyJson() shouldBe
                     """
                         [
                             {
@@ -89,11 +93,15 @@ class ReadSpaceTest(
         }
 
         When("회의실 단건 정보를 조회한다.") {
-            val response = SpaceFixture.회의실_단건_조회(campusId.toString(), spaceId.toString())
+            val response = RestAssured
+                .given().log().all()
+                .`when`().get("/api/maps/${campus.id}/spaces/${space.id}")
+                .then().log().all()
+                .extract()
 
             Then("200 응답과 저장된 회의실 정보들을 반환한다.") {
                 response.statusCode() shouldBe 200
-                ResponseUtils.getPrettyJson(response) shouldBe
+                response.asPrettyJson() shouldBe
                     """
                         {
                             "name": "${space.name}",

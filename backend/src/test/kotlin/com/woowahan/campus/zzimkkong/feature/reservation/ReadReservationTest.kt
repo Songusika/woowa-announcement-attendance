@@ -9,13 +9,12 @@ import com.woowahan.campus.zzimkkong.fixture.ReservationFixture.Companion.회의
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture.Companion.굿샷_강의장
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture.Companion.랜딩_강의장
 import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
-import com.woowahan.campus.zzimkkong.support.ResponseUtils
+import com.woowahan.campus.zzimkkong.support.asPrettyJson
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockkStatic
 import io.restassured.RestAssured
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import java.time.LocalDateTime
@@ -25,11 +24,8 @@ import java.time.LocalTime
 class ReadReservationTest(
     @LocalServerPort
     val port: Int,
-    @Autowired
     val reservationRepository: ReservationRepository,
-    @Autowired
     val spaceRepository: SpaceRepository,
-    @Autowired
     val campusRepository: CampusRepository,
     val databaseInitializer: DatabaseInitializer,
 ) : BehaviorSpec({
@@ -67,7 +63,7 @@ class ReadReservationTest(
 
             Then("200 응답과 공간의 예약 가능 여부를 반환한다.") {
                 response.statusCode() shouldBe 200
-                ResponseUtils.getPrettyJson(response) shouldBe
+                response.asPrettyJson() shouldBe
                     """
                         {
                             "mapId": 1,
@@ -104,7 +100,7 @@ class ReadReservationTest(
 
             Then("200 응답과 조회 결과를 반환한다.") {
                 response.statusCode() shouldBe 200
-                ResponseUtils.getPrettyJson(response) shouldBe
+                response.asPrettyJson() shouldBe
                     """
                         {
                             "id": 1,
@@ -127,7 +123,7 @@ class ReadReservationTest(
 
             Then("200 응답과 조회 결과를 반환한다.") {
                 response.statusCode() shouldBe 200
-                ResponseUtils.getPrettyJson(response) shouldBe
+                response.asPrettyJson() shouldBe
                     """
                         [
                             {

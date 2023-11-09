@@ -18,7 +18,6 @@ import io.restassured.http.ContentType
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
 import openapi.model.RemoveReservationRequest
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import java.time.LocalTime
@@ -27,11 +26,8 @@ import java.time.LocalTime
 class DeleteReservationTest(
     @LocalServerPort
     val port: Int,
-    @Autowired
     val reservationRepository: ReservationRepository,
-    @Autowired
     val spaceRepository: SpaceRepository,
-    @Autowired
     val campusRepository: CampusRepository,
 ) : BehaviorSpec({
 

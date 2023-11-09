@@ -49,7 +49,6 @@ class H2(
     override val metaTablesSql: String =
         "select table_name from information_schema.tables where table_schema = 'PUBLIC'"
 
-    //    override val metaTablesSql: String = "show tables"
     override val constraintsOffSql: String = "set referential_integrity false"
     override val constraintsOnSql: String = "set referential_integrity true"
     override fun createTruncateTableSql(tableName: String): String = "truncate table $tableName restart identity"
