@@ -1,5 +1,7 @@
 package com.woowahan.campus.announcement.feature
 
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
 import com.woowahan.campus.announcement.fixture.createAnnouncementRequest
 import com.woowahan.campus.announcement.fixture.createUpdateAnnouncementRequest
 import com.woowahan.campus.support.DatabaseInitializer
@@ -18,6 +20,7 @@ class UpdateAnnouncementTest(
     @LocalServerPort
     val port: Int,
     val databaseInitializer: DatabaseInitializer,
+    val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
 ) : BehaviorSpec({
 
     RestAssured.port = port
@@ -26,8 +29,8 @@ class UpdateAnnouncementTest(
 
     Given("글ID, 제목, 내용, 작성자, 관리자 비밀번호를 받는다.") {
         val password = "1234".toByteArray()
-        val savedAnnouncementId = createAnnouncement(password, createAnnouncementRequest(author = "author"))
-
+        val slackChannel = announcementSlackChannelRepository.save(AnnouncementSlackChannel("CK01", "6기-공지사항"))
+        val savedAnnouncementId = createAnnouncement(password, createAnnouncementRequest(author = "author", slackChannel = slackChannel.name))
         val updateAnnouncementRequest = createUpdateAnnouncementRequest(author = "author")
         val givenSpec = RestAssured
             .given().log().all()
@@ -36,7 +39,7 @@ class UpdateAnnouncementTest(
             .body(updateAnnouncementRequest)
 
         When("작성자, 제목, 내용, 날짜를 수정한다.") {
-            val response = givenSpec.`when`().put("/api/announcements/{id}", savedAnnouncementId)
+            val response = givenSpec.`when`().patch("/api/announcements/{id}", savedAnnouncementId)
                 .then().log().all()
                 .extract()
 
@@ -53,7 +56,8 @@ class UpdateAnnouncementTest(
 
     Given("글ID, 제목, 내용, 실제 작성자와 다른 작성자, 관리자 비밀번호를 받는다.") {
         val password = "1234".toByteArray()
-        val savedAnnouncementId = createAnnouncement(password, createAnnouncementRequest(author = "author"))
+        val slackChannel = announcementSlackChannelRepository.save(AnnouncementSlackChannel("CK01", "6기-공지사항"))
+        val savedAnnouncementId = createAnnouncement(password, createAnnouncementRequest(author = "author", slackChannel = slackChannel.name))
 
         val updateAnnouncementRequest = createUpdateAnnouncementRequest(author = "differentAuthor")
         val givenSpec = RestAssured
@@ -63,7 +67,7 @@ class UpdateAnnouncementTest(
             .body(updateAnnouncementRequest)
 
         When("잘못된 내용 요청을 확인했다.") {
-            val response = givenSpec.`when`().put("/api/announcements/{id}", savedAnnouncementId)
+            val response = givenSpec.`when`().patch("/api/announcements/{id}", savedAnnouncementId)
                 .then().log().all()
                 .extract()
 

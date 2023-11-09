@@ -10,7 +10,7 @@ import openapi.model.AnnouncementResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
 import openapi.model.AnnouncementsInfoByOffsetResponse
 import openapi.model.CreateAnnouncementRequest
-import openapi.model.CreateAnnouncementRequestSlackChannel
+
 import openapi.model.UpdateAnnouncementRequest
 
 fun createAnnouncement(
@@ -74,14 +74,13 @@ fun createAnnouncementRequest(
     title: String = "title",
     content: String = "content",
     author: String,
-    slackChannelId: Long = 1L,
-    slackChannelName: String = "slackChannelName",
+    slackChannel: String,
 ): CreateAnnouncementRequest {
     return CreateAnnouncementRequest(
         title,
         content,
         author,
-        CreateAnnouncementRequestSlackChannel(slackChannelId, slackChannelName),
+        slackChannel,
     )
 }
 

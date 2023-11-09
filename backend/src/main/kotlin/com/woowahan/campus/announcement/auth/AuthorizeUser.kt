@@ -15,6 +15,9 @@ class AuthorizeUser(
         response: HttpServletResponse,
         handler: Any
     ): Boolean {
+        if (request.method == "OPTIONS") {
+            return true
+        }
         val authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION)
         val basicHeader = authorizationHeader.substringAfter("Basic ")
         val password = String(Base64.getDecoder().decode(basicHeader))

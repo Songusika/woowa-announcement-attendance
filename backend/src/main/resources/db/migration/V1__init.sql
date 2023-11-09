@@ -62,3 +62,5 @@ create table zzimkkong_slack_channel
     url       varchar(255) not null,
     campus_id bigint       not null
 );
+
+INSERT INTO ANNOUNCEMENT_SLACK_CHANNEL (PROVIDER_ID, NAME, CREATED_AT) VALUES ('CK01', '6기-공지사항', now());
