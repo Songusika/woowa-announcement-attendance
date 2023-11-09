@@ -62,9 +62,17 @@ class GetAllAnnouncement(
             AnnouncementsInfoByCursorResponse(
                 announcements.get().map(::toAnnouncementPageResponses).toList(),
                 announcements.hasNext(),
-                announcements.last().id,
+                getLastId(announcements),
             ),
         )
+    }
+
+    private fun getLastId(announcements: Slice<Announcement>): Long {
+        if (announcements.isEmpty) {
+            return 0L
+        }
+
+        return announcements.last().id
     }
 
     fun getAnnouncements(cursorId: Long, pageRequest: PageRequest): Slice<Announcement> {
