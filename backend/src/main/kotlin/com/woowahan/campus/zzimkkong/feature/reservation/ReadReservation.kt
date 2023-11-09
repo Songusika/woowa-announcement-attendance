@@ -1,5 +1,6 @@
 package com.woowahan.campus.zzimkkong.feature.reservation
 
+import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks
 import com.woowahan.campus.zzimkkong.domain.Reservation
 import com.woowahan.campus.zzimkkong.domain.ReservationRepository
@@ -20,6 +21,7 @@ import java.time.LocalDateTime
 
 @RestController
 class ReadReservation(
+    val campusRepository: CampusRepository,
     val spaceRepository: SpaceRepository,
     val reservationRepository: ReservationRepository,
 ) : FindReservationApi {

@@ -166,6 +166,27 @@ paths:
           description: OK
         400:
           description: Bad Request
+  /api/maps/sharing:
+    get:
+      operationId: findSharingMap
+      tags:
+        - FindMap
+      summary: Map sharing 단건 조회
+      description: Map sharing 단건을 조회한다.
+      parameters:
+        - in: query
+          name: sharingMapId
+          required: true
+          schema:
+            type: string
+            example: '잠실 캠퍼스'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/map_get_single'
   /api/maps:
     post:
       operationId: createMap
