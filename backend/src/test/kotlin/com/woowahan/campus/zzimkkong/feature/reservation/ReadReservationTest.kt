@@ -125,22 +125,24 @@ class ReadReservationTest(
                 response.statusCode() shouldBe 200
                 response.asPrettyJson() shouldBe
                     """
-                        [
-                            {
-                                "id": 1,
-                                "startDateTime": "2023-11-07T11:00",
-                                "endDateTime": "2023-11-07T12:00",
-                                "name": "회의실 예약",
-                                "description": "회의실 예약 설명"
-                            },
-                            {
-                                "id": 2,
-                                "startDateTime": "2023-11-07T12:00",
-                                "endDateTime": "2023-11-07T13:00",
-                                "name": "회의실 예약",
-                                "description": "회의실 예약 설명"
-                            }
-                        ]
+                        {
+                            "reservation": [
+                                {
+                                    "id": 1,
+                                    "startDateTime": "2023-11-07T11:00",
+                                    "endDateTime": "2023-11-07T12:00",
+                                    "name": "회의실 예약",
+                                    "description": "회의실 예약 설명"
+                                },
+                                {
+                                    "id": 2,
+                                    "startDateTime": "2023-11-07T12:00",
+                                    "endDateTime": "2023-11-07T13:00",
+                                    "name": "회의실 예약",
+                                    "description": "회의실 예약 설명"
+                                }
+                            ]
+                        }
                     """.trimIndent()
             }
         }

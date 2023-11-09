@@ -5,6 +5,7 @@ import com.woowahan.campus.zzimkkong.domain.SlackChannelRepository
 import com.woowahan.campus.zzimkkong.domain.getByCampusId
 import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.FindMapApi
+import openapi.model.MapGetAll
 import openapi.model.MapGetSingle
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -15,7 +16,7 @@ class ReadCampus(
     val slackChannelRepository: SlackChannelRepository,
 ) : FindMapApi {
 
-    override fun findAllMap(): ResponseEntity<List<MapGetSingle>> {
+    override fun findAllMap(): ResponseEntity<MapGetAll> {
         val response: List<MapGetSingle> = campusRepository.findAll().map {
             val slackChannel = slackChannelRepository.getByCampusId(it.id)
             MapGetSingle(
@@ -27,7 +28,7 @@ class ReadCampus(
             )
         }.toList()
 
-        return ResponseEntity.ok(response)
+        return ResponseEntity.ok(MapGetAll(response))
     }
 
     override fun findMap(mapId: Int): ResponseEntity<MapGetSingle> {

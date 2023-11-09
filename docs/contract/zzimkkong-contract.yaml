@@ -456,31 +456,34 @@ paths:
 components:
   schemas:
     reservations_get:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: integer
-            example: 4
-          startDateTime:
-            type: string
-            example: '2023-03-25T01:00'
-          endDateTime:
-            type: string
-            example: '2023-03-25T02:00'
-          name:
-            type: string
-            example: 제이슨
-          description:
-            type: string
-            example: 찜꽁 근로 회의
-        required:
-          - id
-          - startDateTime
-          - endDateTime
-          - name
-          - description
+      type: object
+      properties:
+        reservation:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 4
+              startDateTime:
+                type: string
+                example: '2023-03-25T01:00'
+              endDateTime:
+                type: string
+                example: '2023-03-25T02:00'
+              name:
+                type: string
+                example: 제이슨
+              description:
+                type: string
+                example: 찜꽁 근로 회의
+            required:
+              - id
+              - startDateTime
+              - endDateTime
+              - name
+              - description
     reservation_get_single:
       type: object
       properties:
@@ -578,9 +581,12 @@ components:
         - thumbnail
         - slackUrl
     map_get_all:
-      type: array
-      items:
-        $ref: '#/components/schemas/map_get_single'
+      type: object
+      properties:
+        maps:
+          type: array
+          items:
+            $ref: '#/components/schemas/map_get_single'
     map_post:
       type: object
       properties:
@@ -696,9 +702,11 @@ components:
         - reservationEnable
         - settings
     space_get_all:
-      type: array
-      items:
-        $ref: '#/components/schemas/space_get_single'
+      type: object
+      properties:
+        space:
+          items:
+            $ref: '#/components/schemas/space_get_single'
     space_get_reservation_enabled:
       type: object
       properties:

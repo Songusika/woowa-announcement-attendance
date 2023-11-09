@@ -50,44 +50,46 @@ class ReadSpaceTest(
                 response.statusCode() shouldBe 200
                 response.asPrettyJson() shouldBe
                     """
-                        [
-                            {
-                                "name": "${space.name}",
-                                "color": "${space.color}",
-                                "area": "${space.area}",
-                                "reservationEnable": ${space.reservationEnabled},
-                                "settings": [
-                                    {
-                                        "settingStartTime": "${settings[0].startTime}",
-                                        "settingEndTime": "${settings[0].endTime}",
-                                        "reservationMaximumTimeUnit": ${settings[0].maximumMinute},
-                                        "enabledDayOfWeek": {
-                                            "monday": ${settings[0].getEnableDays().contains(MONDAY)},
-                                            "tuesday": ${settings[0].getEnableDays().contains(TUESDAY)},
-                                            "wednesday": ${settings[0].getEnableDays().contains(WEDNESDAY)},
-                                            "thursday": ${settings[0].getEnableDays().contains(THURSDAY)},
-                                            "friday": ${settings[0].getEnableDays().contains(FRIDAY)},
-                                            "saturday": ${settings[0].getEnableDays().contains(SATURDAY)},
-                                            "sunday": ${settings[0].getEnableDays().contains(SUNDAY)}
+                        {
+                            "space": [
+                                {
+                                    "name": "${space.name}",
+                                    "color": "${space.color}",
+                                    "area": "${space.area}",
+                                    "reservationEnable": ${space.reservationEnabled},
+                                    "settings": [
+                                        {
+                                            "settingStartTime": "${settings[0].startTime}",
+                                            "settingEndTime": "${settings[0].endTime}",
+                                            "reservationMaximumTimeUnit": ${settings[0].maximumMinute},
+                                            "enabledDayOfWeek": {
+                                                "monday": ${settings[0].getEnableDays().contains(MONDAY)},
+                                                "tuesday": ${settings[0].getEnableDays().contains(TUESDAY)},
+                                                "wednesday": ${settings[0].getEnableDays().contains(WEDNESDAY)},
+                                                "thursday": ${settings[0].getEnableDays().contains(THURSDAY)},
+                                                "friday": ${settings[0].getEnableDays().contains(FRIDAY)},
+                                                "saturday": ${settings[0].getEnableDays().contains(SATURDAY)},
+                                                "sunday": ${settings[0].getEnableDays().contains(SUNDAY)}
+                                            }
+                                        },
+                                        {
+                                            "settingStartTime": "${settings[1].startTime}",
+                                            "settingEndTime": "${settings[1].endTime}",
+                                            "reservationMaximumTimeUnit": ${settings[1].maximumMinute},
+                                            "enabledDayOfWeek": {
+                                                "monday": ${settings[1].getEnableDays().contains(MONDAY)},
+                                                "tuesday": ${settings[1].getEnableDays().contains(TUESDAY)},
+                                                "wednesday": ${settings[1].getEnableDays().contains(WEDNESDAY)},
+                                                "thursday": ${settings[1].getEnableDays().contains(THURSDAY)},
+                                                "friday": ${settings[1].getEnableDays().contains(FRIDAY)},
+                                                "saturday": ${settings[1].getEnableDays().contains(SATURDAY)},
+                                                "sunday": ${settings[1].getEnableDays().contains(SUNDAY)}
+                                            }
                                         }
-                                    },
-                                    {
-                                        "settingStartTime": "${settings[1].startTime}",
-                                        "settingEndTime": "${settings[1].endTime}",
-                                        "reservationMaximumTimeUnit": ${settings[1].maximumMinute},
-                                        "enabledDayOfWeek": {
-                                            "monday": ${settings[1].getEnableDays().contains(MONDAY)},
-                                            "tuesday": ${settings[1].getEnableDays().contains(TUESDAY)},
-                                            "wednesday": ${settings[1].getEnableDays().contains(WEDNESDAY)},
-                                            "thursday": ${settings[1].getEnableDays().contains(THURSDAY)},
-                                            "friday": ${settings[1].getEnableDays().contains(FRIDAY)},
-                                            "saturday": ${settings[1].getEnableDays().contains(SATURDAY)},
-                                            "sunday": ${settings[1].getEnableDays().contains(SUNDAY)}
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
+                                    ]
+                                }
+                            ]
+                        }
                     """.trimIndent()
             }
         }

@@ -43,15 +43,17 @@ class ReadCampusTest(
                     response.statusCode() shouldBe 200
                     response.asPrettyJson() shouldBe
                         """
-                            [
-                                {
-                                    "mapId": ${campus.id},
-                                    "mapName": "${campus.name}",
-                                    "mapDrawing": "${campus.drawing}",
-                                    "thumbnail": "${campus.thumbnail}",
-                                    "slackUrl": "$slackUrl"
-                                }
-                            ]
+                            {
+                                "maps": [
+                                    {
+                                        "mapId": ${campus.id},
+                                        "mapName": "${campus.name}",
+                                        "mapDrawing": "${campus.drawing}",
+                                        "thumbnail": "${campus.thumbnail}",
+                                        "slackUrl": "$slackUrl"
+                                    }
+                                ]
+                            }
                         """.trimIndent()
                 }
             }

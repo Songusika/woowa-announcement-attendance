@@ -6,6 +6,7 @@ import com.woowahan.campus.zzimkkong.domain.Space
 import com.woowahan.campus.zzimkkong.domain.SpaceRepository
 import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.FindSpaceApi
+import openapi.model.SpaceGetAll
 import openapi.model.SpaceGetSingle
 import openapi.model.SpaceGetSingleSettingsInner
 import openapi.model.SpaceGetSingleSettingsInnerEnabledDayOfWeek
@@ -17,22 +18,19 @@ class ReadSpace(
     val spaceRepository: SpaceRepository,
 ) : FindSpaceApi {
 
-    override fun findAllSpace(mapId: Int): ResponseEntity<List<SpaceGetSingle>> {
+    override fun findAllSpace(mapId: Int): ResponseEntity<SpaceGetAll> {
         val spaces = spaceRepository.findAllByCampusId(mapId.toLong())
+        val response = spaces.map {
+            createSpaceSingleResponse(it)
+        }.toList()
 
-        return ResponseEntity.ok(
-            spaces.map {
-                createSpaceSingleResponse(it)
-            }.toList()
-        )
+        return ResponseEntity.ok(SpaceGetAll(response))
     }
 
     override fun findSpace(mapId: Int, spaceId: Int): ResponseEntity<SpaceGetSingle> {
         val space = spaceRepository.getById(spaceId.toLong())
 
-        return ResponseEntity.ok(
-            createSpaceSingleResponse(space)
-        )
+        return ResponseEntity.ok(createSpaceSingleResponse(space))
     }
 
     private fun createSpaceSingleResponse(space: Space) = SpaceGetSingle(

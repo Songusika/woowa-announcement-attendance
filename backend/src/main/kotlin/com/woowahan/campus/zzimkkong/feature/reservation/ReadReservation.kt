@@ -9,7 +9,8 @@ import com.woowahan.campus.zzimkkong.domain.SpaceRepository
 import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.FindReservationApi
 import openapi.model.ReservationGetSingle
-import openapi.model.ReservationsGetInner
+import openapi.model.ReservationsGet
+import openapi.model.ReservationsGetReservationInner
 import openapi.model.SpaceGetReservationEnabled
 import openapi.model.SpaceGetReservationEnabledSpacesInner
 import org.springframework.http.ResponseEntity
@@ -36,23 +37,19 @@ class ReadReservation(
         )
     }
 
-    override fun findReservations(
-        mapId: Int,
-        spaceId: Int,
-        date: LocalDate
-    ): ResponseEntity<List<ReservationsGetInner>> {
+    override fun findReservations(mapId: Int, spaceId: Int, date: LocalDate): ResponseEntity<ReservationsGet> {
         val reservations = reservationRepository.findAllBySpaceIdAndDate(spaceId.toLong(), date)
-        return ResponseEntity.ok(
-            reservations.map {
-                ReservationsGetInner(
-                    id = it.id.toInt(),
-                    startDateTime = "${it.date}T${it.startTime}",
-                    endDateTime = "${it.date}T${it.endTime}",
-                    name = it.name,
-                    description = it.description
-                )
-            }.toList()
-        )
+        val response = reservations.map {
+            ReservationsGetReservationInner(
+                id = it.id.toInt(),
+                startDateTime = "${it.date}T${it.startTime}",
+                endDateTime = "${it.date}T${it.endTime}",
+                name = it.name,
+                description = it.description
+            )
+        }.toList()
+
+        return ResponseEntity.ok(ReservationsGet(response))
     }
 
     override fun findSpaceAvailability(
