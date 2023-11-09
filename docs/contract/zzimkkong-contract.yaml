@@ -16,10 +16,22 @@ tags:
     description: Map(캠퍼스) 수정과 관련된 도메인입니다.
   - name: DeleteMap
     description: Map(캠퍼스) 삭제와 관련된 도메인입니다.
-  - name: Reservation
-    description: 예약과 관련된 도메인입니다.
-  - name: Space
-    description: Space(강의장)과 관련된 도메인입니다.
+  - name: CreateReservation
+    description: 예약 생성과 관련된 도메인입니다.
+  - name: FindReservation
+    description: 예약 조회와 관련된 도메인입니다.
+  - name: UpdateReservation
+    description: 예약 수정과 관련된 도메인입니다.
+  - name: DeleteReservation
+    description: 예약 삭제와 관련된 도메인입니다.
+  - name: CreateSpace
+    description: Space(강의장)생성과 관련된 도메인입니다.
+  - name: FindSpace
+    description: Space(강의장)조회와 관련된 도메인입니다.
+  - name: UpdateSpace
+    description: Space(강의장)수정과 관련된 도메인입니다.
+  - name: DeleteSpace
+    description: Space(강의장)삭제와 관련된 도메인입니다.
   - name: Slack
     description: Slack과 관련된 도메인입니다.
 paths:
@@ -38,7 +50,7 @@ paths:
     post:
       operationId: createReservation
       tags:
-        - Reservation
+        - CreateReservation
       summary: 예약 생성
       description: 사용자가 예약을 수행한다.
       requestBody:
@@ -55,6 +67,31 @@ paths:
               schema:
                 type: string
                 example: '/api/maps/1/spaces/1/reservations/8'
+    get:
+      operationId: findReservations
+      tags:
+        - FindReservation
+      summary: 예약 전체 조회
+      description: 특정 Space의 date에 해당하는 예약 정보를 조회한다.
+      parameters:
+        - in: query
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2023-03-25'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/reservations_get'
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
   /api/maps/{mapId}/spaces/{spaceId}/reservations/{reservationId}:
     parameters:
       - in: path
@@ -75,17 +112,9 @@ paths:
     get:
       operationId: findReservation
       tags:
-        - Reservation
-      summary: 예약 조회
-      description: 특정 Space의 date에 해당하는 예약 정보를 조회한다.
-      parameters:
-        - in: query
-          name: date
-          required: true
-          schema:
-            type: string
-            format: date
-            example: '2023-03-25'
+        - FindReservation
+      summary: 예약 단건 조회
+      description: 특정 예약의 정보를 조회한다.
       responses:
         200:
           description: OK
@@ -100,7 +129,7 @@ paths:
     delete:
       operationId: removeReservation
       tags:
-        - Reservation
+        - DeleteReservation
       summary: 예약 삭제
       description: 특정 예약을 삭제한다.
       requestBody:
@@ -108,8 +137,13 @@ paths:
         content:
           application/json:
             schema:
-              type: string
-              example: 1234
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: 1234
+              required:
+                - password
       responses:
         204:
           description: No Content
@@ -118,7 +152,7 @@ paths:
     put:
       operationId: updateReservation
       tags:
-        - Reservation
+        - UpdateReservation
       summary: 예약 수정
       description: 특정 예약을 수정한다.
       requestBody:
@@ -126,8 +160,7 @@ paths:
         content:
           application/json:
             schema:
-              type: string
-              example: 1234
+              $ref: '#/components/schemas/reservation_put'
       responses:
         200:
           description: OK
@@ -237,7 +270,7 @@ paths:
     post:
       operationId: createSpace
       tags:
-        - Space
+        - CreateSpace
       summary: Space 생성
       description: Space를 생성한다.
       requestBody:
@@ -259,7 +292,7 @@ paths:
     get:
       operationId: findAllSpace
       tags:
-        - Space
+        - FindSpace
       summary: Space 전체 조회
       description: 특정 Map의 Space 전체 목록을 조회한다.
       responses:
@@ -290,7 +323,7 @@ paths:
     get:
       operationId: findSpace
       tags:
-        - Space
+        - FindSpace
       summary: Space 단건 조회
       description: 특정 Map의 Space 단건을 조회한다.
       responses:
@@ -307,7 +340,7 @@ paths:
     delete:
       operationId: removeSpace
       tags:
-        - Space
+        - DeleteSpace
       summary: Space 삭제
       description: 특정 Space를 삭제한다.
       requestBody:
@@ -324,7 +357,7 @@ paths:
     put:
       operationId: updateSpace
       tags:
-        - Space
+        - UpdateSpace
       summary: Space 수정
       description: 특정 Space를 수정한다.
       requestBody:
@@ -349,7 +382,7 @@ paths:
     get:
       operationId: findSpaceAvailability
       tags:
-        - Reservation
+        - FindReservation
       summary: Space 예약 가능 여부 조회
       description: 예약 가능 여부를 조회합니다.
       parameters:
@@ -358,13 +391,13 @@ paths:
           required: true
           schema:
             type: string
-            example: '2023-03-25 10:00'
+            example: '2023-03-25T10:00'
         - in: query
           name: endDateTime
           required: true
           schema:
             type: string
-            example: '2023-03-25 11:00'
+            example: '2023-03-25T11:00'
       responses:
         200:
           description: OK
@@ -422,6 +455,32 @@ paths:
 
 components:
   schemas:
+    reservations_get:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            example: 4
+          startDateTime:
+            type: string
+            example: '2023-03-25T01:00'
+          endDateTime:
+            type: string
+            example: '2023-03-25T02:00'
+          name:
+            type: string
+            example: 제이슨
+          description:
+            type: string
+            example: 찜꽁 근로 회의
+        required:
+          - id
+          - startDateTime
+          - endDateTime
+          - name
+          - description
     reservation_get_single:
       type: object
       properties:
@@ -430,10 +489,10 @@ components:
           example: 4
         startDateTime:
           type: string
-          example: '2023-03-25 01:00'
+          example: '2023-03-25T01:00'
         endDateTime:
           type: string
-          example: '2023-03-25 02:00'
+          example: '2023-03-25T02:00'
         name:
           type: string
           example: 제이슨
@@ -449,15 +508,12 @@ components:
     reservation_post:
       type: object
       properties:
-        id:
-          type: integer
-          example: 4
         startDateTime:
           type: string
-          example: '2023-03-25 01:00'
+          example: '2023-03-25T01:00'
         endDateTime:
           type: string
-          example: '2023-03-25 02:00'
+          example: '2023-03-25T02:00'
         name:
           type: string
           example: 제이슨
@@ -468,7 +524,30 @@ components:
           type: string
           example: 1234
       required:
-        - id
+        - startDateTime
+        - endDateTime
+        - name
+        - description
+        - password
+    reservation_put:
+      type: object
+      properties:
+        startDateTime:
+          type: string
+          example: '2023-03-28T01:00'
+        endDateTime:
+          type: string
+          example: '2023-03-28T02:00'
+        name:
+          type: string
+          example: 브리
+        description:
+          type: string
+          example: 찜꽁 근로 회식
+        password:
+          type: string
+          example: 1234
+      required:
         - startDateTime
         - endDateTime
         - name
@@ -560,44 +639,56 @@ components:
           example: true
         settings:
           description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
-          type: object
-          properties:
-            settingStartTime:
-              type: string
-              example: '10:00:00'
-            settingEndTime:
-              type: string
-              example: '22:00:00'
-            reservationMinimumTimeUnit:
-              type: integer
-              example: 10
-            reservationMaximumTimeUnit:
-              type: integer
-              example: 120
-            enabledDayOfWeek:
-              type: object
-              properties:
-                monday:
-                  type: boolean
-                  example: true
-                tuesday:
-                  type: boolean
-                  example: true
-                wednesday:
-                  type: boolean
-                  example: true
-                thursday:
-                  type: boolean
-                  example: true
-                friday:
-                  type: boolean
-                  example: true
-                saturday:
-                  type: boolean
-                  example: true
-                sunday:
-                  type: boolean
-                  example: true
+          type: array
+          items:
+            type: object
+            properties:
+              settingStartTime:
+                type: string
+                example: '10:00:00'
+              settingEndTime:
+                type: string
+                example: '22:00:00'
+              reservationMaximumTimeUnit:
+                type: integer
+                example: 120
+              enabledDayOfWeek:
+                type: object
+                properties:
+                  monday:
+                    type: boolean
+                    example: true
+                  tuesday:
+                    type: boolean
+                    example: true
+                  wednesday:
+                    type: boolean
+                    example: true
+                  thursday:
+                    type: boolean
+                    example: true
+                  friday:
+                    type: boolean
+                    example: true
+                  saturday:
+                    type: boolean
+                    example: true
+                  sunday:
+                    type: boolean
+                    example: true
+                required:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
+            required:
+              - settingStartTime
+              - settingEndTime
+              - reservationMaximumTimeUnit
+              - enabledDayOfWeek
       required:
         - name
         - color
@@ -625,6 +716,9 @@ components:
               isAvailable:
                 type: boolean
                 example: true
+            required:
+              - spaceId
+              - isAvailable
       required:
         - mapId
         - spaces
@@ -652,47 +746,58 @@ components:
           example: true
         settings:
           description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
-          type: object
-          properties:
-            settingStartTime:
-              type: string
-              example: '10:00:00'
-            settingEndTime:
-              type: string
-              example: '22:00:00'
-            reservationMinimumTimeUnit:
-              type: integer
-              example: 10
-              nullable: false
-            reservationMaximumTimeUnit:
-              type: integer
-              example: 120
-              nullable: false
-            enabledDayOfWeek:
-              type: object
-              nullable: false
-              properties:
-                monday:
-                  type: boolean
-                  example: true
-                tuesday:
-                  type: boolean
-                  example: true
-                wednesday:
-                  type: boolean
-                  example: true
-                thursday:
-                  type: boolean
-                  example: true
-                friday:
-                  type: boolean
-                  example: true
-                saturday:
-                  type: boolean
-                  example: true
-                sunday:
-                  type: boolean
-                  example: true
+          type: array
+          items:
+            type: object
+            properties:
+              settingStartTime:
+                type: string
+                example: '10:00:00'
+              settingEndTime:
+                type: string
+                example: '22:00:00'
+              reservationMaximumTimeUnit:
+                type: integer
+                example: 120
+                nullable: false
+              enabledDayOfWeek:
+                type: object
+                nullable: false
+                properties:
+                  monday:
+                    type: boolean
+                    example: true
+                  tuesday:
+                    type: boolean
+                    example: true
+                  wednesday:
+                    type: boolean
+                    example: true
+                  thursday:
+                    type: boolean
+                    example: true
+                  friday:
+                    type: boolean
+                    example: true
+                  saturday:
+                    type: boolean
+                    example: true
+                  sunday:
+                    type: boolean
+                    example: true
+                required:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
+            required:
+              - settingStartTime
+              - settingEndTime
+              - reservationMaximumTimeUnit
+              - enabledDayOfWeek
       required:
         - name
         - color
@@ -720,45 +825,57 @@ components:
           type: boolean
           example: true
         settings:
-          description: 'reservationEnable이 true인 경우에만 settings가 필요하다.'
-          type: object
-          properties:
-            settingStartTime:
-              type: string
-              example: '10:00:00'
-            settingEndTime:
-              type: string
-              example: '22:00:00'
-            reservationMinimumTimeUnit:
-              type: integer
-              example: 10
-            reservationMaximumTimeUnit:
-              type: integer
-              example: 120
-            enabledDayOfWeek:
-              type: object
-              properties:
-                monday:
-                  type: boolean
-                  example: true
-                tuesday:
-                  type: boolean
-                  example: true
-                wednesday:
-                  type: boolean
-                  example: true
-                thursday:
-                  type: boolean
-                  example: true
-                friday:
-                  type: boolean
-                  example: true
-                saturday:
-                  type: boolean
-                  example: true
-                sunday:
-                  type: boolean
-                  example: true
+          description: 'reservationEnable이 true인 경우에만 settings가 필요로 존재하다.'
+          type: array
+          items:
+            type: object
+            properties:
+              settingStartTime:
+                type: string
+                example: '12:00:00'
+              settingEndTime:
+                type: string
+                example: '20:00:00'
+              reservationMaximumTimeUnit:
+                type: integer
+                example: 120
+              enabledDayOfWeek:
+                type: object
+                properties:
+                  monday:
+                    type: boolean
+                    example: true
+                  tuesday:
+                    type: boolean
+                    example: false
+                  wednesday:
+                    type: boolean
+                    example: true
+                  thursday:
+                    type: boolean
+                    example: true
+                  friday:
+                    type: boolean
+                    example: false
+                  saturday:
+                    type: boolean
+                    example: true
+                  sunday:
+                    type: boolean
+                    example: true
+                required:
+                  - monday
+                  - tuesday
+                  - wednesday
+                  - thursday
+                  - friday
+                  - saturday
+                  - sunday
+            required:
+              - settingStartTime
+              - settingEndTime
+              - reservationMaximumTimeUnit
+              - enabledDayOfWeek
       required:
         - name
         - color

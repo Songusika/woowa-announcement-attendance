@@ -3,10 +3,10 @@ package com.woowahan.campus.announcement.feature
 import com.woowahan.campus.announcement.domain.AnnouncementRepository
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
-import com.woowahan.campus.fixture.createAnnouncement
-import com.woowahan.campus.fixture.createAnnouncementResponse
-import com.woowahan.campus.utils.DatabaseCleaner
-import com.woowahan.campus.utils.basicEncodePassword
+import com.woowahan.campus.announcement.fixture.createAnnouncement
+import com.woowahan.campus.announcement.fixture.createAnnouncementResponse
+import com.woowahan.campus.support.DatabaseInitializer
+import com.woowahan.campus.support.basicEncodePassword
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.equality.shouldBeEqualToComparingFields
 import io.kotest.matchers.shouldBe
@@ -15,25 +15,20 @@ import io.restassured.http.ContentType
 import openapi.model.AnnouncementResponse
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
-import support.test.beforeRootTest
 
-@Import(DatabaseCleaner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GetAnnouncementTest(
     @LocalServerPort
     val port: Int,
     private val announcementRepository: AnnouncementRepository,
     private val announcementSlackRepository: AnnouncementSlackChannelRepository,
-    private val databaseCleaner: DatabaseCleaner,
+    private val databaseInitializer: DatabaseInitializer,
 ) : BehaviorSpec({
 
     RestAssured.port = port
 
-    beforeRootTest {
-        databaseCleaner.clean()
-    }
+    extensions(databaseInitializer)
 
     Given("하나의 공지가 있을 때") {
         val title = "민트는 짱이다."

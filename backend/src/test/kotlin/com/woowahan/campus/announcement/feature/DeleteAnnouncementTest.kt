@@ -1,6 +1,6 @@
 package com.woowahan.campus.announcement.feature
 
-import com.woowahan.campus.utils.DatabaseCleaner
+import com.woowahan.campus.support.DatabaseInitializer
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
@@ -9,24 +9,19 @@ import openapi.model.CreateAnnouncementRequest
 import openapi.model.CreateAnnouncementRequestSlackChannel
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
-import support.test.beforeRootTest
 import java.util.Base64
 
-@Import(DatabaseCleaner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DeleteAnnouncementTest(
     @LocalServerPort
     val port: Int,
-    val databaseCleaner: DatabaseCleaner
+    val databaseInitializer: DatabaseInitializer,
 ) : BehaviorSpec({
 
     RestAssured.port = port
 
-    beforeRootTest {
-        databaseCleaner.clean()
-    }
+    extensions(databaseInitializer)
 
     Given("공지글 ID, 관리자 비밀번호를 받는다.") {
         val title = "민트는 짱이다."

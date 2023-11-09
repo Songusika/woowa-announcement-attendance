@@ -1,4 +1,4 @@
-package com.woowahan.campus.utils
+package com.woowahan.campus.support
 
 import java.util.Base64
 

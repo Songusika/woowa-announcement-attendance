@@ -13,5 +13,6 @@ class WebMvcConfig(
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(AuthorizeUser(password))
+            .addPathPatterns("/api/announcements/**")
     }
 }

@@ -6,9 +6,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.3"
     id("org.openapi.generator") version "6.6.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
-    kotlin("plugin.jpa") version "1.8.22"
+    kotlin("jvm") version "1.9.10"
+    kotlin("plugin.spring") version "1.9.10"
+    kotlin("plugin.jpa") version "1.9.10"
 }
 
 group = "com.woowahan"
@@ -26,13 +26,18 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
+    implementation("p6spy:p6spy:3.9.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
     testImplementation("io.rest-assured:rest-assured:5.3.0")
-    implementation("com.slack.api:slack-api-client:1.30.0")
-    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("com.ninja-squad:springmockk:3.0.1")
+    // slack api
+    implementation("com.slack.api:slack-api-client:1.30.0")
+
+    // mockk
+    testImplementation("io.mockk:mockk:1.13.5")
 }
 
 ktlint {

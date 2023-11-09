@@ -1,4 +1,4 @@
-package com.woowahan.campus.fixture
+package com.woowahan.campus.announcement.fixture
 
 import com.woowahan.campus.announcement.domain.Announcement
 import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
