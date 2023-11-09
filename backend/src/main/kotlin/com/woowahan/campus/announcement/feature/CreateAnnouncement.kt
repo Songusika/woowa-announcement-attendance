@@ -20,16 +20,15 @@ class CreateAnnouncement(
     @Transactional
     override fun createAnnouncement(
         authorization: String,
-        createAnnouncementRequest: CreateAnnouncementRequest
+        createAnnouncementRequest: CreateAnnouncementRequest,
     ): ResponseEntity<Unit> {
-
         val savedAnnouncement = announcementRepository.save(
             Announcement.create(
                 Title(createAnnouncementRequest.title),
                 Content(createAnnouncementRequest.content),
                 Author(createAnnouncementRequest.author),
                 createAnnouncementRequest.slackChannel.channelId,
-            )
+            ),
         )
         return ResponseEntity.created(URI.create("/api/announcements/${savedAnnouncement.id}")).build()
     }
