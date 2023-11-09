@@ -651,6 +651,9 @@ components:
     space_get_single:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         name:
           type: string
           example: '백엔드 강의실'
@@ -717,6 +720,7 @@ components:
               - reservationMaximumTimeUnit
               - enabledDayOfWeek
       required:
+        - id
         - name
         - color
         - area

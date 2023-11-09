@@ -53,6 +53,7 @@ class ReadSpaceTest(
                         {
                             "spaces": [
                                 {
+                                    "id": ${space.id},
                                     "name": "${space.name}",
                                     "color": "${space.color}",
                                     "area": "${space.area}",
@@ -106,6 +107,7 @@ class ReadSpaceTest(
                 response.asPrettyJson() shouldBe
                     """
                         {
+                            "id": ${space.id},
                             "name": "${space.name}",
                             "color": "${space.color}",
                             "area": "${space.area}",

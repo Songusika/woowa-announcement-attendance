@@ -34,6 +34,7 @@ class ReadSpace(
     }
 
     private fun createSpaceSingleResponse(space: Space) = SpaceGetSingle(
+        id = space.id.toInt(),
         name = space.name,
         color = space.color,
         area = space.area,
