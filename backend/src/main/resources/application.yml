@@ -10,9 +10,6 @@ spring:
         ddl-auto: validate
   flyway:
     enabled: true
-  h2:
-    console:
-      enabled: true
 
 common:
   password: 1234
