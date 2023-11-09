@@ -1,12 +1,14 @@
 package com.woowahan.campus.announcement.feature
 
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannel
+import com.woowahan.campus.announcement.domain.AnnouncementSlackChannelRepository
 import com.woowahan.campus.support.DatabaseInitializer
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import openapi.model.CreateAnnouncementRequest
-import openapi.model.CreateAnnouncementRequestSlackChannel
+
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
@@ -17,6 +19,7 @@ class DeleteAnnouncementTest(
     @LocalServerPort
     val port: Int,
     val databaseInitializer: DatabaseInitializer,
+    val announcementSlackChannelRepository: AnnouncementSlackChannelRepository,
 ) : BehaviorSpec({
 
     RestAssured.port = port
@@ -26,11 +29,11 @@ class DeleteAnnouncementTest(
     Given("공지글 ID, 관리자 비밀번호를 받는다.") {
         val title = "민트는 짱이다."
         val contents = "민트는 짱이다. 이상 전달 끗"
-        val slackChannelRequest = CreateAnnouncementRequestSlackChannel(1, "민트 채널")
+        val slackChannel = announcementSlackChannelRepository.save(AnnouncementSlackChannel("CK01", "6기-공지사항"))
         val writer = "민트"
         val password = "1234".toByteArray()
         val createAnnouncementRequest =
-            CreateAnnouncementRequest(title, contents, writer, slackChannelRequest)
+            CreateAnnouncementRequest(title, contents, writer, slackChannel.name)
 
         RestAssured
             .given().log().all()
