@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.support
+package com.woowahan.campus.support
 
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Component

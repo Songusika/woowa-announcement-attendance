@@ -1,5 +1,7 @@
 package com.woowahan.campus.zzimkkong.feature.space
 
+import com.woowahan.campus.support.DatabaseInitializer
+import com.woowahan.campus.support.asPrettyJson
 import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.FRIDAY
 import com.woowahan.campus.zzimkkong.domain.DayOfWeeks.MONDAY
@@ -13,8 +15,6 @@ import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_1
 import com.woowahan.campus.zzimkkong.fixture.SettingFixture.Companion.회의실_예약_설정_3
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture
-import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
-import com.woowahan.campus.zzimkkong.support.asPrettyJson
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured

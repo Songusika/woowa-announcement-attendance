@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.support
+package com.woowahan.campus.support
 
 import io.kotest.core.listeners.BeforeContainerListener
 import io.kotest.core.test.TestCase

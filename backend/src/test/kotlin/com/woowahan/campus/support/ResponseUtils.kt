@@ -1,4 +1,4 @@
-package com.woowahan.campus.zzimkkong.support
+package com.woowahan.campus.support
 
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response

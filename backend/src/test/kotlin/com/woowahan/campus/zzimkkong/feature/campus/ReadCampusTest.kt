@@ -1,11 +1,11 @@
 package com.woowahan.campus.zzimkkong.feature.campus
 
+import com.woowahan.campus.support.DatabaseInitializer
+import com.woowahan.campus.support.asPrettyJson
 import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.SlackChannel
 import com.woowahan.campus.zzimkkong.domain.SlackChannelRepository
 import com.woowahan.campus.zzimkkong.fixture.CampusFixture
-import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
-import com.woowahan.campus.zzimkkong.support.asPrettyJson
 import io.kotest.assertions.assertSoftly
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe

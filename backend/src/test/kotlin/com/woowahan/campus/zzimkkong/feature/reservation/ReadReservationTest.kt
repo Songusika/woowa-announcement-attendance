@@ -1,5 +1,7 @@
 package com.woowahan.campus.zzimkkong.feature.reservation
 
+import com.woowahan.campus.support.DatabaseInitializer
+import com.woowahan.campus.support.asPrettyJson
 import com.woowahan.campus.zzimkkong.domain.CampusRepository
 import com.woowahan.campus.zzimkkong.domain.ReservationRepository
 import com.woowahan.campus.zzimkkong.domain.Setting
@@ -8,8 +10,6 @@ import com.woowahan.campus.zzimkkong.fixture.CampusFixture
 import com.woowahan.campus.zzimkkong.fixture.ReservationFixture.Companion.회의실_예약
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture.Companion.굿샷_강의장
 import com.woowahan.campus.zzimkkong.fixture.SpaceFixture.Companion.랜딩_강의장
-import com.woowahan.campus.zzimkkong.support.DatabaseInitializer
-import com.woowahan.campus.zzimkkong.support.asPrettyJson
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every

@@ -1,3 +1,6 @@
 spring:
   profiles:
     active: local
+
+common:
+  password: 1234
