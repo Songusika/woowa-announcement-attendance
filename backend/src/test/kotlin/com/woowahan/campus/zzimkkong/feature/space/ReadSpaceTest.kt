@@ -51,7 +51,7 @@ class ReadSpaceTest(
                 response.asPrettyJson() shouldBe
                     """
                         {
-                            "space": [
+                            "spaces": [
                                 {
                                     "name": "${space.name}",
                                     "color": "${space.color}",

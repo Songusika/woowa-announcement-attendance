@@ -11,7 +11,7 @@ import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.FindReservationApi
 import openapi.model.ReservationGetSingle
 import openapi.model.ReservationsGet
-import openapi.model.ReservationsGetReservationInner
+import openapi.model.ReservationsGetReservationsInner
 import openapi.model.SpaceGetReservationEnabled
 import openapi.model.SpaceGetReservationEnabledSpacesInner
 import org.springframework.http.ResponseEntity
@@ -42,7 +42,7 @@ class ReadReservation(
     override fun findReservations(mapId: Int, spaceId: Int, date: LocalDate): ResponseEntity<ReservationsGet> {
         val reservations = reservationRepository.findAllBySpaceIdAndDate(spaceId.toLong(), date)
         val response = reservations.map {
-            ReservationsGetReservationInner(
+            ReservationsGetReservationsInner(
                 id = it.id.toInt(),
                 startDateTime = "${it.date}T${it.startTime}",
                 endDateTime = "${it.date}T${it.endTime}",

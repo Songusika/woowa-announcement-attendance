@@ -126,7 +126,7 @@ class ReadReservationTest(
                 response.asPrettyJson() shouldBe
                     """
                         {
-                            "reservation": [
+                            "reservations": [
                                 {
                                     "id": 1,
                                     "startDateTime": "2023-11-07T11:00",

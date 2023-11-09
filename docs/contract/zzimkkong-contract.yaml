@@ -479,7 +479,7 @@ components:
     reservations_get:
       type: object
       properties:
-        reservation:
+        reservations:
           type: array
           items:
             type: object
@@ -725,7 +725,7 @@ components:
     space_get_all:
       type: object
       properties:
-        space:
+        spaces:
           items:
             $ref: '#/components/schemas/space_get_single'
     space_get_reservation_enabled:
