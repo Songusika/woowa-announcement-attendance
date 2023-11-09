@@ -10,7 +10,6 @@ import openapi.model.AnnouncementResponse
 import openapi.model.AnnouncementsInfoByCursorResponse
 import openapi.model.AnnouncementsInfoByOffsetResponse
 import openapi.model.CreateAnnouncementRequest
-
 import openapi.model.UpdateAnnouncementRequest
 
 fun createAnnouncement(

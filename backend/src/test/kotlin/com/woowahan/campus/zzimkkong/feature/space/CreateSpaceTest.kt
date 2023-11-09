@@ -28,7 +28,6 @@ class CreateSpaceTest(
     RestAssured.port = port
 
     Given("이름, 색상, 공간 좌표 정보, 예약 가능 여부, 예약 설정을 받는다.") {
-        val slackUrl = "https://slackexample.com"
         val campus = campusRepository.save(CampusFixture.잠실_캠퍼스())
         val settings = listOf(SettingFixture.회의실_예약_설정_1())
         val space = SpaceFixture.랜딩_강의장(campus.id, settings)

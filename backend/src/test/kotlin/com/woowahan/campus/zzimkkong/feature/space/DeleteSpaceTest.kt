@@ -24,7 +24,6 @@ class DeleteSpaceTest(
     RestAssured.port = port
 
     Given("회의실 정보를 등록한다.") {
-        val slackUrl = "https://slackexample.com"
         val campus = campusRepository.save(CampusFixture.잠실_캠퍼스())
         val settings = listOf(SettingFixture.회의실_예약_설정_1(), SettingFixture.회의실_예약_설정_2())
         val space = spaceRepository.save(SpaceFixture.랜딩_강의장(campus.id, settings))
