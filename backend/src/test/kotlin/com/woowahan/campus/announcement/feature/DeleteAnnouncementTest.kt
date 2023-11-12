@@ -10,8 +10,12 @@ import openapi.model.CreateAnnouncementRequestSlackChannel
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.transaction.annotation.Transactional
 import java.util.Base64
 
+@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class DeleteAnnouncementTest(
     @LocalServerPort
@@ -21,7 +25,7 @@ class DeleteAnnouncementTest(
 
     RestAssured.port = port
 
-    extensions(databaseInitializer)
+    // extensions(databaseInitializer)
 
     Given("공지글 ID, 관리자 비밀번호를 받는다.") {
         val title = "민트는 짱이다."

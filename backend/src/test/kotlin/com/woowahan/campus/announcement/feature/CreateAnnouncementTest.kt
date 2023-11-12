@@ -12,7 +12,11 @@ import openapi.model.CreateAnnouncementRequestSlackChannel
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CreateAnnouncementTest(
     @LocalServerPort
@@ -22,7 +26,7 @@ class CreateAnnouncementTest(
 
     RestAssured.port = port
 
-    extensions(databaseInitializer)
+    // extensions(databaseInitializer)
 
     Given("제목, 내용, 슬랙 채널, 작성자 닉네임, 관리자 비밀번호를 받는다.") {
         val title = "민트는 짱이다."

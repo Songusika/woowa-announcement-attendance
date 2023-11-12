@@ -21,7 +21,11 @@ import openapi.model.AnnouncementsInfoByOffsetResponse
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GetAllAnnouncementTest(
     @LocalServerPort
@@ -33,7 +37,7 @@ class GetAllAnnouncementTest(
 
     RestAssured.port = port
 
-    extensions(databaseInitializer)
+    // extensions(databaseInitializer)
 
     Given("등록된 공지가 20개가 있을 때") {
         val slackChannel = announcementSlackChannelRepository.save(AnnouncementSlackChannel("CK01", "6기-공지사항"))

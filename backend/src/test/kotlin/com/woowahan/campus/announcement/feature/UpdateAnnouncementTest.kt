@@ -11,8 +11,12 @@ import openapi.model.CreateAnnouncementRequest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.transaction.annotation.Transactional
 import java.util.Base64
 
+@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class UpdateAnnouncementTest(
     @LocalServerPort
@@ -22,7 +26,7 @@ class UpdateAnnouncementTest(
 
     RestAssured.port = port
 
-    extensions(databaseInitializer)
+    // extensions(databaseInitializer)
 
     Given("글ID, 제목, 내용, 작성자, 관리자 비밀번호를 받는다.") {
         val password = "1234".toByteArray()

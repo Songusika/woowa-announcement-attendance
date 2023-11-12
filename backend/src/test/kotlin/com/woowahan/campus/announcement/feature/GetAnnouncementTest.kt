@@ -16,7 +16,11 @@ import openapi.model.AnnouncementResponse
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.http.HttpHeaders
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GetAnnouncementTest(
     @LocalServerPort
@@ -28,7 +32,7 @@ class GetAnnouncementTest(
 
     RestAssured.port = port
 
-    extensions(databaseInitializer)
+    // extensions(databaseInitializer)
 
     Given("하나의 공지가 있을 때") {
         val title = "민트는 짱이다."
