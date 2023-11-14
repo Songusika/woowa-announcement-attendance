@@ -19,11 +19,11 @@ class SpaceSettingsValidator {
 
         private fun validateReservationEnabled(
             settings: List<Setting>,
-            space: Space
+            space: Space,
         ) {
             when {
                 settings.isEmpty() -> {
-                    require(!space.reservationEnabled) { "예약이 가능한 공간은 최소 한 개의 예약 설정이 필요합니다." }
+                    require(space.reservationEnabled.not()) { "예약이 가능한 공간은 최소 한 개의 예약 설정이 필요합니다." }
                 }
             }
         }
@@ -35,10 +35,7 @@ class SpaceSettingsValidator {
         ) {
             if (containsDuplicatedDay(enableDays, otherSetting)) {
                 require(
-                    setting.startTime.isAfter(otherSetting.endTime) ||
-                        setting.startTime == otherSetting.endTime ||
-                        setting.endTime.isBefore(otherSetting.startTime) ||
-                        setting.endTime == otherSetting.startTime
+                    setting.startTime >= otherSetting.endTime || setting.endTime <= otherSetting.startTime
                 ) { "시간이 겹칩니다." }
             }
         }
