@@ -22,7 +22,7 @@ class Setting(
     }
 
     private fun validateTime(startTime: LocalTime, endTime: LocalTime) {
-        require(!startTime.isAfter(endTime)) { "시작 시간이 종료 시간보다 늦을 수 없습니다." }
+        require(startTime < endTime) { "시작 시간이 종료 시간보다 늦을 수 없습니다." }
         require(startTime != endTime) { "시작 시간과 종료 시간이 같을 수 없습니다." }
     }
 

@@ -9,6 +9,7 @@ import com.woowahan.campus.zzimkkong.domain.getById
 import openapi.api.UpdateMapApi
 import openapi.model.MapPut
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,6 +18,7 @@ class UpdateCampus(
     val slackChannelRepository: SlackChannelRepository,
 ) : UpdateMapApi {
 
+    @Transactional
     override fun updateMap(mapId: Int, mapPut: MapPut): ResponseEntity<Unit> {
         val campus = campusRepository.getById(mapId.toLong())
         val slackChannel = slackChannelRepository.getByCampusId(campus.id)
